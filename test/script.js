@@ -35,4 +35,85 @@ app.controller('MainCtrl', function($scope) {
   };
 
   console.log("maincontroller end!");
+
+
+
+    $scope.form_cfg = {
+        "legend": "legend",
+        "type": "horizontal",
+        "name": "form",
+        "onSubmit": "SendToServer",
+        "model": "entity",
+        "fields": "form_fields",
+    };
+
+    $scope.form_fields = [{
+        "label": "Text field",
+        "type": "text",
+        "name": "user",
+        "placeholder": "Text",
+        "constraints": {
+            "required": true
+        }
+    },{
+        "label": "Password field",
+        "type": "password",
+        "name": "pwd",
+        "placeholder": "Password",
+        "constraints": {
+            "only-iso": true
+        }
+    },{
+        "label": "Password field - 2",
+        "type": "password",
+        "name": "pwd2",
+        "placeholder": "repeat password",
+        "constraints": {
+            "equal-to": "entity.pwd"
+        },
+        "messages": {
+            "equal-to": "La contraseña no coincide."
+        }
+    },{
+        "label": "T&C",
+        "type": "checkbox",
+        "name": "tyc",
+        "right": true,
+        "constraints": {
+            "required-if": "entity.user"
+        }
+    },{
+        "label": "Services",
+        "type": "checkbox-list",
+        "name": "services",
+        "source": "src_list"
+    },{
+        "label": "Datepicker",
+        "type": "datepicker",
+        "name": "date"
+    },{
+        "label": "Platform",
+        "type": "select",
+        "name": "platform",
+        "source": [{"id": "mobile", "label": "mobile"},{"id": "desktop", "label": "desktop"}],
+        "empty_msg": "Please choose a car"
+    },{
+        "type": "select-bool",
+        "label": "IPhone",
+        "option_id": "id",
+        "option_value": "value",
+        "source": [{"id": true, "label": "YES"},{"id": false, "label": "NO"}],
+        "name": "has_iphone"
+    },{
+        "label": "Lista",
+        "type": "select",
+        "name": "lista",
+        "source": "list",
+        "empty_msg": "Choose one"
+    },{
+        "label": "Submit now!",
+        "type": "submit",
+        "name": "submit"
+    }];
+
 });

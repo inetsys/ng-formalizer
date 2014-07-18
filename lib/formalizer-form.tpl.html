@@ -4,9 +4,6 @@
     ng-class="{'form-horizontal': $fromalizer.horizontal, 'form-vertical': $fromalizer.vertical, 'form-inline': $fromalizer.inline}"
     name="{{$fromalizer.name}}"
     novalidate>
-  <!-- store here the configuration for debug purpose -->
-  <div style="display:none;" ng-transclude></div>
-
   <fieldset>
     <legend ng-if="$fromalizer.legend">{{$fromalizer.legend}}</legend>
     <div class="fieldset-contents"></div>
