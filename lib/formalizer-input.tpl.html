@@ -1,0 +1,12 @@
+<div class="{{container.class}}">
+  <label for="{{element.attrs.name}}" class="{{label.class}}">{{label.text}}</label>
+  <div class="{{element.container.class}}">
+    <p class="{{element.wrap.class}}"><input %element-attributes% />%element-right-icon%</p>
+    <p class="help-block">{{help.text}}</p>
+
+    %element-error-list%
+
+    <!-- div ng-include="formalizer-error-list.tpl.html"></div -->
+
+  </div>
+</div>

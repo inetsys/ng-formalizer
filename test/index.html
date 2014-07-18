@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html ng-app="app" >
+
+  <head>
+    <script src="jquery-2.1.1.js"></script>
+    <script src="angular.js"></script>
+    <script src="angular-animate.js"></script>
+
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+    <script src="ui-bootstrap-tpls-0.11.0.js"></script>
+
+<!--
+    <link href="style.css" rel="stylesheet" />
+-->
+
+    <script src="ng-required-if.js"></script>
+    <script src="ng-blacklist.js"></script>
+    <script src="ng-equalto.js"></script>
+    <script src="ng-regex-validations.js"></script>
+    <script src="ng-fromalizer.js"></script>
+    <script src="script.js"></script>
+    <style>
+    .ng-invalid-required {
+        border-color: #FF0000 !important;
+        box-shadow: 1px 1px 2px #FF0000;
+    }
+    </style>
+  </head>
+
+<body ng-controller="MainCtrl">
+<h1>ng-formalizer</h1>
+
+<fromalizer from-url="test.json">
+</fromalizer>
+
+<fromalizer>
+{
+    "legend": "legend",
+    "type": "horizontal",
+    "name": "form",
+    "onSubmit": "SendToServer",
+    "model": "entity",
+    "fields": [{
+        "label": "Text field",
+        "type": "text",
+        "name": "user",
+        "placeholder": "Text",
+        "constraints": {
+            "required": true
+        }
+    },{
+        "label": "Password field",
+        "type": "password",
+        "name": "pwd",
+        "placeholder": "Password",
+        "constraints": {
+            "only-iso": true
+        }
+    },{
+        "label": "Password field - 2",
+        "type": "password",
+        "name": "pwd2",
+        "placeholder": "repeat password",
+        "constraints": {
+            "equal-to": "entity.pwd"
+        },
+        "messages": {
+            "equal-to": "La contraseña no coincide."
+        }
+    },{
+        "label": "T&C",
+        "type": "checkbox",
+        "name": "tyc",
+        "right": true,
+        "constraints": {
+            "required-if": "entity.user"
+        }
+    },{
+        "label": "Services",
+        "type": "checkbox-list",
+        "name": "services",
+        "source": "src_list"
+    },{
+        "label": "Datepicker",
+        "type": "datepicker",
+        "name": "date"
+    },{
+        "label": "Platform",
+        "type": "select",
+        "name": "platform",
+        "source": [{"id": "mobile", "label": "mobile"},{"id": "desktop", "label": "desktop"}],
+        "empty_msg": "Please choose a car"
+    },{
+        "type": "select-bool",
+        "label": "IPhone",
+        "option_id": "id",
+        "option_value": "value",
+        "source": [{"id": true, "label": "YES"},{"id": false, "label": "NO"}],
+        "name": "has_iphone"
+    },{
+        "label": "Lista",
+        "type": "select",
+        "name": "lista",
+        "source": "list",
+        "empty_msg": "Choose one"
+    },{
+        "label": "Submit now!",
+        "type": "submit",
+        "name": "submit"
+    }]
+}
+</fromalizer>
+
+<hr />
+<pre>
+
+entity: {{ entity | json }}
+</pre>
+
+</body>
+
+</html>

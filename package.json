@@ -1,0 +1,67 @@
+{
+  "name": "ng-formalizer",
+  "version": "0.0.1",
+  "description": "Angular (&UI) form generator and validation from JSON",
+  "main": "./index.js",
+  "keywords": [
+  ],
+  "directories": {
+    "lib": ".",
+    "test": "test"
+  },
+  "scripts": {
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/llafuente/ng-formalizer.git"
+  },
+  "author": {
+    "name": "Luis Lafuente",
+    "email": "llafuente@noboxout.com",
+    "url": "http://www.noboxout.com"
+  },
+  "license": "MIT",
+  "engine": {
+    "node": ">=0.10"
+  },
+  "dependencies": {
+  },
+  "devDependencies": {
+    "express": "*",
+    "serve-static": "*"
+  },
+  "jshintConfig": {
+    "white": true,
+    "curly": true,
+    "eqeqeq": true,
+    "indent": 4,
+    "asi": false,
+    "boss": false,
+    "browser": true,
+    "devel": true,
+    "maxdepth": 4,
+    "maxstatements": 25,
+    "maxcomplexity": 6,
+    "eqnull": true,
+    "es5": true,
+    "evil": false,
+    "immed": false,
+    "jquery": true,
+    "latedef": false,
+    "laxcomma": true,
+    "laxbreak": true,
+    "newcap": true,
+    "node": true,
+    "noempty": true,
+    "nonew": true,
+    "predef": [
+      "log"
+    ],
+    "quotmark": "double",
+    "smarttabs": false,
+    "strict": false,
+    "trailing": true,
+    "undef": true,
+    "unused": true
+  }
+}
