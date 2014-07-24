@@ -1,0 +1,9 @@
+<div class="{{container.class}}">
+ <div class="{{element.container.class}}">
+  <label for="{{element.attrs.name}}" class="{{label.class}}">
+    <input %element-attributes% /><span>{{label.text}}</span>
+  </label>
+  <p class="help-block">{{helpText}}</p>
+  %element-error-list%
+ </div>
+</div>

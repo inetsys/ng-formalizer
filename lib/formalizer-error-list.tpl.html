@@ -1,19 +1,18 @@
-
 <ul class="error-list">
-  <li ng-show="$formalizer.$attemps > 0 && %form-name%['{{element.attrs.name}}'].$error.required">Field is required</li>
-  <li ng-show="%form-name%['{{element.attrs.name}}'].$error.min">Field minimum is {{min}}</li>
-  <li ng-show="%form-name%['{{element.attrs.name}}'].$error.max">Field maximum is {{max}}</li>
-  <li ng-show="%form-name%['{{element.attrs.name}}'].$error.minlength">Field is required to be at least {{minlength}} characters</li>
-  <li ng-show="%form-name%['{{element.attrs.name}}'].$error.maxlength">Field cannot be longer than {{maxlength}} characters</li>
-  <li ng-show="%form-name%['{{element.attrs.name}}'].$error.number">Field is an invalid number</li>
-  <li ng-show="%form-name%['{{element.attrs.name}}'].$error.email">Field is an invalid email</li>
-  <li ng-show="%form-name%['{{element.attrs.name}}'].$error.url">Field is an invalid URL</li>
-  <li ng-show="%form-name%['{{element.attrs.name}}'].$error.blacklist">Field value is blacklisted</li>
-  <li ng-show="%form-name%['{{element.attrs.name}}'].$error['equal-to']">Field must be equal to: X</li>
-  <li ng-show="%form-name%['{{element.attrs.name}}'].$error['only-alpha']">Field must contains only letters</li>
-  <li ng-show="%form-name%['{{element.attrs.name}}'].$error['only-iso']">Valid characters are: A-Z, a-z, 0-9</li>
-  <li ng-show="%form-name%['{{element.attrs.name}}'].$error['one-upper']">At least one uppercase</li>
-  <li ng-show="%form-name%['{{element.attrs.name}}'].$error['one-lower']">At least one lowercase</li>
-  <li ng-show="%form-name%['{{element.attrs.name}}'].$error['one-number']">At least one number</li>
-  <li ng-show="%form-name%['{{element.attrs.name}}'].$error['one-alpha']">At least one letter</li>
+  <li ng-show="$formalizer.$attemps > 0 && %form-name%['{{element.attrs.name}}'].$error.required">{{messages.required || 'Field is required'}}</li>
+  <li ng-show="%form-name%['{{element.attrs.name}}'].$error.min">{{messages.min || 'Field minimum is {\\{element.attrs[\'ng-min\']}\\}'}}</li>
+  <li ng-show="%form-name%['{{element.attrs.name}}'].$error.max">{{messages.max || 'Field maximum is {\\{element.attrs[\'ng-max\']}\\}'}}</li>
+  <li ng-show="%form-name%['{{element.attrs.name}}'].$error.minlength">{{messages.minlength || 'Field is required to be at least {\\{element.attrs[\'ng-minlength\']}\\} characters'}}</li>
+  <li ng-show="%form-name%['{{element.attrs.name}}'].$error.maxlength">{{messages.maxlength || 'Field cannot be longer than {\\{element.attrs[\'ng-maxlength\']}\\} characters'}}</li>
+  <li ng-show="%form-name%['{{element.attrs.name}}'].$error.number">{{messages.number || 'Field is an invalid number'}}</li>
+  <li ng-show="%form-name%['{{element.attrs.name}}'].$error.email">{{messages.email || 'Field is an invalid email'}}</li>
+  <li ng-show="%form-name%['{{element.attrs.name}}'].$error.url">{{messages.url || 'Field is an invalid URL'}}</li>
+  <li ng-show="%form-name%['{{element.attrs.name}}'].$error.blacklist">{{messages.blacklist || 'Field value is blacklisted'}}</li>
+  <li ng-show="%form-name%['{{element.attrs.name}}'].$error['equal-to']">{{messages.['equal-to'] || 'Field must be equal to: X'}}</li>
+  <li ng-show="%form-name%['{{element.attrs.name}}'].$error['only-alpha']">{{messages.['only-alpha'] || 'Field must contains only letters'}}</li>
+  <li ng-show="%form-name%['{{element.attrs.name}}'].$error['only-iso']">{{messages.['only-iso'] || 'Valid characters are: A-Z, a-z, 0-9'}}</li>
+  <li ng-show="%form-name%['{{element.attrs.name}}'].$error['one-upper']">{{messages.['one-upper'] || 'At least one uppercase'}}</li>
+  <li ng-show="%form-name%['{{element.attrs.name}}'].$error['one-lower']">{{messages.['one-lower'] || 'At least one lowercase'}}</li>
+  <li ng-show="%form-name%['{{element.attrs.name}}'].$error['one-number']">{{messages.['one-number'] || 'At least one number'}}</li>
+  <li ng-show="%form-name%['{{element.attrs.name}}'].$error['one-alpha']">{{messages.['one-alpha'] || 'At least one letter'}}</li>
 </ul>

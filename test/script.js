@@ -15,23 +15,9 @@ app.controller("MainCtrl", ["$scope", "$timeout", function ($scope, $timeout) {
         "starting-day": 1
     };
 
-    $scope.list = [{
-        id: 1,
-        label: "Soccer"
-    }, {
-        id: 2,
-        label: "Basket"
-    }, {
-        id: 3,
-        label: "Curlin"
-    }, {
-        id: "sc2",
-        label: "starcraft 2"
-    }];
-
-    $scope.SendToServer = function (dirty_data) {
-        console.log("SendToServer");
-        console.log(dirty_data);
+    $scope.onSubmit = function (dirty_data_only) {
+        console.log("onSubmit");
+        console.log(dirty_data_only);
     };
 
     console.log("maincontroller end!");
@@ -42,21 +28,34 @@ app.controller("MainCtrl", ["$scope", "$timeout", function ($scope, $timeout) {
         "legend": "legend",
         "type": "horizontal",
         "name": "form",
-        "onSubmit": "SendToServer",
+        "onSubmit": "onSubmit",
         "model": "entity",
         "fields": "form_fields",
     };
 
+    $scope.typeahead_items = [
+        {id: 1, name: "abc"},
+        {id: 2, name: "bcd"},
+        {id: 3, name: "def"},
+        {id: 4, name: "efg"},
+        {id: 5, name: "zzz"},
+    ];
+
+
     $scope.form_fields = [{
-        "label": "Text field",
+        "label": "User (minlength=5 and messages translated)",
         "type": "text",
         "name": "user",
         "placeholder": "Text",
         "constraints": {
-            "required": true
+            "required": true,
+            "minlength": 5
+        },
+        "messages": {
+            "minlength": "más de 5 caracters majo!"
         }
     }, {
-        "label": "Password field",
+        "label": "Password (only-iso)",
         "type": "password",
         "name": "pwd",
         "placeholder": "Password",
@@ -64,7 +63,7 @@ app.controller("MainCtrl", ["$scope", "$timeout", function ($scope, $timeout) {
             "only-iso": true
         }
     }, {
-        "label": "Password field - 2",
+        "label": "Password repeat (must be equal to password)",
         "type": "password",
         "name": "pwd2",
         "placeholder": "repeat password",
@@ -75,7 +74,11 @@ app.controller("MainCtrl", ["$scope", "$timeout", function ($scope, $timeout) {
             "equal-to": "La contraseña no coincide."
         }
     }, {
-        "label": "T&C",
+        "label": "Comments",
+        "type": "textarea",
+        "name": "comments"
+    }, {
+        "label": "just a checkbox, required if you fill User (with a valid user!)",
         "type": "checkbox",
         "name": "tyc",
         "right": true,
@@ -83,7 +86,7 @@ app.controller("MainCtrl", ["$scope", "$timeout", function ($scope, $timeout) {
             "required-if": "entity.user"
         }
     }, {
-        "label": "Services",
+        "label": "Checkbos list (not available atm)",
         "type": "checkbox-list",
         "name": "services",
         "source": "src_list"
@@ -92,36 +95,90 @@ app.controller("MainCtrl", ["$scope", "$timeout", function ($scope, $timeout) {
         "type": "datepicker",
         "name": "date"
     }, {
-        "label": "Platform",
+        "label": "Select (set to desktop)",
         "type": "select",
         "name": "platform",
         "source": [{"id": "mobile", "label": "mobile"}, {"id": "desktop", "label": "desktop"}],
         "empty_msg": "Please choose a car"
     }, {
-        "type": "select-bool",
-        "label": "IPhone",
+        "label": "Select (with booleans this time)",
+        "type": "select",
         "option_id": "id",
         "option_value": "value",
         "source": [{"id": true, "label": "YES"}, {"id": false, "label": "NO"}],
         "name": "has_iphone"
     }, {
-        "label": "Lista",
+        "label": "List (source is a string and formalizer watch that variable) in 5 seconds will have more elements",
         "type": "select",
         "name": "lista",
         "source": "list",
         "empty_msg": "Choose one"
+    }, {
+        "label": "Checkbox list",
+        "type": "checkbox-list",
+        "name": "cb_list",
+        "placeholder": "",
+        "source": [
+            {"value": 1, "label": "xxxx"},
+            {"value": 2, "label": "xxxx - 2"},
+            {"value": 3, "label": "xxxx - 3"},
+        ],
+        "source_display": "label",
+        "source_model": "value",
+        "messages": {
+            "required": "necesita rellenar este campo!"
+        }
+    }, {
+        "label": "Text field",
+        "type": "typeahead-multi",
+        "name": "ta_list",
+        "placeholder": "Text",
+        "constraints": {
+        },
+        "source": "typeahead_items",
+        "source_display": "name",
+        "messages": {
+            "required": "necesita rellenar este campo!"
+        }
     }, {
         "label": "Submit now!",
         "type": "submit",
         "name": "submit"
     }];
 
+
+    $scope.list = [{
+        id: 1,
+        label: "ELEMENT ID 1"
+    },{
+        id: 2,
+        label: "ELEMENT ID 2"
+    },{
+        id: 3,
+        label: "ELEMENT ID 3"
+    },{
+        id: 4,
+        label: "ELEMENT ID 4"
+    }];
+
     setTimeout(function () {
-        console.log("new text field!");
+        console.log("chages arrive");
+
+        $scope.list.push({
+            id: 5,
+            label: "ELEMENT ID 5"
+        });
+
+        $scope.list.push({
+            id: 6,
+            label: "ELEMENT ID 6"
+        });
+
+
         $scope.form_fields.push({
-            "label": "Text field",
+            "label": "dynamic text field",
             "type": "text",
-            "name": "user2",
+            "name": "dynamic_text",
             "placeholder": "Text",
             "constraints": {
                 "required": true
@@ -132,6 +189,6 @@ app.controller("MainCtrl", ["$scope", "$timeout", function ($scope, $timeout) {
             $scope.$digest();
         });
 
-    }, 3000);
+    }, 5000);
 
 }]);

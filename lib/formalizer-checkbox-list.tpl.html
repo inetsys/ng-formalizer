@@ -1,0 +1,12 @@
+<div class="{{container.class}}">
+  <label class="{{label.class}}">{{label.text}}</label>
+  <div class="{{element.container.class}}">
+    <div class="{{element.wrap.class}}" ng-repeat="cb in %field-source%">
+      <label for="{{element.attrs.name}}-{\{$index}\}">
+        <input %element-attributes% name="{{element.attrs.name}}-{\{$index}\}" id="{{element.attrs.id}}-{\{$index}\}" value="{\{cb.value}\}">
+        {\{cb.label}\}
+      </label>
+    </div>
+  </div>
+</div>
+

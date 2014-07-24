@@ -1,0 +1,10 @@
+<div class="{{container.class}}">
+  <label for="{{element.attrs.name}}" class="{{label.class}}">{{label.text}}</label>
+  <div class="{{element.container.class}}">
+    <select ng-options="c.id as c.label for c in %field-source%" %element-attributes%>
+      {{defaultOption}}
+    </select>
+    <p class="help-block">{{helpText}}</p>
+    %element-error-list%
+  </div>
+</div>
