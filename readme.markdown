@@ -11,6 +11,11 @@ WIP, do not use atm. Wait a few weeks!
 html reference
 http://bootsnipp.com/forms?version=3
 
+# Usage
+````js
+  // Add to app dependencies
+  var app = angular.module("app", ["formalizer"]);
+````
 
 
 ### Development

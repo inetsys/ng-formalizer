@@ -1,10 +1,10 @@
 <div class="{{container.class}}">
   <label class="{{label.class}}">{{label.text}}</label>
   <div class="{{element.container.class}}">
-    <div class="{{element.wrap.class}}" ng-repeat="cb in %field-source%">
+    <div class="{{element.wrap.class}}" ng-repeat="checkbox_data in %field-source%">
       <label for="{{element.attrs.name}}-{\{$index}\}">
         <input name="{{element.attrs.name}}-{\{$index}\}" id="{{element.attrs.id}}-{\{$index}\}" %element-attributes%>
-        {\{cb.label}\}
+        {\{checkbox_data['{{source_display}}']}\}
       </label>
     </div>
   </div>

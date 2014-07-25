@@ -119,12 +119,12 @@ app.controller("MainCtrl", ["$scope", "$timeout", function ($scope, $timeout) {
         "name": "cb_list",
         "placeholder": "",
         "source": [
-            {"value": 1, "label": "xxxx"},
-            {"value": 2, "label": "xxxx - 2"},
-            {"value": 3, "label": "xxxx - 3"},
+            {"id": 1, "label": "check@1"},
+            {"id": 2, "label": "check@2"},
+            {"id": 3, "label": "check@3"},
         ],
         "source_display": "label",
-        "source_model": "value",
+        "source_model": "id", // null means the object otherwise a key(string)
         "messages": {
             "required": "necesita rellenar este campo!"
         }
