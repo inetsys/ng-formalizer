@@ -1,7 +1,7 @@
 // Code goes here
 
 // NOTE: ng-app="plunker" + AngularUI module dependency
-var app = angular.module("app", ["ui.bootstrap"]);
+var app = angular.module("app", ["ui.bootstrap", "formalizer"]);
 
 app.controller("MainCtrl", ["$scope", "$timeout", function ($scope, $timeout) {
     $scope.entity = {

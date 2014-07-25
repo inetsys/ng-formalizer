@@ -34,7 +34,7 @@
     "white": true,
     "curly": true,
     "eqeqeq": true,
-    "indent": 4,
+
     "asi": false,
     "boss": false,
     "browser": true,
@@ -62,6 +62,6 @@
     "strict": false,
     "trailing": true,
     "undef": true,
-    "unused": true
+    "unused": true,
   }
 }

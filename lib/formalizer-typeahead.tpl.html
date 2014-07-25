@@ -11,7 +11,11 @@
     </ul>
 
     </p>
-    <p class="{{element.wrap.class}}"><input %element-attributes% />%element-right-icon%</p>
+    <p class="{{element.wrap.class}}">
+        {{element.left}}
+        <input %element-attributes% />
+        {{element.right}}
+    </p>
     <p class="help-block">{{help.text}}</p>
 
     %element-error-list%

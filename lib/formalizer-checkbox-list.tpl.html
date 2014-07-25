@@ -3,7 +3,7 @@
   <div class="{{element.container.class}}">
     <div class="{{element.wrap.class}}" ng-repeat="cb in %field-source%">
       <label for="{{element.attrs.name}}-{\{$index}\}">
-        <input %element-attributes% name="{{element.attrs.name}}-{\{$index}\}" id="{{element.attrs.id}}-{\{$index}\}" value="{\{cb.value}\}">
+        <input name="{{element.attrs.name}}-{\{$index}\}" id="{{element.attrs.id}}-{\{$index}\}" %element-attributes%>
         {\{cb.label}\}
       </label>
     </div>

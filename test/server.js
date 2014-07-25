@@ -7,6 +7,7 @@ var app = express();
 var server = http.createServer(app);
 var port = 6001;
 
+app.use("/", serveStatic(__dirname + "/../bower_components/"));
 app.use("/", serveStatic(__dirname + "/../lib/"));
 app.use("/", serveStatic(__dirname + "/"));
 

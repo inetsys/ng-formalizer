@@ -1,4 +1,5 @@
 /node_modules
+/bower_components
 /doc
 #/debug/*
 /dist/js-2dmath-browser.js
