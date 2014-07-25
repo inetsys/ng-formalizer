@@ -129,7 +129,7 @@ app.controller("MainCtrl", ["$scope", "$timeout", function ($scope, $timeout) {
             "required": "necesita rellenar este campo!"
         }
     }, {
-        "label": "Text field",
+        "label": "typeahead (abc,bcd,zzz)",
         "type": "typeahead-multi",
         "name": "ta_list",
         "placeholder": "Text",
