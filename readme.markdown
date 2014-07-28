@@ -44,7 +44,7 @@ bower install
 ### markup
 
 ```html
-<div fromalizer="config"></div>
+<div formalizer="config"></div>
 ```
 
 ### config object.
@@ -73,7 +73,7 @@ bower install
     $scope.form_fields = [/* explained below */];
 ```
 
-### fromalizer.fields properties
+### formalizer.fields properties
 
 #### `type`: String
 * text
