@@ -129,6 +129,21 @@ app.controller("MainCtrl", ["$scope", "$timeout", function ($scope, $timeout) {
             "required": "necesita rellenar este campo!"
         }
     }, {
+        "label": "Checkbox list",
+        "type": "radio-list",
+        "name": "radio",
+        "placeholder": "",
+        "source": [
+            {"id": 1, "label": "check@1"},
+            {"id": 2, "label": "check@2"},
+            {"id": 3, "label": "check@3"},
+        ],
+        "source_display": "label",
+        "source_model": null, // null means the object otherwise a key(string)
+        "messages": {
+            "required": "necesita rellenar este campo!"
+        }
+    }, {
         "label": "typeahead (abc,bcd,zzz)",
         "type": "typeahead-multi",
         "name": "ta_list",

@@ -1,0 +1,12 @@
+<div class="{{container.class}}">
+  <label class="{{label.class}}">{{label.text}}</label>
+  <div class="{{element.container.class}}">
+    <div class="{{element.wrap.class}}" ng-repeat="radio_data in %scope-field-source%">
+      <label for="{{element.attrs.name}}-\{\{$index\}\}">
+        <input name="{{element.attrs.name}}" id="{{element.attrs.id}}-\{\{$index\}\}" value="\{\{radio_data{{source_model}}\}\}" %element-attributes%>
+        \{\{radio_data['{{source_display}}']\}\}
+      </label>
+    </div>
+  </div>
+</div>
+

@@ -3,13 +3,34 @@ WIP, do not use atm. Wait a few weeks!
 
 ##todo
 
-* server validation
-* raw type -> html
+* select multiple
+* checkbox-inline (label@class)
+* radio-inline (label@class)
+* Timepicker
+* server validation?
+* raw -> direct html
+* include -> direct html (file)
+* tabs
+  * tabs (cfg)
+  * tab-break
+* matrix (table of radios)
+* captcha (require server side so -> plugin system)
+* file upload (queue & instant)
+* columns (when found an array instead a config object 12 / length)
+* remove elements (add $$formalizer_key to each cfg to track changes)
 * casperjs tests with travis_ci support
-* remove elements
 
 html reference
 http://bootsnipp.com/forms?version=3
+
+
+## install
+
+```bash
+npm install
+bower install
+```
+
 
 ## Usage
 ````js
@@ -98,6 +119,48 @@ For: select, typeahead-multi, checkbox-list
 Choose the data source to *build* the field. Use it in conjuction with source_diplay & source_model give you the ability to display and insert in the model exactly what you need.
 
 If String is selected, watch/eval is used.
+
+#### `options`: Object
+
+Extend current config with extra options for each type of field.
+
+[`typeahead` options](http://angular-ui.github.io/bootstrap/#/typeahead)
+
+* typeahead-append-to-body
+* typeahead-editable
+* typeahead-input-formatter
+* typeahead-loading
+* typeahead-min-length
+* typeahead-template-url
+* typeahead-wait-m
+
+#### `datepicker`: Object
+
+[`datepiker` options](http://angular-ui.github.io/bootstrap/#/datepicker)
+
+* datepicker-mode
+* min-date
+* max-date
+* date-disabled
+* show-weeks
+* starting-day
+* init-date
+* min-mode
+* max-mode
+* format-day
+* format-month
+* format-year
+* format-day-header
+* format-day-title
+* format-month-title
+* year-range
+* show-button-bar
+* current-text
+* clear-text
+* close-text
+* close-on-date-selection
+* datepicker-append-to-body
+* datepicker-option
 
 ### extending templates
 
