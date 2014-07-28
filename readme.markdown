@@ -1,34 +1,19 @@
 WIP, do not use atm. Wait a few weeks!
 
 
-##todo
-
-* select multiple
-* checkbox-inline (label@class)
-* radio-inline (label@class)
-* Timepicker
-* server validation?
-* raw -> direct html
-* include -> direct html (file)
-* tabs
-  * tabs (cfg)
-  * tab-break
-* matrix (table of radios)
-* captcha (require server side so -> plugin system)
-* file upload (queue & instant)
-* columns (when found an array instead a config object 12 / length)
-* remove elements (add $$formalizer_key to each cfg to track changes)
-* casperjs tests with travis_ci support
-
-html reference
-http://bootsnipp.com/forms?version=3
-
-
 ## install
 
 ```bash
 npm install
 bower install
+```
+
+
+## run tests (not ci yet)
+
+```bash
+node test/server.js
+firefox http://localhost:6001
 ```
 
 
@@ -41,11 +26,13 @@ bower install
 
 ## Development
 
+
 ### markup
 
 ```html
 <div formalizer="config"></div>
 ```
+
 
 ### config object.
 
@@ -73,9 +60,11 @@ bower install
     $scope.form_fields = [/* explained below */];
 ```
 
+
 ### formalizer.fields properties
 
-#### `type`: String
+
+#### `type`: String [**mandatory**]
 * text
 * textarea
 * password
@@ -90,39 +79,50 @@ bower install
 * typeahead-multi
 * submit
 
+
 #### `label`: String
 
 Label text
 
-#### `name`: String
+
+#### `name`: String [**mandatory**]
 
 Same as HTML
 
+
 #### `placeholder`: String
 
-No aplicable to select, typeahead*, checkbox*, radios*
+No applicable to select, typeahead*, checkbox*, radio*
 
-#### `source`: String|Array
 
-Where obtain the data to *build* the field
+#### `source`: String|Array [**mandatory** for types: select, typeahead\*, checkbox\*, radio\*]
 
-#### `source_diplay`: String
-
-What display
+#### `source_display`: String [**mandatory** for types: select, typeahead\*, checkbox\*, radio\*]
 
 #### `source_model`: String|null
 
-What field of the object include in the model, `null` means insert the object.
+These three options configure how you data source is displayed and what need to be stored in your model.
 
-For: select, typeahead-multi, checkbox-list
+**source**
 
-Choose the data source to *build* the field. Use it in conjuction with source_diplay & source_model give you the ability to display and insert in the model exactly what you need.
+Data source, must be an array of objects or a string if you want formalizer to watch the scope for changes.
 
-If String is selected, watch/eval is used.
+**source_display**
+
+What will be displayed
+
+**source_model**
+
+What will be inserted in your model. String if you want a specific key of your object or null if you want the entire object.
+
 
 #### `options`: Object
 
-Extend current config with extra options for each type of field.
+Extends current configuration with extra options for each type of field.
+
+`select` options
+
+* multiple
 
 [`typeahead` options](http://angular-ui.github.io/bootstrap/#/typeahead)
 
@@ -162,9 +162,11 @@ Extend current config with extra options for each type of field.
 * datepicker-append-to-body
 * datepicker-option
 
+
 ### extending templates
 
 Here I expose some rules you need to know.
+
 
 #### formalizer.error-list.html
 
@@ -202,9 +204,6 @@ As you may notice `%scope-form-name%` appears in *formalizer.error-list.html* bu
 The second one `$interpolate` so remember to escape `{{` and `}}` if you want them to be in the final html that will be compiled.
 
 
-
-
-
 ### snippets
 
 Hide a form field.
@@ -224,3 +223,22 @@ Hide a form field.
 * set-value-if
 * add-option-if
 * remove-option-if
+* select multiple
+* checkbox-inline (label@class)
+* radio-inline (label@class)
+* Timepicker
+* server validation?
+* raw -> direct html
+* include -> direct html (file)
+* tabs
+  * tabs (cfg)
+  * tab-break
+* matrix (table of radios)
+* captcha (require server side so -> plugin system)
+* file upload (queue & instant)
+* columns (when found an array instead a config object 12 / length)
+* remove elements (add $$formalizer_key to each cfg to track changes)
+* casperjs tests with travis_ci support
+
+util websites
+* http://bootsnipp.com/forms?version=3

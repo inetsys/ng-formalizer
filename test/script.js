@@ -97,8 +97,10 @@ app.controller("MainCtrl", ["$scope", "$timeout", function ($scope, $timeout) {
     }, {
         "label": "Select (set to desktop)",
         "type": "select",
-        "name": "platform",
+        "name": "select_platform",
         "source": [{"id": "mobile", "label": "mobile"}, {"id": "desktop", "label": "desktop"}],
+        "source_model": "id",
+        "source_display": "label",
         "empty_msg": "Please choose a car"
     }, {
         "label": "Select (with booleans this time)",
@@ -106,7 +108,20 @@ app.controller("MainCtrl", ["$scope", "$timeout", function ($scope, $timeout) {
         "option_id": "id",
         "option_value": "value",
         "source": [{"id": true, "label": "YES"}, {"id": false, "label": "NO"}],
-        "name": "has_iphone"
+        "source_model": "id",
+        "source_display": "label",
+        "name": "select_bool"
+    }, {
+        "label": "Select (multiple)",
+        "type": "select",
+        "name": "select_multiple_platform",
+        "source": [{"id": "mobile", "label": "mobile"}, {"id": "desktop", "label": "desktop"}],
+        "source_model": null,
+        "source_display": "label",
+        "empty_msg": "Please choose a car",
+        "options": {
+            "multiple": true
+        }
     }, {
         "label": "List (source is a string and formalizer watch that variable) in 5 seconds will have more elements",
         "type": "select",
