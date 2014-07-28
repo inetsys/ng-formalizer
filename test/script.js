@@ -86,11 +86,6 @@ app.controller("MainCtrl", ["$scope", "$timeout", function ($scope, $timeout) {
             "required-if": "entity.user"
         }
     }, {
-        "label": "Checkbos list (not available atm)",
-        "type": "checkbox-list",
-        "name": "services",
-        "source": "src_list"
-    }, {
         "label": "Datepicker",
         "type": "datepicker",
         "name": "date"
@@ -142,6 +137,9 @@ app.controller("MainCtrl", ["$scope", "$timeout", function ($scope, $timeout) {
         "source_model": "id", // null means the object otherwise a key(string)
         "messages": {
             "required": "necesita rellenar este campo!"
+        },
+        "options": {
+            "select_all": true
         }
     }, {
         "label": "Checkbox list",

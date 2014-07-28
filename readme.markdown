@@ -120,6 +120,10 @@ What will be inserted in your model. String if you want a specific key of your o
 
 Extends current configuration with extra options for each type of field.
 
+`checkbox-list` options
+
+* select_all display a "Select All" checkbox
+
 `select` options
 
 * multiple
