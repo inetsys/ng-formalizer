@@ -155,63 +155,62 @@ Extends current configuration with extra options for each type of field.
 
 `checkbox-list` options
 
-* select_all display a "Select All" checkbox
+* `select_all` display a "Select All" checkbox
 
 `select` options
 
-* multiple
+* `multiple`
 
 [`typeahead` options](http://angular-ui.github.io/bootstrap/#/typeahead)
 
-* typeahead-append-to-body
-* typeahead-editable
-* typeahead-input-formatter
-* typeahead-loading
-* typeahead-min-length
-* typeahead-template-url
-* typeahead-wait-m
-
-#### `datepicker`: Object
+* `typeahead-append-to-body`
+* `typeahead-editable`
+* `typeahead-input-formatter`
+* `typeahead-loading`
+* `typeahead-min-length`
+* `typeahead-template-url`
+* `typeahead-wait-m`
 
 [`datepiker` options](http://angular-ui.github.io/bootstrap/#/datepicker)
 
-* datepicker-mode
-* min-date
-* max-date
-* date-disabled
-* show-weeks
-* starting-day
-* init-date
-* min-mode
-* max-mode
-* format-day
-* format-month
-* format-year
-* format-day-header
-* format-day-title
-* format-month-title
-* year-range
-* show-button-bar
-* current-text
-* clear-text
-* close-text
-* close-on-date-selection
-* datepicker-append-to-body
-* datepicker-option
+* `datepicker-mode`
+* `min-date`
+* `max-date`
+* `date-disabled`
+* `show-weeks`
+* `starting-day`
+* `init-date`
+* `min-mode`
+* `max-mode`
+* `format-day`
+* `format-month`
+* `format-year`
+* `format-day-header`
+* `format-day-title`
+* `format-month-title`
+* `year-range`
+* `show-button-bar`
+* `current-text`
+* `clear-text`
+* `close-text`
+* `close-on-date-selection`
+* `datepicker-append-to-body`
+* `datepicker-option`
 
 
 ### Extending templates
 
-Here I expose some rules you need to know.
+Here I expose some rules you need to know to write your own.
 
+This is an advanced tutorial. Take a look to [$interpolate](https://docs.angularjs.org/api/ng/service/$interpolate) and [$compile](https://docs.angularjs.org/api/ng/service/$compile) their knowledge will help you to understand formalizer passes and how to escape things.
 
 #### formalizer.error-list.html
 
-This file will be `$interpolate` twice (before injected in field template, another one after it)
+This file will be `$interpolate` twice (before injected in field template), and one more time after it.
 
-In each pass you lose everything between `{{` and `}}`, if you need to target a specific $interpolate escape braces `\{` and `\}` like in this example.
+Take a look to this example:
 
-`<li ng-show="%form-name%['{{element.attrs.name}}'].$error.min">{{messages.min || 'Field minimum is {\\{element.attrs[\'ng-min\']}\\}'}}</li>`
+`<li ng-show="%form-name%['{{element.attrs.name}}'].$error.min">{{messages.min || 'Field minimum is \{\{element.attrs[\'ng-min\']\}\}'}}</li>`
 
 After the first `$interpolate`
 
@@ -221,7 +220,7 @@ After the second `$interpolate`
 
 `<li ng-show="form['input_name'].$error.min">Field minimum is 5</li>`
 
-Then the file is injected into the the form field template.
+Then the file is injected into the the form field template and will be `$interpolate` one more time.
 
 
 ### Form field templates
