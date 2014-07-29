@@ -1,4 +1,4 @@
-<ul class="error-list">
+<ul class="form-error-list">
   <li ng-show="$formalizer.$attemps > 0 && %scope-form-name%['{{element.attrs.name}}'].$error.required">{{messages.required || 'Field is required'}}</li>
   <li ng-show="%scope-form-name%['{{element.attrs.name}}'].$error.min">{{messages.min || 'Field minimum is \{\{element.attrs[\'ng-min\']\}\}'}}</li>
   <li ng-show="%scope-form-name%['{{element.attrs.name}}'].$error.max">{{messages.max || 'Field maximum is \{\{element.attrs[\'ng-max\']\}\}'}}</li>

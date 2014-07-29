@@ -34,7 +34,7 @@ firefox http://localhost:6001
 ```
 
 
-### config object.
+### Configuration object
 
 ```js
 // in the controller
@@ -44,24 +44,40 @@ firefox http://localhost:6001
         console.log(obj);
     };
 
-    $scope.rawSubmit = function(obj) {
-        console.log(obj);
-    };
+    $scope.entity = {};
 
     $scope.config = {
         "legend": "The form legend, leave it blank to disable",
         "type": "horizontal", // vertical or inline, should work (untested)
         "name": "form",
         "onSubmit": "onSubmit", // function(dirty_data_only, model, form)
-        "model": "entity",
-        "fields": "form_fields", // dynamic (watch): string | static: array
+        "model": "entity", // must be a string, not the real variable!
+        "fields": "form_fields", // String (watch) | Array
     };
 
-    $scope.form_fields = [/* explained below */];
+    $scope.form_fields = [/* Fields properties */];
 ```
 
 
-### formalizer.fields properties
+### Fields properties
+
+Example: Create an input with some constraints and error messages translated.
+
+```json
+{
+    "label": "User (minlength=5 and messages translated)",
+    "type": "text",
+    "name": "user",
+    "placeholder": "Text",
+    "constraints": {
+        "required": true,
+        "minlength": 5
+    },
+    "messages": {
+        "minlength": "más de 5 caracters majo!"
+    }
+}
+```
 
 
 #### `type`: String [**mandatory**]
@@ -70,11 +86,13 @@ firefox http://localhost:6001
 * password
 * number
 * email
+* tel
+* url
 * select
 * datepicker
 * checkbox
 * checkbox-list
-* radio-list (**IN PROGRESS**)
+* radio-list
 * typeahead (**IN PROGRESS**)
 * typeahead-multi
 * submit
@@ -95,9 +113,9 @@ Same as HTML
 No applicable to select, typeahead*, checkbox*, radio*
 
 
-#### `source`: String|Array [**mandatory** for types: select, typeahead\*, checkbox\*, radio\*]
+#### `source`: String|Array [**mandatory** in select, typeahead\*, checkbox\*, radio\*]
 
-#### `source_display`: String [**mandatory** for types: select, typeahead\*, checkbox\*, radio\*]
+#### `source_display`: String [**mandatory** in select, typeahead\*, checkbox\*, radio\*]
 
 #### `source_model`: String|null
 
@@ -105,16 +123,31 @@ These three options configure how you data source is displayed and what need to 
 
 **source**
 
-Data source, must be an array of objects or a string if you want formalizer to watch the scope for changes.
+Data source, must be an *array of objects* or a string if you want formalizer to watch the scope for changes.
 
 **source_display**
 
-What will be displayed
+What will be displayed, the key in the object
 
 **source_model**
 
 What will be inserted in your model. String if you want a specific key of your object or null if you want the entire object.
 
+
+Examples:
+
+```js
+{
+    source: [
+        {id: 1, label:"1.- Brikindans"},
+        {id: 2, label:"2.- Crusaíto"},
+        {id: 3, label: "Maiquelyason",
+        {id:4, label: "Robocop"}
+    ],
+    source_display: "label",
+    source_model: "id"
+}
+```
 
 #### `options`: Object
 
@@ -167,7 +200,7 @@ Extends current configuration with extra options for each type of field.
 * datepicker-option
 
 
-### extending templates
+### Extending templates
 
 Here I expose some rules you need to know.
 
@@ -176,21 +209,19 @@ Here I expose some rules you need to know.
 
 This file will be `$interpolate` twice (before injected in field template, another one after it)
 
-To support multiple tokens in each pass escape `{{` and `}}` like in this example.
+In each pass you lose everything between `{{` and `}}`, if you need to target a specific $interpolate escape braces `\{` and `\}` like in this example.
 
 `<li ng-show="%form-name%['{{element.attrs.name}}'].$error.min">{{messages.min || 'Field minimum is {\\{element.attrs[\'ng-min\']}\\}'}}</li>`
 
-after the first `$interpolate`
+After the first `$interpolate`
 
 `<li ng-show="form['input_name'].$error.min">Field minimum is {{element.attrs['ng-min']}}</li>`
 
-after the second `$interpolate`
+After the second `$interpolate`
 
 `<li ng-show="form['input_name'].$error.min">Field minimum is 5</li>`
 
 Then the file is injected into the the form field template.
-
-If you want to display something in the final
 
 
 ### Form field templates
@@ -198,15 +229,16 @@ If you want to display something in the final
 Templates has another two phase process.
 
 First replaces some internal values:
-* `%element-attributes%` list of input/select/etc attributes as html-string
-* `%element-error-list%` html for errors (the one explained above)
-* `%scope-form-name%`
-* `%scope-field-source%`
+* `%element-attributes%` element attributes as html-string example: `ng-model="xxxx" ng-class="xxx"`
+* `%element-error-list%` contents of `formalizer.error-list.html` after the process explained above.
+* `%scope-form-name%` name of the form in scope
+* `%scope-field-source%` name of the field config in the scope
 
 As you may notice `%scope-form-name%` appears in *formalizer.error-list.html* but it's replaced in this phase.
 
-The second one `$interpolate` so remember to escape `{{` and `}}` if you want them to be in the final html that will be compiled.
+After this replacement, `$interpolate`. Remember to escape `{{` and `}}` if you want them to be in the final html.
 
+When all fields are generated, we attach them to the fieldset and `$compile`.
 
 ### snippets
 
@@ -219,7 +251,7 @@ Hide a form field.
         "show": false
     }
 }
-```js
+```
 
 
 ## TODO
@@ -227,7 +259,6 @@ Hide a form field.
 * set-value-if
 * add-option-if
 * remove-option-if
-* select multiple
 * checkbox-inline (label@class)
 * radio-inline (label@class)
 * Timepicker
@@ -237,7 +268,7 @@ Hide a form field.
 * tabs
   * tabs (cfg)
   * tab-break
-* matrix (table of radios)
+* matrix (table of radios|checkbox)
 * captcha (require server side so -> plugin system)
 * file upload (queue & instant)
 * columns (when found an array instead a config object 12 / length)

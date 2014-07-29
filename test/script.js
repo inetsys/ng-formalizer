@@ -135,9 +135,6 @@ app.controller("MainCtrl", ["$scope", "$timeout", function ($scope, $timeout) {
         ],
         "source_display": "label",
         "source_model": "id", // null means the object otherwise a key(string)
-        "messages": {
-            "required": "necesita rellenar este campo!"
-        },
         "options": {
             "select_all": true
         }
@@ -152,10 +149,7 @@ app.controller("MainCtrl", ["$scope", "$timeout", function ($scope, $timeout) {
             {"id": 3, "label": "check@3"},
         ],
         "source_display": "label",
-        "source_model": null, // null means the object otherwise a key(string)
-        "messages": {
-            "required": "necesita rellenar este campo!"
-        }
+        "source_model": null // null means the object otherwise a key(string)
     }, {
         "label": "typeahead (abc,bcd,zzz)",
         "type": "typeahead-multi",
@@ -164,10 +158,7 @@ app.controller("MainCtrl", ["$scope", "$timeout", function ($scope, $timeout) {
         "constraints": {
         },
         "source": "typeahead_items",
-        "source_display": "name",
-        "messages": {
-            "required": "necesita rellenar este campo!"
-        }
+        "source_display": "name"
     }, {
         "label": "Submit now!",
         "type": "submit",
