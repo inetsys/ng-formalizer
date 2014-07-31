@@ -1,10 +1,13 @@
-WIP, do not use atm. Wait a few weeks!
+# ng-formalizer [![Build Status](https://secure.travis-ci.org/llafuente/ng-formalizer.png?branch=master)](http://travis-ci.org/llafuente/ng-formalizer)
+
+
+WIP, do not use atm. Wait a few weeks/days testing is coming!
 
 
 ## install
 
 ```bash
-npm install
+# npm install #this is required only if you need to PR or run tests
 bower install
 ```
 
@@ -252,6 +255,14 @@ Hide a form field.
 }
 ```
 
+## testing
+
+Currently karma with phantomjs (so you need to install phantomjs)
+
+```bash
+npm install
+npm test
+```
 
 ## TODO
 

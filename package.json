@@ -3,13 +3,13 @@
   "version": "0.0.1",
   "description": "Angular (&UI) form generator and validation from JSON",
   "main": "./index.js",
-  "keywords": [
-  ],
+  "keywords": [],
   "directories": {
     "lib": ".",
     "test": "test"
   },
   "scripts": {
+    "test": "node_modules/karma/bin/karma start karma.js --single-run"
   },
   "repository": {
     "type": "git",
@@ -24,17 +24,20 @@
   "engine": {
     "node": ">=0.10"
   },
-  "dependencies": {
-  },
+  "dependencies": {},
   "devDependencies": {
     "express": "*",
-    "serve-static": "*"
+    "serve-static": "*",
+    "karma": "^0.12.19",
+    "karma-ng-html2js-preprocessor": "^0.1.0",
+    "karma-jasmine": "^0.1.5",
+    "karma-phantomjs-launcher": "^0.1.4",
+    "karma-coverage": "^0.2.5"
   },
   "jshintConfig": {
     "white": true,
     "curly": true,
     "eqeqeq": true,
-
     "asi": false,
     "boss": false,
     "browser": true,
