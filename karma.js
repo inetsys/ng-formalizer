@@ -49,7 +49,8 @@ module.exports = function(config) {
     reporters: ['dots', 'coverage'],
 
     autoWatch: true,
-    browsers: ['PhantomJS']
+    //browsers: ['PhantomJS']
+    browsers: ['Firefox']
   });
 };
 
