@@ -1,5 +1,6 @@
-// a test suite (group of tests)
-describe("sample component test", function () {
+describe("specs-ng-equal-to.js", function () {
+    console.log("--> ", this.description);
+
     var $compile;
     var $rootScope;
 
