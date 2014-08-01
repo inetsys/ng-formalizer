@@ -21,7 +21,7 @@ module.exports = function(config) {
       "bower_components/angular-mocks/angular-mocks.js",
 
       "bower_components/angular-bootstrap/ui-bootstrap-tpls.js",
-      "bower_components/angular-animate.js",
+      //"bower_components/angular-animate.js",
       "bower_components/checklist-model/checklist-model.js",
 
       // our app
@@ -29,21 +29,24 @@ module.exports = function(config) {
       'lib/ng-blacklist.js',
       'lib/ng-decimal.js',
       'lib/ng-equalto.js',
-      'lib/ng-required-if.js',
 
       // tests
       'tests/*.js',
 
       // templates
-      'lib/*.html'
+      'templates/*.html'
     ],
 
     //logLevel: config.LOG_DEBUG,
 
     // generate js files from html templates
     preprocessors: {
-      'tpl/*.html': 'ng-html2js',
+      'templates/*.html': 'ng-html2js',
       'lib/*.js': ['coverage']
+    },
+
+    ngHtml2JsPreprocessor: {
+        moduleName: 'formalizer-tpls'
     },
 
     reporters: ['dots', 'coverage'],

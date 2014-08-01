@@ -1,48 +1,37 @@
-// Code goes here
+// a test suite (group of tests)
+describe("sample component test", function () {
+    var $compile;
+    var $rootScope;
 
-// NOTE: ng-app="plunker" + AngularUI module dependency
-var app = angular.module("app", ["ui.bootstrap", "formalizer"]);
+    // Load the myApp module, which contains the directive
+    beforeEach(module("formalizer-tpls"));
+    beforeEach(module("formalizer"));
 
-app.controller("MainCtrl", ["$scope", "$timeout", function ($scope, $timeout) {
-    $scope.entity = {
-        //tyc: true,
-        platform: "desktop",
-        //has_iphone: false
-    };
+    // Store references to $rootScope and $compile
+    // so they are available to all tests in this describe block
+    beforeEach(inject(function(FORMLIZER_CFG, _$compile_, _$rootScope_) {
+        FORMLIZER_CFG.TPL_URL = "templates/";
 
-    $scope.dateOptions = {
-        "year-format": "yyyy",
-        "starting-day": 1
-    };
+        // The injector unwraps the underscores (_) from around the parameter names when matching
+        $compile = _$compile_;
+        $rootScope = _$rootScope_;
+    }));
 
-    $scope.onSubmit = function (dirty_data_only) {
-        console.log("onSubmit");
-        console.log(dirty_data_only);
-    };
+    var form,
+        input;
 
-    console.log("maincontroller end!");
+    // a single test
+    it("Create an empty formalizer", function () {
+        var submited = false;
+        $rootScope.onSubmit = function(clean) {
+            expect(clean).toEqual({});
 
+            submited = true;
+        };
 
+        $rootScope.entity = {};
 
-    $scope.form_cfg = {
-        "legend": "legend",
-        "type": "horizontal",
-        "name": "form",
-        "onSubmit": "onSubmit",
-        "model": "entity",
-        "fields": "form_fields",
-    };
-
-    $scope.typeahead_items = [
-        {id: 1, name: "abc"},
-        {id: 2, name: "bcd"},
-        {id: 3, name: "def"},
-        {id: 4, name: "efg"},
-        {id: 5, name: "zzz"},
-    ];
-
-
-    $scope.form_fields = [{
+        $rootScope.form_fields = [{
         "label": "User (minlength=5 and messages translated)",
         "type": "text",
         "name": "user",
@@ -166,49 +155,33 @@ app.controller("MainCtrl", ["$scope", "$timeout", function ($scope, $timeout) {
         "class": "btn-primary"
     }];
 
+        $rootScope.config = {
+            "legend": "Legend",
+            "type": "horizontal",
+            "name": "form",
+            "onSubmit": "onSubmit",
+            "model": "entity",
+            "fields": "form_fields",
+        };
 
-    $scope.list = [{
-        id: 1,
-        label: "ELEMENT ID 1"
-    },{
-        id: 2,
-        label: "ELEMENT ID 2"
-    },{
-        id: 3,
-        label: "ELEMENT ID 3"
-    },{
-        id: 4,
-        label: "ELEMENT ID 4"
-    }];
+        var element = $compile(
+            "<div formalizer=\"config\">" +
+            "</div>"
+        )($rootScope);
 
-    setTimeout(function () {
-        console.log("chages arrive");
+        $rootScope.$digest();
 
-        $scope.list.push({
-            id: 5,
-            label: "ELEMENT ID 5"
-        });
+        //console.log(element.html());
 
-        $scope.list.push({
-            id: 6,
-            label: "ELEMENT ID 6"
-        });
+        expect(submited).toEqual(false);
 
 
-        $scope.form_fields.push({
-            "label": "dynamic text field",
-            "type": "text",
-            "name": "dynamic_text",
-            "placeholder": "Text",
-            "constraints": {
-                "required": true
-            }
-        });
+        var submit = element.find("#form-submit");
+        expect(submit.hasClass("btn-primary")).toEqual(true);
+        expect(submit.attr("disabled")).toEqual(null);
 
-        $timeout(function () {
-            $scope.$digest();
-        });
+        element.submit();
 
-    }, 5000);
-
-}]);
+        expect(submited).toEqual(true);
+    });
+});
