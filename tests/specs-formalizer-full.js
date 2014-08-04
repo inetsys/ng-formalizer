@@ -1,62 +1,36 @@
-// Code goes here
+describe("specs-formalizer-full.js", function () {
+    console.log("--> ", this.description);
 
-// NOTE: ng-app="plunker" + AngularUI module dependency
-var app = angular.module("app", ["formalizer"]);
+    var $compile,
+        $scope,
+        form,
+        input,
+        submited = false,
+        element,
+        form;
 
-app.config(["datepickerConfig", "datepickerPopupConfig", "datepickerPopupFix", function (datepickerConfig, datepickerPopupConfig, datepickerPopupFix) {
-    datepickerPopupConfig.currentText = "Hoy";
-    datepickerPopupConfig.clearText = "Borrar";
-    datepickerPopupConfig.closeText = "Cerrar";
-    datepickerPopupConfig.toggleWeeksText = "Semanas";
-    datepickerConfig.showWeeks = false;
-    datepickerPopupConfig.datepickerPopup = "dd/MM/yyyy";
+    // Load the myApp module, which contains the directive
+    beforeEach(module("formalizer-tpls"));
+    beforeEach(module("formalizer"));
 
-    // spanish GMT+0
-    datepickerPopupFix.datepickerPopup = "DD/MM/YYYY";
-    datepickerPopupFix.datepickerZone = "+0000";
-}]);
+    // Store references to $scope and $compile
+    // so they are available to all tests in this describe block
+    beforeEach(inject(function(FORMLIZER_CFG, _$compile_, _$rootScope_, $timeout) {
+        // The injector unwraps the underscores (_) from around the parameter names when matching
+        $compile = _$compile_;
+        $scope = _$rootScope_;
 
-app.controller("MainCtrl", ["$scope", "$timeout", function ($scope, $timeout) {
-    $scope.entity = {
-        //tyc: true,
-        platform: "desktop",
-        date: "2014-03-14T00:00:00.000Z"
-        //has_iphone: false
-    };
+        $scope.onSubmit = function(clean) {
+            expect(clean).toEqual({});
 
-    $scope.dateOptions = {
-        "year-format": "yyyy",
-        "starting-day": 1
-    };
+            submited = true;
+        };
 
-    $scope.onSubmit = function (dirty_data_only) {
-        console.log("onSubmit");
-        console.log(dirty_data_only);
-    };
+        $scope.entity = {
+            text: null
+        };
 
-    console.log("maincontroller end!");
-
-
-
-    $scope.form_cfg = {
-        "legend": "legend",
-        "type": "horizontal",
-        "name": "form",
-        "onSubmit": "onSubmit",
-        "model": "entity",
-        "fields": "form_fields",
-    };
-
-    $scope.typeahead_items = [
-        {id: 1, name: "abc"},
-        {id: 2, name: "bcd"},
-        {id: 3, name: "def"},
-        {id: 4, name: "efg"},
-        {id: 5, name: "zzz"},
-    ];
-
-
-    $scope.form_fields = [{
+        $scope.form_fields = [{
         "label": "User (minlength=5 and messages translated)",
         "type": "text",
         "name": "user",
@@ -178,51 +152,43 @@ app.controller("MainCtrl", ["$scope", "$timeout", function ($scope, $timeout) {
         "type": "submit",
         "name": "submit",
         "class": "btn-primary"
-    }];
+    }];;
 
+        $scope.config = {
+            "legend": "Legend",
+            "type": "horizontal",
+            "name": "form",
+            "onSubmit": "onSubmit",
+            "model": "entity",
+            "fields": "form_fields",
+        };
 
-    $scope.list = [{
-        id: 1,
-        label: "ELEMENT ID 1"
-    },{
-        id: 2,
-        label: "ELEMENT ID 2"
-    },{
-        id: 3,
-        label: "ELEMENT ID 3"
-    },{
-        id: 4,
-        label: "ELEMENT ID 4"
-    }];
+        element = $compile(
+            "<div formalizer=\"config\">" +
+            "</div>"
+        )($scope);
 
-    setTimeout(function () {
-        console.log("chages arrive");
+        $scope.$digest();
 
-        $scope.list.push({
-            id: 5,
-            label: "ELEMENT ID 5"
-        });
+        $timeout.flush();
 
-        $scope.list.push({
-            id: 6,
-            label: "ELEMENT ID 6"
-        });
+        form = $scope.$$childTail.form;
+    }));
 
+    // a single test
+    it("test input@text", function () {
 
-        $scope.form_fields.push({
-            "label": "dynamic text field",
-            "type": "text",
-            "name": "dynamic_text",
-            "placeholder": "Text",
-            "constraints": {
-                "required": true
-            }
-        });
+        //debug: console.log($("<div />").append(element).html());
 
-        $timeout(function () {
-            $scope.$digest();
-        });
+        var input = element.find("#form-text"),
+            submit = element.find("#form-submit");
 
-    }, 5000);
+        expect(form.$invalid).toEqual(true);
+        expect(form.user.$invalid).toEqual(true);
+        expect(submit.attr("disabled")).toEqual("disabled");
 
-}]);
+        // do more tests!
+
+    });
+});
+

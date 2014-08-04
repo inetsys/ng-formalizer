@@ -24,11 +24,14 @@ module.exports = function(config) {
       //"bower_components/angular-animate.js",
       "bower_components/checklist-model/checklist-model.js",
 
+      "bower_components/moment/moment.js",
+
       // our app
       'lib/ng-formalizer.js',
       'lib/ng-blacklist.js',
       'lib/ng-decimal.js',
       'lib/ng-equalto.js',
+      'lib/ng-datepicker-fix.js',
 
       // tests
       'tests/*.js',
@@ -52,8 +55,8 @@ module.exports = function(config) {
     reporters: ['dots', 'coverage'],
 
     autoWatch: true,
-    browsers: ['PhantomJS']
-    //browsers: ['Firefox']
+    //browsers: ['PhantomJS']
+    browsers: ['Firefox']
   });
 };
 

@@ -4,6 +4,16 @@
 WIP, do not use atm. Wait a few weeks/days testing is coming!
 
 
+## dependencies
+
+* jquery: 2.1.*
+* angular: 1.2.*
+* angular-bootstrap : *
+* checklist-model: 0.1.3
+* bootstrap: ~3.2.0
+* moment: ~2.8. (optional, used in ng-datepicker-fix)
+
+
 ## install
 
 ```bash
@@ -43,8 +53,8 @@ firefox http://localhost:6001
 // in the controller
 
 
-    $scope.onSubmit = function(obj) {
-        console.log(obj);
+    $scope.onSubmit = function(dirty_data, entity, form) {
+        console.log(dirty_data);
     };
 
     $scope.entity = {};
@@ -53,7 +63,7 @@ firefox http://localhost:6001
         "legend": "The form legend, leave it blank to disable",
         "type": "horizontal", // vertical or inline, should work (untested)
         "name": "form",
-        "onSubmit": "onSubmit", // function(dirty_data_only, model, form)
+        "onSubmit": "onSubmit", // function(dirty_data_only, model, scope_form)
         "model": "entity", // must be a string, not the real variable!
         "fields": "form_fields", // String (watch) | Array
     };
@@ -142,10 +152,10 @@ Examples:
 ```js
 {
     source: [
-        {id: 1, label:"1.- Brikindans"},
-        {id: 2, label:"2.- Crusaíto"},
-        {id: 3, label: "Maiquelyason",
-        {id:4, label: "Robocop"}
+        {id: 1, label: "1.- Brikindans"},
+        {id: 2, label: "2.- Crusaíto"},
+        {id: 3, label: "3.- Maiquelyason",
+        {id: 4, label: "4.- Robocop"}
     ],
     source_display: "label",
     source_model: "id"
@@ -254,6 +264,34 @@ Hide a form field.
     }
 }
 ```
+
+## ng-datepicker-fix
+
+Fix date input/output in foreign languages like Spanish using momentjs.
+
+If you don't need to introduce dates in foreign languages, *remove* `ng-datepicker-fix.js` & `moment.js` from your include list.
+
+
+Spanish example witht GMT+0:
+
+```js
+your_module
+.config(["datepickerPopupConfig", function(datepickerPopupConfig) {
+    datepickerPopupConfig.datepickerPopup = "dd/MM/yyyy"; // this is the viewable format (angularjs)
+})
+.config(["datepickerPopupFix", function(datepickerPopupFix) {
+
+    // configure your lang
+    moment.lang('es');
+
+    // this will be the input/output format for datepickers
+    datepickerPopupFix.datepickerPopup = "DD/MM/YYYY"; // in momentjs format
+    datepickerPopupFix.datepickerZone = "+0000"; // GMT+0, GMT+1 = "+0100", GMT-1 = "-0100" etc.
+})
+
+```
+
+fix [TZ localization in date picker should be optional](https://github.com/angular-ui/bootstrap/issues/1891)
 
 ## testing
 
