@@ -6,7 +6,7 @@
 // setx FIREFOX_BIN "C:\Program Files (x86)\Mozilla Firefox\firefox.exe" /M
 
 
-module.exports = function(config) {
+module.exports = function (config) {
   config.set({
     basePath: '',
 
@@ -27,6 +27,17 @@ module.exports = function(config) {
       "bower_components/moment/moment.js",
 
       // our app
+      'lib/formalizer.js',
+      'lib/formalizer.submit.js',
+      'lib/formalizer.select.js',
+      'lib/formalizer.textarea.js',
+      'lib/formalizer.checkbox.js',
+      'lib/formalizer.checkbox.js',
+      'lib/formalizer.radio-list.js',
+      'lib/formalizer.typeahead.js',
+      'lib/formalizer.datepicker.js',
+      'lib/formalizer.input.js',
+      'lib/formalizer.checkbox-list.js',
       'lib/ng-formalizer.js',
       'lib/ng-blacklist.js',
       'lib/ng-decimal.js',

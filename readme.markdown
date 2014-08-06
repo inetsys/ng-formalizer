@@ -1,7 +1,9 @@
 # ng-formalizer [![Build Status](https://secure.travis-ci.org/llafuente/ng-formalizer.png?branch=master)](http://travis-ci.org/llafuente/ng-formalizer)
 
 
-WIP, do not use atm. Wait a few weeks/days testing is coming!
+## Notice
+
+Still under construction, but API is final. Report any error and provide a test case.
 
 
 ## dependencies
@@ -22,10 +24,10 @@ bower install
 ```
 
 
-## run tests (not ci yet)
+## run examples
 
 ```bash
-node test/server.js
+node examples/server.js
 firefox http://localhost:6001
 ```
 
@@ -43,7 +45,7 @@ firefox http://localhost:6001
 ### markup
 
 ```html
-<div formalizer="config"></div>
+<div ng-formalizer="config"></div>
 ```
 
 
@@ -265,6 +267,27 @@ Hide a form field.
 }
 ```
 
+## Extending ng-formalizer
+
+Formalizer class can be extended to support new types or overwrite current ones.
+
+Let's take a look to a simple case
+
+formalizer.textarea.js
+```js
+    // add to templates, so it will fetch templates/formalizer-textarea.tpl.hmtml
+    Formalizer.templates.push("textarea");
+
+    // add a new field.type = template to use
+    Formalizer.types.textarea = "textarea";
+
+    // do your staff here.
+    // take a look to: "lib/formalizer.**.js" for more code examples.
+    Formalizer.parsers.textarea = function ($scope, field, cfg) {
+    };
+```
+
+
 ## ng-datepicker-fix
 
 Fix date input/output in foreign languages like Spanish using momentjs.
@@ -297,9 +320,16 @@ fix [TZ localization in date picker should be optional](https://github.com/angul
 
 Currently karma with phantomjs (so you need to install phantomjs)
 
+
+Datepicker fix need your system in GMT+1 to break angular-ui datepicker and see if the fix works.
+
 ```bash
+sudo ln -sf /usr/share/zoneinfo/Europe/Madrid /etc/localtime
+
 npm install
 npm test
+# or what i do
+node_modules/karma/bin/karma start karma.js --browsers Firefox
 ```
 
 ## TODO

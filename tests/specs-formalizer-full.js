@@ -15,7 +15,7 @@ describe("specs-formalizer-full.js", function () {
 
     // Store references to $scope and $compile
     // so they are available to all tests in this describe block
-    beforeEach(inject(function(FORMLIZER_CFG, _$compile_, _$rootScope_, $timeout) {
+    beforeEach(inject(function(FormalizerConfig, _$compile_, _$rootScope_, $timeout) {
         // The injector unwraps the underscores (_) from around the parameter names when matching
         $compile = _$compile_;
         $scope = _$rootScope_;
@@ -164,7 +164,7 @@ describe("specs-formalizer-full.js", function () {
         };
 
         element = $compile(
-            "<div formalizer=\"config\">" +
+            "<div ng-formalizer=\"config\">" +
             "</div>"
         )($scope);
 

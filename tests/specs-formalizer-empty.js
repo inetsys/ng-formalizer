@@ -10,9 +10,7 @@ describe("specs-formalizer-empty.js", function () {
 
     // Store references to $rootScope and $compile
     // so they are available to all tests in this describe block
-    beforeEach(inject(function(FORMLIZER_CFG, _$compile_, _$rootScope_) {
-        FORMLIZER_CFG.TPL_URL = "templates/";
-
+    beforeEach(inject(function(FormalizerConfig, _$compile_, _$rootScope_) {
         // The injector unwraps the underscores (_) from around the parameter names when matching
         $compile = _$compile_;
         $rootScope = _$rootScope_;
@@ -49,7 +47,7 @@ describe("specs-formalizer-empty.js", function () {
         };
 
         var element = $compile(
-            "<div formalizer=\"config\">" +
+            "<div ng-formalizer=\"config\">" +
             "</div>"
         )($rootScope);
 
