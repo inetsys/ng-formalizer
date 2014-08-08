@@ -55,6 +55,11 @@ app.controller("MainCtrl", ["$scope", "$timeout", function ($scope, $timeout) {
         {id: 5, name: "zzz"},
     ];
 
+    $scope.select_populate = {
+        "mobile": ["xxx", "yyy"],
+        "desktop": ["xxx", "yyy"]
+    };
+
 
     $scope.form_fields = [{
         "label": "User (minlength=5 and messages translated)",
@@ -110,7 +115,10 @@ app.controller("MainCtrl", ["$scope", "$timeout", function ($scope, $timeout) {
         "source": [{"id": "mobile", "label": "mobile"}, {"id": "desktop", "label": "desktop"}],
         "source_model": "id",
         "source_display": "label",
-        "empty_msg": "Please choose a car"
+        "empty_msg": "Please choose a car",
+        "constraints": {
+            "populate": "select_populate"
+        }
     }, {
         "label": "Select (with booleans this time)",
         "type": "select",

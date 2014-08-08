@@ -254,18 +254,187 @@ After this replacement, `$interpolate`. Remember to escape `{{` and `}}` if you 
 
 When all fields are generated, we attach them to the fieldset and `$compile`.
 
+
+### constraints
+
+AngularJS provide with some constraints, like min/max/maxlength/minlength etc... those can be used.
+
+Additionally we provide some more:
+
+#### populate
+
+Fill another field if a specific value is meet.
+
+Example:
+
+```js
+"constraints": {
+   "populate": {
+        // by default populate initialize the model
+        // if it has a value, do not set the new one unless the third parameter is true
+        "value-01": ["target_field", "-value-", true]
+    }
+}
+```
+
+
+#### blacklist (not in)
+
+Example:
+
+```js
+"constraints": {
+   "blacklist": ["apple", "pear"]
+}
+```
+
+#### decimal
+
+Example:
+
+```js
+"constraints": {
+   "decimal": 4 // maximum of 4 decimals are allowed
+}
+```
+
+#### equal-to
+
+Current field must be equal to something in the scope, could be or not a field.
+
+Example:
+
+```js
+"constraints": {
+   "equal-to": "variable-in-the-scope"
+}
+```
+
+#### only-alpha
+
+Allow letters only.
+
+```js
+"constraints": {
+   "only-alpha": true
+}
+```
+
+#### only-iso
+
+Allow letters, digits, "-" and "_".
+
+```js
+"constraints": {
+   "only-iso": true
+}
+```
+
+#### one-upper
+
+At least one character must be uppercase
+
+```js
+"constraints": {
+   "one-upper": true
+}
+```
+
+#### one-lower
+
+At least one character must be lowercase
+
+```js
+"constraints": {
+   "one-lower": true
+}
+```
+
+#### one-number
+
+At least one number must be lowercase
+
+```js
+"constraints": {
+   "one-number": true
+}
+```
+
+#### one-alpha
+
+At least one letter must be lowercase
+
+```js
+"constraints": {
+   "one-number": true
+}
+```
+
+#### no-spaces
+
+Cannot contains any spaces
+
+```js
+"constraints": {
+   "one-number": true
+}
+```
+
+#### server-validation
+
+Validate against server. $http send a JSON body with `request-key` and server must return a JSON with a boolean in `request-response`.
+
+By default `request-key` is `value` and `request-response` is `success`
+
+```js
+"constraints": {
+   "server-validation": "/URL/validation",
+   "request-key": "value",
+   "request-response": "success"
+}
+```
+
+
+**TODO**
+* IPv4/IPv6
+* After Date (Future Date)
+* Before Date
+* alpha-dash
+* alpha-num
+* between (can be mimic with min/max really needed?)
+* not-equal-to
+* in
+* mime-type
+* file-size
+
 ### snippets
 
 Hide a form field.
 
 ```js
-{
+field_cfg = [{
     //...
     "constraints": {
         "show": false
     }
-}
+}];
 ```
+
+Disable weekend selection @datepicker
+
+```js
+field_cfg = [{
+    //...
+    "constraints": {
+        "date-disabled": "disabled_weekend(date, mode)"
+    }
+}];
+
+$scope.disabled_weekend = function(date, mode) {
+    return ( mode === 'day' && ( date.getDay() === 0 || date.getDay() === 6 ) );
+};
+```js
+
 
 ## Extending ng-formalizer
 
@@ -334,7 +503,6 @@ node_modules/karma/bin/karma start karma.js --browsers Firefox
 
 ## TODO
 
-* set-value-if
 * add-option-if
 * remove-option-if
 * checkbox-inline (label@class)
