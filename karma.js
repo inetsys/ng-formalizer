@@ -24,6 +24,10 @@ module.exports = function (config) {
       //"bower_components/angular-animate.js",
       "bower_components/checklist-model/checklist-model.js",
 
+      //slider
+      "angular-bootstrap-slider/slider.js",
+      "seiyria-bootstrap-slider/js/bootstrap-slider.js",
+
       "bower_components/moment/moment.js",
 
       // our app
@@ -38,6 +42,7 @@ module.exports = function (config) {
       'lib/formalizer.datepicker.js',
       'lib/formalizer.input.js',
       'lib/formalizer.checkbox-list.js',
+      'lib/formalizer.slider.js',
       'lib/ng-formalizer.js',
       'lib/ng-blacklist.js',
       'lib/ng-decimal.js',

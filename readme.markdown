@@ -110,6 +110,7 @@ Example: Create an input with some constraints and error messages translated.
 * radio-list
 * typeahead (**IN PROGRESS**)
 * typeahead-multi
+* slider
 * submit
 
 
@@ -168,15 +169,18 @@ Examples:
 
 Extends current configuration with extra options for each type of field.
 
+
 `checkbox-list` options
 
 * `select_all` display a "Select All" checkbox
+
 
 `select` options
 
 * `multiple`
 
-[`typeahead` options](http://angular-ui.github.io/bootstrap/#/typeahead)
+
+`typeahead` options [ui-bootstrap](http://angular-ui.github.io/bootstrap/#/typeahead)
 
 * `typeahead-append-to-body`
 * `typeahead-editable`
@@ -186,7 +190,8 @@ Extends current configuration with extra options for each type of field.
 * `typeahead-template-url`
 * `typeahead-wait-m`
 
-[`datepiker` options](http://angular-ui.github.io/bootstrap/#/datepicker)
+
+`datepiker` options [ui-bootstrap](http://angular-ui.github.io/bootstrap/#/datepicker)
 
 * `datepicker-mode`
 * `min-date`
@@ -211,6 +216,26 @@ Extends current configuration with extra options for each type of field.
 * `close-on-date-selection`
 * `datepicker-append-to-body`
 * `datepicker-option`
+
+
+`slider` options [angular-bootstrap-slider](https://github.com/seiyria/angular-bootstrap-slider)
+
+* `min`
+* `max`
+* `step`
+* `precision`
+* `orientation`
+* `range`
+* `selection`
+* `tooltip`
+* `tooltipSeparator`
+* `tooltipSplit`
+* `handle`
+* `reversed`
+* `enabled`
+* `naturalArrowKeys`
+* `sliderId`
+* `updateEvent`
 
 
 ### Extending templates

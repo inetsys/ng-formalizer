@@ -182,6 +182,17 @@ app.controller("MainCtrl", ["$scope", "$timeout", function ($scope, $timeout) {
         "source": "typeahead_items",
         "source_display": "name"
     }, {
+        "label": "Slider 0-50, 1",
+        "type": "slider",
+        "name": "slider_val",
+        "options": {
+            "min": 0,
+            "max": 50,
+            "step": 1
+        },
+        "source": "typeahead_items",
+        "source_display": "name"
+    }, {
         "label": "Submit now!",
         "type": "submit",
         "name": "submit",

@@ -1,0 +1,15 @@
+<div class="{{container.class}}">
+  <label for="{{element.attrs.name}}" class="{{label.class}}">{{label.text}}</label>
+  <div class="{{element.container.class}}">
+    <p class="{{element.wrap.class}}">
+        {{element.left}}
+        <div slider %element-attributes% />
+        {{element.right}}
+        <!-- hide an input with the value ?! -->
+    </p>
+    <p class="help-block">{{help.text}}</p>
+
+    %element-error-list%
+
+  </div>
+</div>
