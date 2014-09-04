@@ -8,11 +8,12 @@
   <li ng-show="%scope-form-name%['{{element.attrs.name}}'].$error.email">{{messages.email || 'Field is an invalid email'}}</li>
   <li ng-show="%scope-form-name%['{{element.attrs.name}}'].$error.url">{{messages.url || 'Field is an invalid URL'}}</li>
   <li ng-show="%scope-form-name%['{{element.attrs.name}}'].$error.blacklist">{{messages.blacklist || 'Field value is blacklisted'}}</li>
-  <li ng-show="%scope-form-name%['{{element.attrs.name}}'].$error['equal-to']">{{messages.['equal-to'] || 'Field must be equal to: X'}}</li>
-  <li ng-show="%scope-form-name%['{{element.attrs.name}}'].$error['only-alpha']">{{messages.['only-alpha'] || 'Field must contains only letters'}}</li>
-  <li ng-show="%scope-form-name%['{{element.attrs.name}}'].$error['only-iso']">{{messages.['only-iso'] || 'Valid characters are: A-Z, a-z, 0-9'}}</li>
-  <li ng-show="%scope-form-name%['{{element.attrs.name}}'].$error['one-upper']">{{messages.['one-upper'] || 'At least one uppercase'}}</li>
-  <li ng-show="%scope-form-name%['{{element.attrs.name}}'].$error['one-lower']">{{messages.['one-lower'] || 'At least one lowercase'}}</li>
-  <li ng-show="%scope-form-name%['{{element.attrs.name}}'].$error['one-number']">{{messages.['one-number'] || 'At least one number'}}</li>
-  <li ng-show="%scope-form-name%['{{element.attrs.name}}'].$error['one-alpha']">{{messages.['one-alpha'] || 'At least one letter'}}</li>
+  <li ng-show="%scope-form-name%['{{element.attrs.name}}'].$error['equal-to']">{{messages['equal-to'] || 'Field must be equal to: X'}}</li>
+  <li ng-show="%scope-form-name%['{{element.attrs.name}}'].$error['only-alpha']">{{messages['only-alpha'] || 'Field must contains only letters'}}</li>
+  <li ng-show="%scope-form-name%['{{element.attrs.name}}'].$error['only-iso']">{{messages['only-iso'] || 'Valid characters are: A-Z, a-z, 0-9'}}</li>
+  <li ng-show="%scope-form-name%['{{element.attrs.name}}'].$error['one-upper']">{{messages['one-upper'] || 'At least one uppercase'}}</li>
+  <li ng-show="%scope-form-name%['{{element.attrs.name}}'].$error['one-lower']">{{messages['one-lower'] || 'At least one lowercase'}}</li>
+  <li ng-show="%scope-form-name%['{{element.attrs.name}}'].$error['one-number']">{{messages['one-number'] || 'At least one number'}}</li>
+  <li ng-show="%scope-form-name%['{{element.attrs.name}}'].$error['one-alpha']">{{messages['one-alpha'] || 'At least one letter'}}</li>
+  <li ng-show="%scope-form-name%['{{element.attrs.name}}'].$error['server-validation']">{{messages['server-validation'] || 'Server validation fails'}}</li>
 </ul>

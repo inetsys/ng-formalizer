@@ -62,16 +62,20 @@ app.controller("MainCtrl", ["$scope", "$timeout", function ($scope, $timeout) {
 
 
     $scope.form_fields = [{
-        "label": "User (minlength=5 and messages translated)",
+        "label": "User (minlength=5 translated) & (server-side validation)",
         "type": "text",
         "name": "user",
         "placeholder": "Text",
         "constraints": {
             "required": true,
-            "minlength": 5
+            "minlength": 5,
+            "server-validation": "/validate",
+            "request-key": "username",
+            "response-key": "success"
         },
         "messages": {
-            "minlength": "más de 5 caracters majo!"
+            "minlength": "más de 5 caracters majo!",
+            "server-validation": "the only free name is pepe123"
         }
     }, {
         "label": "Password (only-iso)",
