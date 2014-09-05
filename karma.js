@@ -32,6 +32,7 @@ module.exports = function (config) {
 
       // our app
       'lib/formalizer.js',
+      'lib/formalizer.raw.js',
       'lib/formalizer.submit.js',
       'lib/formalizer.select.js',
       'lib/formalizer.textarea.js',

@@ -147,21 +147,39 @@ Label text
 
 #### `type`: String [**mandatory**]
 * text
-* textarea
 * password
 * number
 * email
 * tel
 * url
+* textarea
 * select
 * datepicker
+
+  using [ui-bootstrap-datepicker](http://angular-ui.github.io/bootstrap/#/datepicker)
+
 * checkbox
 * checkbox-list
+
+  using [checklist-model](http://vitalets.github.io/checklist-model/)
+
 * radio-list
 * typeahead (**IN PROGRESS**)
+
+  using [ui-bootstrap-typeahead](http://angular-ui.github.io/bootstrap/#/typeahead)
+
 * typeahead-multi
+
+  using [ui-bootstrap-typeahead](http://angular-ui.github.io/bootstrap/#/typeahead)
+
 * slider
+
+  using [angular-bootstrap-slider](https://github.com/seiyria/angular-bootstrap-slider)
+
 * submit
+* raw
+
+  Raw HTML that will be included into the form. [example](#field-type-raw-example)
 
 
 #### `name`: String [**mandatory**]
@@ -219,6 +237,21 @@ Example:
 
 Extends current configuration with extra options for each type of field.
 
+`raw` options
+
+<a name="field-type-raw-example"></a>
+* `template` HTML-string
+
+  HTML to be displayed directly in the form.
+
+```json
+{
+    "type": "raw",
+    "options": {
+        "template": "<div class=\"col-sm-10 col-sm-offset-2\">Current avatar: {{entity.avatar}}</div>"
+    }
+}
+```
 
 `checkbox-list` options
 
@@ -230,7 +263,7 @@ Extends current configuration with extra options for each type of field.
 * `multiple`
 
 
-`typeahead` options [ui-bootstrap](http://angular-ui.github.io/bootstrap/#/typeahead)
+`typeahead` options [ui-bootstrap-typeahead](http://angular-ui.github.io/bootstrap/#/typeahead)
 
 * `typeahead-append-to-body`
 * `typeahead-editable`
@@ -241,7 +274,7 @@ Extends current configuration with extra options for each type of field.
 * `typeahead-wait-m`
 
 
-`datepiker` options [ui-bootstrap](http://angular-ui.github.io/bootstrap/#/datepicker)
+`datepiker` options [ui-bootstrap-datepicker](http://angular-ui.github.io/bootstrap/#/datepicker)
 
 * `datepicker-mode`
 * `min-date`
