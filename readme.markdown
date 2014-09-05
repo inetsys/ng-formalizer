@@ -589,7 +589,7 @@ your_module
 
     // this will be the input/output format for datepickers
     datepickerPopupFix.datepickerPopup = "DD/MM/YYYY"; // in momentjs format
-    datepickerPopupFix.datepickerZone = "+0000"; // GMT+0, GMT+1 = "+0100", GMT-1 = "-0100" etc.
+    datepickerPopupFix.datepickerTZ = "+0000"; // GMT+0, GMT+1 = "+0100", GMT-1 = "-0100" etc.
 })
 
 ```

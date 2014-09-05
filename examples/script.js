@@ -13,7 +13,7 @@ app.config(["datepickerConfig", "datepickerPopupConfig", "datepickerPopupFix", f
 
     // spanish GMT+0
     datepickerPopupFix.datepickerPopup = "DD/MM/YYYY";
-    datepickerPopupFix.datepickerZone = "+0000";
+    datepickerPopupFix.datepickerTZ = "+0000";
 }]);
 
 app.controller("MainCtrl", ["$scope", "$timeout", function ($scope, $timeout) {
