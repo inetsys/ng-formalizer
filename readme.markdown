@@ -32,14 +32,14 @@ firefox http://localhost:6001
 ```
 
 
-## Usage
+## usage
 ````js
   // Add to app dependencies
   var app = angular.module("app", ["formalizer"]);
 ````
 
 
-## Development
+## development
 
 
 ### markup
@@ -52,11 +52,13 @@ firefox http://localhost:6001
 ### Configuration object
 
 ```js
-// in the controller
+    // in the controller
 
-
-    $scope.onSubmit = function(dirty_data, file, entity, form) {
-        console.log(dirty_data);
+    $scope.onSubmit = function(dirty_data, files, entity, form) {
+        console.log("dirty_data", dirty_data);
+        console.log("files", files);
+        console.log("entity", entity);
+        console.log("form", form);
     };
 
     $scope.entity = {};
@@ -70,17 +72,60 @@ firefox http://localhost:6001
         "fields": "form_fields", // String (watch) | Array
     };
 
-    $scope.form_fields = [/* Fields properties */];
+    $scope.form_fields = [
+        // Fields properties see below for examples & info
+    ];
 ```
 
+#### `legend`: String
+
+Form legend.
+
+#### `type`: String [horizontal, vertical, inline]
+
+How to display the form in the screen. ATM only horizontal is fully supported and tested.
+
+#### `name`: String
+
+Form name.
+
+#### `model`: String
+
+Key in the scope that will hold all form information
+
+#### `onSubmit`: String|Function [**mandatory**]
+
+* `dirty_data` Object
+
+  Data that has from the original model.
+
+* `files` null|Array<File>
+
+  List of files.
+
+* `entity` Object
+
+  Entity in the scope.
+
+* `form`
+
+  AngularJS Form controller
+
+
+#### `fields`: String|Array
+
+Fields list. See below for more information.
+
+- - -
 
 ### Fields properties
 
-Example: Create an input with some constraints and error messages translated.
+Basic Example:
+Create an input with some constraints and error messages translated.
 
 ```json
 {
-    "label": "User (minlength=5 and messages translated)",
+    "label": "User",
     "type": "text",
     "name": "user",
     "placeholder": "Text",
@@ -93,6 +138,11 @@ Example: Create an input with some constraints and error messages translated.
     }
 }
 ```
+
+
+#### `label`: String
+
+Label text
 
 
 #### `type`: String [**mandatory**]
@@ -114,11 +164,6 @@ Example: Create an input with some constraints and error messages translated.
 * submit
 
 
-#### `label`: String
-
-Label text
-
-
 #### `name`: String [**mandatory**]
 
 Same as HTML
@@ -129,13 +174,13 @@ Same as HTML
 No applicable to select, typeahead*, checkbox*, radio*
 
 
-#### `source`: String|Array [**mandatory** in select, typeahead\*, checkbox\*, radio\*]
+##### `source`: String|Array [**mandatory** in select, typeahead\*, checkbox\*, radio\*]
 
-#### `source_display`: String [**mandatory** in select, typeahead\*, checkbox\*, radio\*]
+##### `source_display`: String [**mandatory** in select, typeahead\*, checkbox\*, radio\*]
 
-#### `source_model`: String|null
+##### `source_model`: String|null
 
-These three options configure how you data source is displayed and what need to be stored in your model.
+These three options configure how your data source is displayed and what need to be stored in your model.
 
 **source**
 
@@ -150,18 +195,23 @@ What will be displayed, the key in the object
 What will be inserted in your model. String if you want a specific key of your object or null if you want the entire object.
 
 
-Examples:
+Example:
 
-```js
+```json
 {
-    source: [
-        {id: 1, label: "1.- Brikindans"},
-        {id: 2, label: "2.- Crusaíto"},
-        {id: 3, label: "3.- Maiquelyason",
-        {id: 4, label: "4.- Robocop"}
+    "label": "Multiple select. Model will contains `id`s, and `label` will be displayed in the options.",
+    "type": "select",
+    "source": [
+        {"id": 1, "label": "1.- Brikindans"},
+        {"id": 2, "label": "2.- Crusaíto"},
+        {"id": 3, "label": "3.- Maiquelyason"},
+        {"id": 4, "label": "4.- Robocop"}
     ],
-    source_display: "label",
-    source_model: "id"
+    "source_display": "label",
+    "source_model": "id",
+    "options": {
+        "multiple": true
+    }
 }
 ```
 
