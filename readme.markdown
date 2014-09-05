@@ -55,7 +55,7 @@ firefox http://localhost:6001
 // in the controller
 
 
-    $scope.onSubmit = function(dirty_data, entity, form) {
+    $scope.onSubmit = function(dirty_data, file, entity, form) {
         console.log(dirty_data);
     };
 

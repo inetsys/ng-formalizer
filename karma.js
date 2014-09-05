@@ -24,8 +24,9 @@ module.exports = function (config) {
       "bower_components/checklist-model/checklist-model.js",
 
       //slider
-      "angular-bootstrap-slider/slider.js",
-      "seiyria-bootstrap-slider/js/bootstrap-slider.js",
+      "bower_components/angular-bootstrap-slider/slider.js",
+      "bower_components/seiyria-bootstrap-slider/js/bootstrap-slider.js",
+
 
       "bower_components/moment/moment.js",
 
@@ -43,6 +44,7 @@ module.exports = function (config) {
       'lib/formalizer.checkbox-list.js',
       'lib/formalizer.slider.js',
       'lib/ng-formalizer.js',
+      'lib/ng-formalizer-attach.js',
       'lib/ng-blacklist.js',
       'lib/ng-decimal.js',
       'lib/ng-equalto.js',
