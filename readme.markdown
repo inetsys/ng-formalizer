@@ -357,7 +357,7 @@ Example:
 
 Example:
 
-```js
+```json
 "constraints": {
    "blacklist": ["apple", "pear"]
 }
@@ -365,11 +365,13 @@ Example:
 
 #### decimal
 
+Limit the decimals allowed.
+
 Example:
 
-```js
+```json
 "constraints": {
-   "decimal": 4 // maximum of 4 decimals are allowed
+   "decimal": 4
 }
 ```
 
@@ -379,7 +381,7 @@ Current field must be equal to something in the scope, could be or not a field.
 
 Example:
 
-```js
+```json
 "constraints": {
    "equal-to": "variable-in-the-scope"
 }
@@ -389,7 +391,7 @@ Example:
 
 Allow letters only.
 
-```js
+```json
 "constraints": {
    "only-alpha": true
 }
@@ -399,7 +401,7 @@ Allow letters only.
 
 Allow letters, digits, "-" and "_".
 
-```js
+```json
 "constraints": {
    "only-iso": true
 }
@@ -409,7 +411,7 @@ Allow letters, digits, "-" and "_".
 
 At least one character must be uppercase
 
-```js
+```json
 "constraints": {
    "one-upper": true
 }
@@ -419,7 +421,7 @@ At least one character must be uppercase
 
 At least one character must be lowercase
 
-```js
+```json
 "constraints": {
    "one-lower": true
 }
@@ -429,7 +431,7 @@ At least one character must be lowercase
 
 At least one number must be lowercase
 
-```js
+```json
 "constraints": {
    "one-number": true
 }
@@ -439,7 +441,7 @@ At least one number must be lowercase
 
 At least one letter must be lowercase
 
-```js
+```json
 "constraints": {
    "one-number": true
 }
@@ -449,7 +451,7 @@ At least one letter must be lowercase
 
 Cannot contains any spaces
 
-```js
+```json
 "constraints": {
    "one-number": true
 }
@@ -459,9 +461,11 @@ Cannot contains any spaces
 
 Validate against server. $http send a JSON body with `request-key` and server must return a JSON with a boolean in `request-response`.
 
+The request fill be made on `focusout` and only if the value change from last validation.
+
 By default `request-key` is `value` and `request-response` is `success`
 
-```js
+```json
 "constraints": {
    "server-validation": "/URL/validation",
    "request-key": "value",
@@ -486,13 +490,12 @@ By default `request-key` is `value` and `request-response` is `success`
 
 Hide a form field.
 
-```js
-field_cfg = [{
-    //...
+```json
+{
     "constraints": {
         "show": false
     }
-}];
+}
 ```
 
 Disable weekend selection @datepicker
@@ -508,7 +511,7 @@ field_cfg = [{
 $scope.disabled_weekend = function(date, mode) {
     return ( mode === 'day' && ( date.getDay() === 0 || date.getDay() === 6 ) );
 };
-```js
+```
 
 
 ## Extending ng-formalizer
