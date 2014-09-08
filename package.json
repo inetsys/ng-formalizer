@@ -1,6 +1,6 @@
 {
   "name": "ng-formalizer",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Angular (&UI) form generator and validation from JSON",
   "main": "./index.js",
   "keywords": [],
