@@ -1,0 +1,4 @@
+uglify:
+    dist:
+        files:
+            'dist/ng-formalizer.min.js': ['dist/ng-formalizer.js']

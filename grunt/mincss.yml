@@ -1,0 +1,8 @@
+html2js:
+    options:
+        # custom options, see below
+        module: "formalizer-tpls"
+        base: "."
+    main:
+        src: ['templates/*.tpl.html']
+        dest: 'dist/ng-formalizer.templates.js'

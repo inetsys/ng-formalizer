@@ -15,6 +15,7 @@ app.use("/", serveStatic(__dirname + "/../bower_components/"));
 app.use("/", serveStatic(__dirname + "/../lib/"));
 app.use("/", serveStatic(__dirname + "/"));
 app.use("/templates/", serveStatic(__dirname + "/../templates/"));
+app.use("/dist/", serveStatic(__dirname + "/../dist/"));
 
 
 router.post("/validate", function(req, res, next) {
