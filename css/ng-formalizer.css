@@ -1,0 +1,7 @@
+/* remove flashing errors */
+form.ng-pristine .form-error-list {
+    display: none;
+}
+form.ng-dirty .form-error-list {
+    display: block;
+}

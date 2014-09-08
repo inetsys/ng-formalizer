@@ -1,6 +1,6 @@
 {
   "name": "ng-formalizer",
-  "version": "0.0.3",
+  "version": "0.0.0",
   "description": "Angular (&UI) form generator and validation from JSON",
   "main": "./index.js",
   "keywords": [],
@@ -40,7 +40,8 @@
     "bootstrap-grunt": "0.0.2",
     "grunt-contrib-concat": "^0.5.0",
     "grunt-contrib-uglify": "^0.5.1",
-    "grunt-release": "^0.7.0"
+    "grunt-release": "^0.7.0",
+    "grunt-contrib-cssmin": "^0.10.0"
   },
   "jshintConfig": {
     "white": true,

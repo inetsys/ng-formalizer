@@ -1,0 +1,4 @@
+cssmin:
+    css:
+        files:
+            'dist/ng-formalizer.min.css': ['dist/ng-formalizer.css']

@@ -1,4 +1,7 @@
 uglify:
-    dist:
+    js:
         files:
             'dist/ng-formalizer.min.js': ['dist/ng-formalizer.js']
+    js_templates:
+        files:
+            'dist/ng-formalizer-tpls.min.js': ['dist/ng-formalizer-tpls.js']

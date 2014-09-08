@@ -1,5 +1,5 @@
 concat:
-    dist:
+    js:
         src:
             - lib/formalizer.js
             - lib/formalizer.raw.js
@@ -24,3 +24,12 @@ concat:
             - lib/ng-populate.js
             - lib/ng-server-validation.js
         dest: dist/ng-formalizer.js
+    js_templates:
+        src:
+            - dist/ng-formalizer.js
+            - dist/ng-formalizer.templates.js
+        dest: dist/ng-formalizer-tpls.js
+    css:
+        src:
+            - css/ng-formalizer.css
+        dest: dist/ng-formalizer.css

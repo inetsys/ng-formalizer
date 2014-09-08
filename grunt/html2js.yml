@@ -3,6 +3,6 @@ html2js:
         # custom options, see below
         module: "formalizer-tpls"
         base: "."
-    main:
+    dist:
         src: ['templates/*.tpl.html']
         dest: 'dist/ng-formalizer.templates.js'

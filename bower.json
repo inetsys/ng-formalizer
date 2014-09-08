@@ -5,7 +5,10 @@
   "author": "https://github.com/llafuente",
   "license": "MIT",
   "homepage": "http://llafuente.github.io/ng-formalizer",
-  "main": "dist/ng-formalizer.js",
+  "main": [
+    "dist/ng-formalizer-tpls.js",
+    "dist/ng-formalizer.css",
+  ],
   "ignore": [
     "tests/*",
     "grunt/*",
