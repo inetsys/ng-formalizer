@@ -26,8 +26,8 @@ concat:
         dest: dist/ng-formalizer.js
     js_templates:
         src:
-            - dist/ng-formalizer.js
             - dist/ng-formalizer.templates.js
+            - dist/ng-formalizer.js
         dest: dist/ng-formalizer-tpls.js
     css:
         src:
