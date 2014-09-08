@@ -1,0 +1,6 @@
+release:
+    options:
+      bump: true
+      npm: false
+      github:
+        repo: 'llafuente/ng-formalizer'
