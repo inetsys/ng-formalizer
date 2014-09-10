@@ -91,7 +91,9 @@ var Formalizer;
         this.name = this.options.name || "form";
 
         this[this.options.type] = true;
+    };
 
+    Formalizer.prototype.init = function (options) {
         if (!this.options.onSubmit) {
             throw new Error("options.onSubmit is required");
         }
@@ -320,6 +322,21 @@ var Formalizer;
                 model[field_name].push(value);
             }
         }
+    }
+
+    Formalizer.toFormData = function(data, data_key, files) {
+        var formData = new FormData();
+
+        var tfiles = 0,
+            j;
+
+        formData.append(data_name, JSON.stringify(data));
+
+        for (j = 0; j < files.length; j++) {
+            formData.append("file" + (++tfiles), files[j]);
+        }
+
+        return formData;
     }
 
 }());
@@ -765,8 +782,7 @@ var Formalizer;
     module.directive("ngFormalizer", [
         "$parse", "$compile", "$interpolate", "$http", "$templateCache", "$rootScope", "$timeout", "$q", "$log", "FormalizerConfig",
         function ($parse, $compile, $interpolate, $http, $templateCache, $rootScope, $timeout, $q, $log, FormalizerConfig) {
-            var $ready = Formalizer.loadTemplates($q, $http, $templateCache, FormalizerConfig),
-                parsed_fields = 0;
+            var $ready = Formalizer.loadTemplates($q, $http, $templateCache, FormalizerConfig);
 
             return {
                 restrict: "A",
@@ -775,8 +791,19 @@ var Formalizer;
                 templateUrl: "templates/formalizer-form.tpl.html",
                 priority: 500,
 
-                controller: function ($scope, $element, $compile) {
-                    return $scope.$formalizer = new Formalizer($scope, $parse, $log);
+                controller: function ($scope) {
+                    if (angular.version.minor > 2) {
+                        $scope.$formalizer = new Formalizer($scope, $parse, $log);
+
+                        // this is dangerous!
+                        angular.extend(this, $scope.$formalizer);
+
+                        return $scope.$formalizer;
+                    } else if (angular.version.minor === 2) {
+                        return ($scope.$formalizer = new Formalizer($scope, $parse, $log));
+                    }
+
+                    throw new Error("not supported angular version");
                 },
                 compile: function () {
                     return {
@@ -786,45 +813,73 @@ var Formalizer;
                                 config = $scope.$eval($attrs.ngFormalizer),
                                 $formalizer = $scope.$formalizer;
 
-                            $formalizer.setOptions(config);
+                            if (!config) {
+                                throw new Error("formalizer configuration must be sent");
+                            }
 
-                            function update_fields(fields, o) {
-                                if (!fields) {
-                                    return;
-                                }
+                            if (!config.name) {
+                                throw new Error("formalizer require form name");
+                            }
 
-                                //console.log("--> fields: ", fields.length);
+                            function configure(config) {
+                                $formalizer.setOptions(config);
+                                $formalizer.init();
 
-                                var new_elements = [];
+                                function update_fields(fields) {
+                                    if (!fields) {
+                                        return;
+                                    }
 
-                                var new_fields = $formalizer.addFields(fields, $interpolate);
+                                    //console.log("--> fields: ", fields.length);
 
-                                angular.forEach(new_fields, function (fel) {
-                                    //console.log(fel);
-                                    //var el = jQuery(fel);
-                                    var el = angular.element(fel);
-                                    new_elements.push(el);
-                                    container.append(el);
-                                });
+                                    var new_elements = [];
 
-                                //$compile($element.contents())($scope);
-                                $timeout(function () {
-                                    angular.forEach(new_elements, function (el) {
-                                        $compile(el.contents())($scope);
+                                    var new_fields = $formalizer.addFields(fields, $interpolate);
+
+                                    angular.forEach(new_fields, function (fel) {
+                                        //console.log(fel);
+                                        //var el = jQuery(fel);
+                                        var el = angular.element(fel);
+                                        new_elements.push(el);
+                                        container.append(el);
                                     });
 
-                                    $scope.$digest();
+                                    //$compile($element.contents())($scope);
+                                    $timeout(function () {
+                                        angular.forEach(new_elements, function (el) {
+                                            $compile(el.contents())($scope);
+                                        });
+
+                                        $scope.$digest();
+                                    });
+                                }
+
+                                // watch fields and generate HTML after every template is loaded
+                                $ready.then(function () {
+                                    if ("string" === typeof config.fields) {
+                                        return $scope.$watch(config.fields, update_fields, true);
+                                    }
+
+                                    update_fields(config.fields);
                                 });
                             }
 
-                            // watch fields and generate HTML after every template is loaded
-                            $ready.then(function () {
-                                if ("string" === typeof config.fields) {
-                                    return $scope.$watch(config.fields, update_fields, true);
-                                }
+                            if (!config.model) {
+                                //console.log("post-initialization");
 
-                                update_fields(config.fields);
-                            });
+                                // set initial config
+                                $formalizer.setOptions(config);
+
+                                var unregister = $scope.$watch($attrs.ngFormalizer, function(new_config) {
+                                    if (new_config && new_config.model) {
+                                        unregister();
+
+                                        configure(new_config);
+                                    }
+                                }, true);
+                            } else {
+                                configure(config);
+                            }
                         },
                         post: function ($scope, $element, $attrs) {
                         }

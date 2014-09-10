@@ -519,6 +519,23 @@ By default `request-key` is `value` and `request-response` is `success`
 * mime-type
 * file-size
 
+### Post initialization
+
+Sometimes you could need to wait for an async event (request) to arrive before displaying the form.
+
+To do that you need to send the configuration object without `model`.
+
+Minimal example:
+```json
+{
+  'name': 'form'
+}
+```
+
+Formalizer will be watching the scope until the `model` is set.
+
+`name` is required at first because angular will create a FormController without an appropriate name in the scope.
+
 ### snippets
 
 Hide a form field.
