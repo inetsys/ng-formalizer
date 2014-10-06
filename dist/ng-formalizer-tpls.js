@@ -1,4 +1,4 @@
-angular.module('formalizer-tpls', ['templates/formalizer-checkbox-list.tpl.html', 'templates/formalizer-checkbox.tpl.html', 'templates/formalizer-error-list.tpl.html', 'templates/formalizer-form.tpl.html', 'templates/formalizer-input.tpl.html', 'templates/formalizer-radio-list.tpl.html', 'templates/formalizer-raw.tpl.html', 'templates/formalizer-select.tpl.html', 'templates/formalizer-slider.tpl.html', 'templates/formalizer-submit.tpl.html', 'templates/formalizer-textarea.tpl.html', 'templates/formalizer-typeahead.tpl.html']);
+angular.module('formalizer-tpls', ['templates/formalizer-checkbox-list.tpl.html', 'templates/formalizer-checkbox.tpl.html', 'templates/formalizer-error-list.tpl.html', 'templates/formalizer-form-1.2.tpl.html', 'templates/formalizer-form-1.3.tpl.html', 'templates/formalizer-input.tpl.html', 'templates/formalizer-radio-list.tpl.html', 'templates/formalizer-raw.tpl.html', 'templates/formalizer-select.tpl.html', 'templates/formalizer-slider.tpl.html', 'templates/formalizer-submit.tpl.html', 'templates/formalizer-textarea.tpl.html', 'templates/formalizer-typeahead.tpl.html']);
 
 angular.module("templates/formalizer-checkbox-list.tpl.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("templates/formalizer-checkbox-list.tpl.html",
@@ -60,13 +60,32 @@ angular.module("templates/formalizer-error-list.tpl.html", []).run(["$templateCa
     "</ul>");
 }]);
 
-angular.module("templates/formalizer-form.tpl.html", []).run(["$templateCache", function($templateCache) {
-  $templateCache.put("templates/formalizer-form.tpl.html",
+angular.module("templates/formalizer-form-1.2.tpl.html", []).run(["$templateCache", function($templateCache) {
+  $templateCache.put("templates/formalizer-form-1.2.tpl.html",
     "<form\n" +
     "    role=\"form\"\n" +
     "    ng-submit=\"$formalizer.submit()\"\n" +
     "    ng-class=\"{'form-horizontal': $formalizer.horizontal, 'form-vertical': $formalizer.vertical, 'form-inline': $formalizer.inline}\"\n" +
     "    name=\"{{$formalizer.name}}\"\n" +
+    "    ng-formalizer-form-attach=\"$formalizer.name\"\n" +
+    "    novalidate>\n" +
+    "  <fieldset>\n" +
+    "    <legend ng-if=\"$formalizer.legend\">{{$formalizer.legend}}</legend>\n" +
+    "    <div class=\"fieldset-contents\"></div>\n" +
+    "\n" +
+    "  </fieldset>\n" +
+    "\n" +
+    "</form>");
+}]);
+
+angular.module("templates/formalizer-form-1.3.tpl.html", []).run(["$templateCache", function($templateCache) {
+  $templateCache.put("templates/formalizer-form-1.3.tpl.html",
+    "<form\n" +
+    "    role=\"form\"\n" +
+    "    ng-submit=\"$formalizer.submit()\"\n" +
+    "    ng-class=\"{'form-horizontal': $formalizer.horizontal, 'form-vertical': $formalizer.vertical, 'form-inline': $formalizer.inline}\"\n" +
+    "    name=\"$parent.{{$formalizer.name}}\"\n" +
+    "    ng-formalizer-form-attach=\"$formalizer.name\"\n" +
     "    novalidate>\n" +
     "  <fieldset>\n" +
     "    <legend ng-if=\"$formalizer.legend\">{{$formalizer.legend}}</legend>\n" +
@@ -82,12 +101,12 @@ angular.module("templates/formalizer-input.tpl.html", []).run(["$templateCache",
     "<div class=\"{{container.class}}\">\n" +
     "  <label for=\"{{element.attrs.name}}\" class=\"{{label.class}}\">{{label.text}}</label>\n" +
     "  <div class=\"{{element.container.class}}\">\n" +
-    "    <p class=\"{{element.wrap.class}}\">\n" +
+    "    <div class=\"{{element.wrap.class}}\">\n" +
     "        {{element.left}}\n" +
     "        <input %element-attributes% />\n" +
     "        {{element.right}}\n" +
-    "    </p>\n" +
-    "    <p class=\"help-block\">{{help.text}}</p>\n" +
+    "    </div>\n" +
+    "    <div class=\"help-block\">{{help.text}}</div>\n" +
     "\n" +
     "    %element-error-list%\n" +
     "\n" +
@@ -990,13 +1009,14 @@ var Formalizer;
     module.directive("ngFormalizer", [
         "$parse", "$compile", "$interpolate", "$http", "$templateCache", "$rootScope", "$timeout", "$q", "$log", "FormalizerConfig",
         function ($parse, $compile, $interpolate, $http, $templateCache, $rootScope, $timeout, $q, $log, FormalizerConfig) {
-            var $ready = Formalizer.loadTemplates($q, $http, $templateCache, FormalizerConfig);
+            var $ready = Formalizer.loadTemplates($q, $http, $templateCache, FormalizerConfig),
+                v = angular.version;
 
             return {
                 restrict: "A",
                 replace: true,
                 scope: true,
-                templateUrl: "templates/formalizer-form.tpl.html",
+                templateUrl: "templates/formalizer-form-" + v.major + "." + Math.min(3, v.minor) + ".tpl.html",
                 priority: 500,
 
                 controller: function ($scope) {
@@ -1078,7 +1098,7 @@ var Formalizer;
                                 // set initial config
                                 $formalizer.setOptions(config);
 
-                                var unregister = $scope.$watch($attrs.ngFormalizer, function(new_config) {
+                                var unregister = $scope.$watch($attrs.ngFormalizer, function (new_config) {
                                     if (new_config && new_config.model) {
                                         unregister();
 
@@ -1167,12 +1187,14 @@ angular.module("formalizer")
 
     angular.forEach({
         "only-alpha": /^[a-zA-Z]*$/i,
-        "only-iso": /^[a-zA-Z0-9_\-\s]*$/i,
+        //"only-iso": /^[a-zA-Z0-9_\-\s]*$/i,
         "one-upper": /^(?=.*[A-Z]).+$/,
         "one-lower": /^(?=.*[a-z]).+$/,
         "one-number": /^(?=.*[0-9]).+$/,
         "one-alpha": /^(?=.*[a-z]).+$/i,
-        "no-spaces": /^[^\s]+$/
+        "no-spaces": /^[^\s]+$/,
+        "hexadecimal": /^[0-9a-fA-F]+$/,
+        "hex-color": /^#?([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$/
     }, function(regex, key) {
         angular.module('formalizer')
         .directive(camelCase('ng-' + key), function (){

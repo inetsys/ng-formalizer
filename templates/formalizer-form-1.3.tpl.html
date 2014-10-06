@@ -1,0 +1,14 @@
+<form
+    role="form"
+    ng-submit="$formalizer.submit()"
+    ng-class="{'form-horizontal': $formalizer.horizontal, 'form-vertical': $formalizer.vertical, 'form-inline': $formalizer.inline}"
+    name="$parent.{{$formalizer.name}}"
+    ng-formalizer-form-attach="$formalizer.name"
+    novalidate>
+  <fieldset>
+    <legend ng-if="$formalizer.legend">{{$formalizer.legend}}</legend>
+    <div class="fieldset-contents"></div>
+
+  </fieldset>
+
+</form>

@@ -490,6 +490,26 @@ Cannot contains any spaces
 }
 ```
 
+#### hexadecimal
+
+hexadecimal number: 0-9 & a-f
+
+```json
+"constraints": {
+   "hexadecimal": true
+}
+```
+
+#### hex-color
+
+A color: #ffffff (# is required)
+
+```json
+"constraints": {
+   "hex-color": true
+}
+```
+
 #### server-validation
 
 Validate against server. $http send a JSON body with `request-key` and server must return a JSON with a boolean in `request-response`.
@@ -519,7 +539,7 @@ By default `request-key` is `value` and `request-response` is `success`
 * mime-type
 * file-size
 
-### Post initialization
+### Post initialization (late loading)
 
 Sometimes you could need to wait for an async event (request) to arrive before displaying the form.
 

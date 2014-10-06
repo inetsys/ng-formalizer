@@ -782,13 +782,14 @@ var Formalizer;
     module.directive("ngFormalizer", [
         "$parse", "$compile", "$interpolate", "$http", "$templateCache", "$rootScope", "$timeout", "$q", "$log", "FormalizerConfig",
         function ($parse, $compile, $interpolate, $http, $templateCache, $rootScope, $timeout, $q, $log, FormalizerConfig) {
-            var $ready = Formalizer.loadTemplates($q, $http, $templateCache, FormalizerConfig);
+            var $ready = Formalizer.loadTemplates($q, $http, $templateCache, FormalizerConfig),
+                v = angular.version;
 
             return {
                 restrict: "A",
                 replace: true,
                 scope: true,
-                templateUrl: "templates/formalizer-form.tpl.html",
+                templateUrl: "templates/formalizer-form-" + v.major + "." + Math.min(3, v.minor) + ".tpl.html",
                 priority: 500,
 
                 controller: function ($scope) {
@@ -870,7 +871,7 @@ var Formalizer;
                                 // set initial config
                                 $formalizer.setOptions(config);
 
-                                var unregister = $scope.$watch($attrs.ngFormalizer, function(new_config) {
+                                var unregister = $scope.$watch($attrs.ngFormalizer, function (new_config) {
                                     if (new_config && new_config.model) {
                                         unregister();
 
@@ -959,12 +960,14 @@ angular.module("formalizer")
 
     angular.forEach({
         "only-alpha": /^[a-zA-Z]*$/i,
-        "only-iso": /^[a-zA-Z0-9_\-\s]*$/i,
+        //"only-iso": /^[a-zA-Z0-9_\-\s]*$/i,
         "one-upper": /^(?=.*[A-Z]).+$/,
         "one-lower": /^(?=.*[a-z]).+$/,
         "one-number": /^(?=.*[0-9]).+$/,
         "one-alpha": /^(?=.*[a-z]).+$/i,
-        "no-spaces": /^[^\s]+$/
+        "no-spaces": /^[^\s]+$/,
+        "hexadecimal": /^[0-9a-fA-F]+$/,
+        "hex-color": /^#?([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$/
     }, function(regex, key) {
         angular.module('formalizer')
         .directive(camelCase('ng-' + key), function (){
