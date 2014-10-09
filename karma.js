@@ -11,6 +11,7 @@ module.exports = function (config) {
     basePath: '',
 
     frameworks: ['jasmine'],
+    //frameworks: ['ng-scenario'],
 
     // list of files / patterns to load in the browser
     files: [
@@ -45,6 +46,7 @@ module.exports = function (config) {
       'lib/formalizer.checkbox-list.js',
       'lib/formalizer.slider.js',
       'lib/ng-formalizer.js',
+      'lib/ng-formalizer-field.js',
       'lib/ng-formalizer-attach.js',
       'lib/ng-blacklist.js',
       'lib/ng-decimal.js',
@@ -62,7 +64,7 @@ module.exports = function (config) {
 
     // generate js files from html templates
     preprocessors: {
-      'templates/*.html': 'ng-html2js',
+      'templates/*.tpl.html': 'ng-html2js',
       'lib/*.js': ['coverage']
     },
 
@@ -72,11 +74,17 @@ module.exports = function (config) {
 
     reporters: ['dots', 'coverage'],
 
+    plugins: [
+        //'karma-ng-scenario',
+        'karma-jasmine',
+        'karma-firefox-launcher',
+        'karma-ng-html2js-preprocessor',
+        'karma-coverage',
+        'karma-phantomjs-launcher'
+    ],
+
     autoWatch: true,
     browsers: ['PhantomJS']
     //browsers: ['Firefox']
   });
 };
-
-// add the coverage plugin
-//plugins: [ 'karma-jasmine', 'karma-firefox-launcher', 'karma-chrome-launcher', 'karma-coverage'],

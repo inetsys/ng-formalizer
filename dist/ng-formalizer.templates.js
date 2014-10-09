@@ -73,6 +73,12 @@ angular.module("templates/formalizer-form-1.2.tpl.html", []).run(["$templateCach
     "    <legend ng-if=\"$formalizer.legend\">{{$formalizer.legend}}</legend>\n" +
     "    <div class=\"fieldset-contents\"></div>\n" +
     "\n" +
+    "    <div ng-if=\"$formalizer.model\">\n" +
+    "        <div ng-repeat=\"field in $formalizer.fields\">\n" +
+    "            <!-- <pre>{{field | json}}</pre> -->\n" +
+    "            <div ng-formalizer-field=\"field\"></div>\n" +
+    "        </div>\n" +
+    "    </div>\n" +
     "  </fieldset>\n" +
     "\n" +
     "</form>");
@@ -90,6 +96,15 @@ angular.module("templates/formalizer-form-1.3.tpl.html", []).run(["$templateCach
     "  <fieldset>\n" +
     "    <legend ng-if=\"$formalizer.legend\">{{$formalizer.legend}}</legend>\n" +
     "    <div class=\"fieldset-contents\"></div>\n" +
+    "\n" +
+    "    <div ng-if=\"$formalizer.model\">\n" +
+    "        <div ng-repeat=\"field in $formalizer.fields\">\n" +
+    "            <!-- <pre>{{field | json}}</pre> -->\n" +
+    "            <div ng-formalizer-field=\"field\"></div>\n" +
+    "        </div>\n" +
+    "    </div>\n" +
+    "\n" +
+    "    <pre>{{form | json}}</pre>\n" +
     "\n" +
     "  </fieldset>\n" +
     "\n" +

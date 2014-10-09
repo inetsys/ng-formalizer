@@ -53,8 +53,6 @@ describe("specs-formalizer-empty.js", function () {
 
         $rootScope.$digest();
 
-        //console.log(element.html());
-
         expect(submited).toEqual(false);
 
 

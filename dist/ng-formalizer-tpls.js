@@ -73,6 +73,12 @@ angular.module("templates/formalizer-form-1.2.tpl.html", []).run(["$templateCach
     "    <legend ng-if=\"$formalizer.legend\">{{$formalizer.legend}}</legend>\n" +
     "    <div class=\"fieldset-contents\"></div>\n" +
     "\n" +
+    "    <div ng-if=\"$formalizer.model\">\n" +
+    "        <div ng-repeat=\"field in $formalizer.fields\">\n" +
+    "            <!-- <pre>{{field | json}}</pre> -->\n" +
+    "            <div ng-formalizer-field=\"field\"></div>\n" +
+    "        </div>\n" +
+    "    </div>\n" +
     "  </fieldset>\n" +
     "\n" +
     "</form>");
@@ -90,6 +96,15 @@ angular.module("templates/formalizer-form-1.3.tpl.html", []).run(["$templateCach
     "  <fieldset>\n" +
     "    <legend ng-if=\"$formalizer.legend\">{{$formalizer.legend}}</legend>\n" +
     "    <div class=\"fieldset-contents\"></div>\n" +
+    "\n" +
+    "    <div ng-if=\"$formalizer.model\">\n" +
+    "        <div ng-repeat=\"field in $formalizer.fields\">\n" +
+    "            <!-- <pre>{{field | json}}</pre> -->\n" +
+    "            <div ng-formalizer-field=\"field\"></div>\n" +
+    "        </div>\n" +
+    "    </div>\n" +
+    "\n" +
+    "    <pre>{{form | json}}</pre>\n" +
     "\n" +
     "  </fieldset>\n" +
     "\n" +
@@ -248,18 +263,21 @@ var Formalizer;
     }
 
 
-    Formalizer = function ($scope, $parse, $log) {
-        this.options = {};
+    Formalizer = function ($scope, $parse, $interpolate, $log) {
         this.fields = [];
+        this.__fields = [];
 
         this.$scope = $scope;
         this.$parse = $parse;
+        this.$interpolate = $interpolate;
         this.$log = $log;
     };
 
-    Formalizer.prototype.options = null;
+    Formalizer.prototype.onSubmit = null;
     Formalizer.prototype.name = null;
+    Formalizer.prototype.type = null;
     Formalizer.prototype.fields = null;
+    Formalizer.prototype.__fields = null;
 
     Formalizer.prototype.attempts = 0;
 
@@ -270,6 +288,7 @@ var Formalizer;
     Formalizer.prototype.$scope = null;
     Formalizer.prototype.$parse = null;
     Formalizer.prototype.$log = null;
+    Formalizer.prototype.$interpolate = null;
 
     // match between templates and field.type
     Formalizer.types = {};
@@ -312,23 +331,13 @@ var Formalizer;
         return template;
     };
 
-    Formalizer.prototype.setOptions = function (options) {
-        angular.extend(this.options, options);
+    Formalizer.prototype.submit = function () {
+        var on_submit = this.$parse(this.onSubmit)(this.$scope.$parent),
+            form = this.$scope[this.name];
 
-        this.name = this.options.name || "form";
-
-        this[this.options.type] = true;
-    };
-
-    Formalizer.prototype.init = function (options) {
-        if (!this.options.onSubmit) {
+        if (!on_submit) {
             throw new Error("options.onSubmit is required");
         }
-    };
-
-    Formalizer.prototype.submit = function () {
-        var on_submit = this.$parse(this.options.onSubmit)(this.$scope.$parent),
-            form = this.$scope[this.name];
 
         ++this.attempts;
 
@@ -345,7 +354,7 @@ var Formalizer;
                 if (i[0] === "$") continue;
 
                 //console.log(i, form[i]);
-                field_data = this.fields.filter(function(v) { return v.element.attrs.name === i});
+                field_data = this.__fields.filter(function(v) { return v.element.attrs.name === i});
 
                 if (form[i].$dirty) {
                     data[i] = form[i].$modelValue;
@@ -363,7 +372,7 @@ var Formalizer;
                 }
             }
 
-            return on_submit(data, files, this.$scope.$eval(this.options.model), form);
+            return on_submit(data, files, this.$scope.$eval(this.model), form);
         }
 
         this.$log.info("$invalid = true, no submit");
@@ -375,7 +384,7 @@ var Formalizer;
         }
     };
 
-    Formalizer.prototype.addField = function (cfg, field_in_scope, field_id) {
+    Formalizer.prototype.createFieldMeta = function (cfg, field_in_scope, field_id) {
         var key;
 
         cfg.constraints = cfg.constraints || {};
@@ -433,7 +442,7 @@ var Formalizer;
             field.source = cfg.source;
         }
 
-        field.element.attrs["ng-model"] = cfg.model || this.options.model + "." + name;
+        field.element.attrs["ng-model"] = cfg.model || this.model + "." + name;
         field.element.attrs["class"] = ["form-control"].concat(cfg["class"].split(" "));
         field.element.attrs["ng-class"] = "{'has-error': $formalizer.attempts > 0 && " + this.name + "." + field.element.attrs.name + ".$invalid}";
         field.element.attrs["ng-placeholder"] = cfg.placeholder || "";
@@ -444,7 +453,7 @@ var Formalizer;
         }
 
 
-        switch (this.options.type) {
+        switch (this.type) {
         case "horizontal":
             if (cfg.type === "checkbox") {
                 field.element.container["class"].push("col-sm-offset-2");
@@ -467,77 +476,65 @@ var Formalizer;
         return field;
     };
 
-    Formalizer.prototype.addFields = function (fields, $interpolate) {
-        var i,
-            max,
-            j,
+    Formalizer.prototype.createField = function (field_data, field_id) {
+        var j,
             attrs,
             template,
-            field,
-            new_fields = [];
+            field;
 
-        for (i = 0, max = fields.length; i < max; ++i) {
-            if (!fields[i].name && fields[i].type !== "raw") {
-                throw new Error("invalid field without name");
-            }
-
-            // already parsed ?
-            if (this.fields.length > i) {
-                continue;
-            }
-
-            var field_id = this.fields.length,
-                field_in_scope = "$formalizer.fields[" + field_id + "]";
-            field = this.addField(fields[i], field_in_scope, field_id);
-
-            // join classes
-            join_class(field.element.wrap);
-            join_class(field.container);
-            join_class(field.element.container);
-            join_class(field.element.attrs);
-            join_class(field.label);
-
-            attrs = [];
-            for (j in field.element.attrs) {
-                attrs.push(j + "=\"" + field.element.attrs[j] + "\"");
-            }
-            attrs = attrs.join(" ");
-
-
-            var field_source = "$formalizer.fields[" + field_id + "].source";
-            this.fields.push(field);
-
-            template = this.getTemplate(field.type);
-
-            //double interpolation!
-            var errs = "";
-
-            // interpolate only if needed!
-            if (template.indexOf("%element-error-list%") !== -1) {
-                errs = $interpolate(
-                        $interpolate(templates["error-list"])(field)
-                    )(field);
-            }
-
-            var html = template
-                        .replace("%element-attributes%", attrs)
-                        .replace("%element-error-list%", errs)
-                        .replace(/%scope-form-name%/g, this.name)
-                        .replace(/%scope-field-source%/g, field_source);
-            // always escape!
-            html = $interpolate(html)(field)
-
-                // TODO this seem to be a bug in $interpolate
-                .replace(/\\\{/g, "{").replace(/\\\}/g, "}");
-
-            new_fields.push(html);
+        if (!field_data.name && field_data.type !== "raw") {
+            throw new Error("invalid field without name");
         }
 
-        return new_fields;
+        var field_in_scope = "$formalizer.__fields[" + field_id + "]";
+        var field_source = "$formalizer.__fields[" + field_id + "].source";
+
+        field = this.createFieldMeta(field_data, field_in_scope, field_id);
+        this.__fields[field_id] = field;
+
+        // join classes
+        join_class(field.element.wrap);
+        join_class(field.container);
+        join_class(field.element.container);
+        join_class(field.element.attrs);
+        join_class(field.label);
+
+        attrs = [];
+        for (j in field.element.attrs) {
+            attrs.push(j + "=\"" + field.element.attrs[j] + "\"");
+        }
+        attrs = attrs.join(" ");
+
+        template = this.getTemplate(field.type);
+
+        //double interpolation!
+        var errs = "";
+
+        // interpolate only if needed!
+        if (template.indexOf("%element-error-list%") !== -1) {
+            errs = this.$interpolate(
+                    this.$interpolate(templates["error-list"])(field)
+                )(field);
+        }
+
+        var html = template
+                    .replace("%element-attributes%", attrs)
+                    .replace("%element-error-list%", errs)
+                    .replace(/%scope-form-name%/g, this.name)
+                    .replace(/%scope-field-source%/g, field_source);
+
+        // always escape!
+        html = this.$interpolate(html)(field)
+
+            // TODO this seem to be a bug in $interpolate
+            .replace(/\\\{/g, "{").replace(/\\\}/g, "}");
+
+        return html;
+
     };
 
     Formalizer.prototype.setModel = function (field_name, value, force) {
-        var model = this.$scope.$eval(this.options.model);
+        var model = this.$scope.$eval(this.model);
 
         // not defined or forced
         if (!model[field_name] || force) {
@@ -992,21 +989,13 @@ var Formalizer;
 "use strict";
 (function () {
 
-    var module;
+    angular
 
-    try {
-        //production
-        angular.module("formalizer-tpls");
-        module = angular.module("formalizer", ["ui.bootstrap", "checklist-model", "ui.bootstrap-slider", "formalizer-tpls"]);
-    } catch (e) {
-        //development
-        module = angular.module("formalizer", ["ui.bootstrap", "checklist-model", "ui.bootstrap-slider"]);
-    }
+    .module("formalizer", ["ui.bootstrap", "checklist-model", "ui.bootstrap-slider", "formalizer-tpls"])
 
-    module.value("FormalizerConfig", {
-    });
+    .value("FormalizerConfig", {})
 
-    module.directive("ngFormalizer", [
+    .directive("ngFormalizer", [
         "$parse", "$compile", "$interpolate", "$http", "$templateCache", "$rootScope", "$timeout", "$q", "$log", "FormalizerConfig",
         function ($parse, $compile, $interpolate, $http, $templateCache, $rootScope, $timeout, $q, $log, FormalizerConfig) {
             var $ready = Formalizer.loadTemplates($q, $http, $templateCache, FormalizerConfig),
@@ -1020,18 +1009,18 @@ var Formalizer;
                 priority: 500,
 
                 controller: function ($scope) {
+                    var $formalizer = new Formalizer($scope, $parse, $interpolate, $log);
+
                     if (angular.version.minor > 2) {
-                        $scope.$formalizer = new Formalizer($scope, $parse, $log);
-
                         // this is dangerous!
-                        angular.extend(this, $scope.$formalizer);
-
-                        return $scope.$formalizer;
-                    } else if (angular.version.minor === 2) {
-                        return ($scope.$formalizer = new Formalizer($scope, $parse, $log));
+                        var self = this;
+                        Object.keys(Formalizer.prototype).forEach(function (key) {
+                            self[key] = $formalizer[key];
+                        });
                     }
 
-                    throw new Error("not supported angular version");
+                    $scope.$formalizer = $formalizer;
+                    return $scope.$formalizer;
                 },
                 compile: function () {
                     return {
@@ -1049,64 +1038,41 @@ var Formalizer;
                                 throw new Error("formalizer require form name");
                             }
 
-                            function configure(config) {
-                                $formalizer.setOptions(config);
-                                $formalizer.init();
+                            // start watching
 
-                                function update_fields(fields) {
-                                    if (!fields) {
-                                        return;
-                                    }
+                            $ready.then(function () {
+                                $log.info("formalizer is ready");
 
-                                    //console.log("--> fields: ", fields.length);
+                                var config_watcher;
 
-                                    var new_elements = [];
+                                 $scope.$watch($attrs.ngFormalizer, function config_watcher (config) {
+                                    //$log.log("config_watcher", config);
 
-                                    var new_fields = $formalizer.addFields(fields, $interpolate);
-
-                                    angular.forEach(new_fields, function (fel) {
-                                        //console.log(fel);
-                                        //var el = jQuery(fel);
-                                        var el = angular.element(fel);
-                                        new_elements.push(el);
-                                        container.append(el);
+                                    ["name", "type", "model", "legend", "onSubmit"].forEach(function (key) {
+                                        $formalizer[key] = config[key];
                                     });
 
-                                    //$compile($element.contents())($scope);
-                                    $timeout(function () {
-                                        angular.forEach(new_elements, function (el) {
-                                            $compile(el.contents())($scope);
-                                        });
+                                    $formalizer.horizontal = $formalizer.vertical = $formalizer.inline = false;
+                                    $formalizer[$formalizer.type] = true;
 
-                                        $scope.$digest();
-                                    });
-                                }
+                                }, true);
+                            });
 
-                                // watch fields and generate HTML after every template is loaded
-                                $ready.then(function () {
-                                    if ("string" === typeof config.fields) {
-                                        return $scope.$watch(config.fields, update_fields, true);
-                                    }
+                            ["name", "type", /*"model",*/ "legend", "onSubmit"].forEach(function (key) {
+                                $formalizer[key] = config[key];
+                            });
 
-                                    update_fields(config.fields);
-                                });
-                            }
+                            $formalizer.horizontal = $formalizer.vertical = $formalizer.inline = false;
+                            $formalizer[$formalizer.type] = true;
 
-                            if (!config.model) {
-                                //console.log("post-initialization");
+                            if ("string" === typeof config.fields) {
+                                $scope.$watch(config.fields, function fields_watcher (fields) {
+                                    //$log.log("fields_watcher", fields);
 
-                                // set initial config
-                                $formalizer.setOptions(config);
-
-                                var unregister = $scope.$watch($attrs.ngFormalizer, function (new_config) {
-                                    if (new_config && new_config.model) {
-                                        unregister();
-
-                                        configure(new_config);
-                                    }
+                                    $formalizer.fields = fields;
                                 }, true);
                             } else {
-                                configure(config);
+                                $formalizer.fields = config.fields;
                             }
                         },
                         post: function ($scope, $element, $attrs) {
@@ -1114,10 +1080,32 @@ var Formalizer;
                     };
                 }
             };
-        }]);
+        }
+    ]);
 
 })();
 
+angular.module("formalizer")
+.directive("ngFormalizerField", ["$timeout", "$compile", function ($timeout, $compile) {
+    return {
+        link: function ($scope, $elm, $attrs) {
+            var $ngFormalizer = $scope.$formalizer; // nasty hack but works!
+
+            var field_data = $scope.$eval($attrs.ngFormalizerField);
+
+            var html = $ngFormalizer.createField(field_data, $scope.$index);
+            var el = angular.element(html);
+            $elm.append(el);
+
+            $timeout(function () {
+                $compile(el.contents())($scope);
+
+                $scope.$digest();
+            });
+
+        }
+    };
+}]);
 angular.module("formalizer")
 .directive("ngFormalizerAttach", function () {
     return {
@@ -1127,7 +1115,7 @@ angular.module("formalizer")
                 return;
             }
 
-            $ngFormalizer.fields[$attrs.ngFormalizerAttach].domElement = $elm;
+            $ngFormalizer.__fields[$attrs.ngFormalizerAttach].domElement = $elm;
         }
     };
 });
@@ -1314,11 +1302,11 @@ angular.module("formalizer")
                 sent_data[ngRequestKey] = current_value;
                 $http.post(url, sent_data)
                     .success(function (data) {
-                        $ngModel.$setValidity("server-validation-in-progress", false); // spinner off
+                        $ngModel.$setValidity("server-validation-in-progress", true); // spinner off
                         $ngModel.$setValidity("server-validation", !!data[ngResponseKey]);
                     })
                     .error(function (data) {
-                        $ngModel.$setValidity("server-validation-in-progress", false); // spinner off
+                        $ngModel.$setValidity("server-validation-in-progress", true); // spinner off
 
                         // do nothing is reasonable ?
                     });

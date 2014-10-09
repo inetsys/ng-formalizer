@@ -15,8 +15,8 @@ concat:
             - lib/formalizer.checkbox-list.js
             - lib/formalizer.slider.js
             - lib/ng-formalizer.js
+            - lib/ng-formalizer-field.js
             - lib/ng-formalizer-attach.js
-            - lib/ng-formalizer.js
             - lib/ng-blacklist.js
             - lib/ng-equalto.js
             - lib/ng-regex-validations.js

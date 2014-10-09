@@ -9,6 +9,12 @@
     <legend ng-if="$formalizer.legend">{{$formalizer.legend}}</legend>
     <div class="fieldset-contents"></div>
 
+    <div ng-if="$formalizer.model">
+        <div ng-repeat="field in $formalizer.fields">
+            <!-- <pre>{{field | json}}</pre> -->
+            <div ng-formalizer-field="field"></div>
+        </div>
+    </div>
   </fieldset>
 
 </form>
