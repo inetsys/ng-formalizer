@@ -2,4 +2,7 @@
   <div class="col-sm-10 col-sm-offset-2">
     <button %element-attributes% ng-disabled="%scope-form-name%.$invalid" ng-bind="$field.label"></button>
   </div>
+
+  <div class="help-block" ng-bind="$field.helpText || $field.help"></div>
+
 </div>

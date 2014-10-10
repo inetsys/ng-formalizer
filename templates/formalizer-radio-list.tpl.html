@@ -1,12 +1,17 @@
 <div class="{{container.class}}">
   <label class="{{label.class}}" ng-bind="$field.label"></label>
   <div class="{{element.container.class}}">
-    <div class="{{element.wrap.class}}" ng-repeat="radio_data in $field.$$.source">
+    <div class="{{element.wrap.class}}" ng-repeat="radio_data in $field.formalizer.source">
       <label for="{{element.attrs.name}}-\{\{$index\}\}">
         <input name="{{element.attrs.name}}" id="{{element.attrs.id}}-\{\{$index\}\}" value="\{\{radio_data{{source_model}}\}\}" %element-attributes%>
         \{\{radio_data['{{source_display}}']\}\}
       </label>
     </div>
+
+    <div class="help-block" ng-bind="$field.helpText || $field.help"></div>
+
+    %element-error-list%
+
   </div>
 </div>
 

@@ -15,7 +15,8 @@
         <input %element-attributes% />
         {{element.right}}
     </p>
-    <p class="help-block">{{help.text}}</p>
+
+    <div class="help-block" ng-bind="$field.helpText || $field.help"></div>
 
     %element-error-list%
 

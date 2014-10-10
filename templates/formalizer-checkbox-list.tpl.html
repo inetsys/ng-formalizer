@@ -8,12 +8,15 @@
       </label>
     </div>
 
-    <div class="{{element.wrap.class}}" ng-repeat="checkbox_data in $field['$$'].source">
+    <div class="{{element.wrap.class}}" ng-repeat="checkbox_data in $field.formalizer.source">
       <label for="{{element.attrs.name}}-\{\{$index\}\}">
         <input name="{{element.attrs.name}}-\{\{$index\}\}" id="{{element.attrs.id}}-\{\{$index\}\}" %element-attributes%>
         \{\{checkbox_data['{{source_display}}']\}\}
       </label>
     </div>
+
+    <div class="help-block" ng-bind="$field.helpText || $field.help"></div>
+
   </div>
 </div>
 

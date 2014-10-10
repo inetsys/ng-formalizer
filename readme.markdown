@@ -144,6 +144,9 @@ Create an input with some constraints and error messages translated.
 
 Label text. *Can be real-time modified*.
 
+#### `help`: String
+
+Help text. *Can be real-time modified*. You could be used to give extra feedback to user.
 
 #### `type`: String [**mandatory**]
 * text

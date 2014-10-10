@@ -3,7 +3,9 @@
   <label for="{{element.attrs.name}}" class="{{label.class}}">
     <input %element-attributes% /><span ng-bind="$field.label"></span>
   </label>
-  <p class="help-block">{{helpText}}</p>
+
+  <div class="help-block" ng-bind="$field.helpText || $field.help"></div>
+
   %element-error-list%
  </div>
 </div>

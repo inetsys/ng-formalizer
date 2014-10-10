@@ -4,7 +4,10 @@
     <select %element-attributes%>
       {{defaultOption}}
     </select>
-    <p class="help-block">{{helpText}}</p>
+
+    <div class="help-block" ng-bind="$field.helpText || $field.help"></div>
+
     %element-error-list%
   </div>
 </div>
+<!-- <pre>\{\{$field | json\}\}</pre>-->
