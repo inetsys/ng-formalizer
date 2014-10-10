@@ -77,14 +77,15 @@ app.controller("MainCtrl", ["$scope", "$timeout", function ($scope, $timeout) {
             "minlength": "más de 5 caracters majo!",
             "server-validation": "the only free name is pepe123"
         }
-    }, {
+    }, /* cols*/ [{
         "label": "Password (only-iso)",
         "type": "password",
         "name": "pwd",
         "placeholder": "Password",
         "constraints": {
             "only-iso": true
-        }
+        },
+        "cols": 6
     }, {
         "label": "Password repeat (must be equal to password)",
         "type": "password",
@@ -95,8 +96,9 @@ app.controller("MainCtrl", ["$scope", "$timeout", function ($scope, $timeout) {
         },
         "messages": {
             "equal-to": "La contraseña no coincide."
-        }
-    }, {
+        },
+        "cols": 6
+    }], {
         "label": "Comments",
         "type": "textarea",
         "name": "comments"

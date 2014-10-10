@@ -7,6 +7,14 @@
 
 
 module.exports = function (config) {
+  var version = "1.2";
+
+  process.argv.forEach(function(arg) {
+      if (arg.indexOf("--angular=") === 0) {
+        version = arg.substring(10);
+      }
+  });
+
   config.set({
     basePath: '',
 
@@ -18,7 +26,7 @@ module.exports = function (config) {
       // libraries
       "bower_components/jquery/dist/jquery.js",
 
-      "bower_components/angular/angular.js",
+      "bower_components/angular-" + version +"/angular.js",
       "bower_components/angular-mocks/angular-mocks.js",
 
       "bower_components/angular-bootstrap/ui-bootstrap-tpls.js",
