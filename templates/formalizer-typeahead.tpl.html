@@ -5,8 +5,7 @@
 
     <ul>
       <li ng-repeat="obj in entity.ta_list">
-
-        <span>\{\{obj.name\}\} <a ng-click="{{options.del_fn}}(obj)"><img src="/trash.png" /></a></span>
+        <span>\{\{obj.name\}\} <a ng-click="{{options.del_fn}}(obj)"><span class="glyphicon glyphicon-trash"></span></a></span>
       </li>
     </ul>
 
