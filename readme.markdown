@@ -123,7 +123,7 @@ Fields list. See below for more information.
 Basic Example:
 Create an input with some constraints and error messages translated.
 
-```json
+```js
 {
     "label": "User",
     "type": "text",
@@ -142,7 +142,7 @@ Create an input with some constraints and error messages translated.
 
 #### `label`: String
 
-Label text
+Label text. *Can be real-time modified*.
 
 
 #### `type`: String [**mandatory**]
@@ -204,9 +204,11 @@ These three options configure how your data source is displayed and what need to
 
 Data source, must be an *array of objects* or a string if you want formalizer to watch the scope for changes.
 
+*Can be real-time modified.*
+
 **source_display**
 
-What will be displayed, the key in the object
+What will be displayed, the key in the object.
 
 **source_model**
 

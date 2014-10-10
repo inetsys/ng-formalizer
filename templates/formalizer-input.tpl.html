@@ -1,5 +1,5 @@
 <div class="{{container.class}}">
-  <label for="{{element.attrs.name}}" class="{{label.class}}">{{label.text}}</label>
+  <label for="{{element.attrs.name}}" class="{{label.class}}" ng-bind="$field.label"></label>
   <div class="{{element.container.class}}">
     <div class="{{element.wrap.class}}">
         {{element.left}}
@@ -12,3 +12,4 @@
 
   </div>
 </div>
+<pre>{{$field | json}}</pre>

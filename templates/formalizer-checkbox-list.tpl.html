@@ -1,5 +1,5 @@
 <div class="{{container.class}}">
-  <label class="{{label.class}}">{{label.text}}</label>
+  <label class="{{label.class}}" ng-bind="$field.label"></label>
   <div class="{{element.container.class}}">
     <div ng-show="{{scope_name}}.options.select_all">
       <label for="{{element.attrs.name}}-select-all">
