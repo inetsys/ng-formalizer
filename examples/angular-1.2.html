@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html ng-app="app" >
+
+  <head>
+
+    <link rel="stylesheet" href="bootstrap/dist/css/bootstrap.css">
+    <link rel="stylesheet" href="seiyria-bootstrap-slider/css/bootstrap-slider.css">
+
+<!--
+-->
+    <script src="jquery/dist/jquery.js"></script>
+
+    <script src="angular-1.2/angular.js"></script>
+    <script src="angular-bootstrap/ui-bootstrap-tpls.js"></script>
+    <script src="checklist-model/checklist-model.js"></script>
+    <script src="angular-bootstrap-slider/slider.js"></script>
+    <script src="seiyria-bootstrap-slider/js/bootstrap-slider.js"></script>
+    <script src="moment/moment.js"></script>
+
+
+    <script src="dist/ng-formalizer-tpls.js"></script>
+    <script src="script.js"></script>
+    <style>
+    .ng-invalid-required {
+        border-color: #FF0000 !important;
+        box-shadow: 1px 1px 2px #FF0000;
+    }
+    /* remove errors flash */
+    form.ng-pristine .form-error-list {
+        display: none;
+    }
+    form.ng-dirty .form-error-list {
+        display: block;
+    }
+    </style>
+  </head>
+
+<body ng-controller="MainCtrl">
+<h1>ng-formalizer</h1>
+
+<!-- <formalizer from-url="test.json"></formalizer> -->
+<span>{{entity.user}}</span>
+<div ng-formalizer="form_cfg"></div>
+
+<hr />
+<pre>
+
+entity: {{ entity | json }}
+</pre>
+
+</body>
+
+</html>
