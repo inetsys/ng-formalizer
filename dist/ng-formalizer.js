@@ -23,7 +23,6 @@ var Formalizer;
 
     Formalizer = function ($scope, $parse, $interpolate, $log) {
         this.fields = [];
-        this.__fields = [];
 
         this.$scope = $scope;
         this.$parse = $parse;
@@ -35,7 +34,6 @@ var Formalizer;
     Formalizer.prototype.name = null;
     Formalizer.prototype.type = null;
     Formalizer.prototype.fields = null;
-    Formalizer.prototype.__fields = null;
 
     Formalizer.prototype.attempts = 0;
 
@@ -49,7 +47,9 @@ var Formalizer;
     Formalizer.prototype.$interpolate = null;
 
     // match between templates and field.type
-    Formalizer.types = {};
+    Formalizer.types = {
+        "columns": "columns"
+    };
     Formalizer.templates = [];
     Formalizer.parsers = {};
 
@@ -63,6 +63,7 @@ var Formalizer;
             "submit",
             "typeahead",
             "checkbox-list",
+            "columns",
         ]).map(function (tpl) {
             // debug
             //var html = $templateCache.get("templates/formalizer-" + tpl + ".tpl.html");
@@ -112,7 +113,7 @@ var Formalizer;
                 if (i[0] === "$") continue;
 
                 //console.log(i, form[i]);
-                field_data = this.__fields.filter(function(v) { return v.element.attrs.name === i});
+                field_data = this.fields.filter(function(v) { return v.formalizer.element.attrs.name === i});
 
                 if (form[i].$dirty) {
                     data[i] = form[i].$modelValue;
@@ -136,18 +137,23 @@ var Formalizer;
         this.$log.info("$invalid = true, no submit");
     };
 
-    Formalizer.prototype.parseField = function (type, field) {
-        if (Formalizer.parsers[type]) {
-            Formalizer.parsers[type](this.$scope, field, this);
+    Formalizer.prototype.callParser = function (event, field, args) {
+        var type = field.type,
+            ret;
+
+        if ("function" === typeof Formalizer.parsers[type] && event === "post") {
+            ret = Formalizer.parsers[type](this.$scope, field, this);
+        } else if (Formalizer.parsers[type] && "function" === typeof Formalizer.parsers[type][event]) {
+            ret = Formalizer.parsers[type][event](this.$scope, field, this, args);
         }
+
+        return ret;
     };
 
-    Formalizer.prototype.createFieldMeta = function (cfg, field_in_scope, field_id) {
+    Formalizer.prototype.createFieldMeta = function (cfg, field_in_scope, field_id, $scope) {
         var key;
 
         cfg.constraints = cfg.constraints || {};
-        cfg.labelClass = cfg.labelClass || "";
-        cfg["class"] = cfg["class"] || "";
 
         var field = {
             type: cfg.type || "text",
@@ -156,8 +162,7 @@ var Formalizer;
                 "class": ["form-group"]
             },
             label: {
-                text: cfg.label || "",
-                "class": ["control-label"].concat(cfg.labelClass.split(" "))
+                "class": ["control-label"].concat(( cfg.labelClass || "" ).split(" "))
             },
             element: {
                 container: {
@@ -179,9 +184,6 @@ var Formalizer;
                 left: ""
             },
             messages: cfg.messages || {},
-            help: {
-                text: cfg.helpText || ""
-            },
             source: null,
             source_display: cfg.source_display || null,
             source_model: cfg.source_model || null,
@@ -192,22 +194,31 @@ var Formalizer;
 
         var name = field.element.attrs.name;
 
-        // TODO watch ?!
-
+        // watch source for changes
         if (typeof cfg.source === "string") {
-            field.source = this.$scope.$eval(cfg.source);
+            field.source = $scope.$eval(cfg.source);
+            $scope.$watch(cfg.source, function(a) {
+                field.source = a;
+            });
         } else if (cfg.source !== undefined) {
             field.source = cfg.source;
+            $scope.$watch("$field.source", function(a) {
+                field.source = a;
+            });
         }
 
         field.element.attrs["ng-model"] = cfg.model || this.model + "." + name;
-        field.element.attrs["class"] = ["form-control"].concat(cfg["class"].split(" "));
+        field.element.attrs["class"] = ["form-control"].concat((cfg["class"] || "").split(" "));
         field.element.attrs["ng-class"] = "{'has-error': $formalizer.attempts > 0 && " + this.name + "." + field.element.attrs.name + ".$invalid}";
         field.element.attrs["ng-placeholder"] = cfg.placeholder || "";
 
         // constraints
         for (key in cfg.constraints) {
-            field.element.attrs["ng-" + key] = cfg.constraints[key];
+            if (key === "min" || key === "max") {
+                field.element.attrs[key] = cfg.constraints[key];
+            } else {
+                field.element.attrs["ng-" + key] = cfg.constraints[key];
+            }
         }
 
 
@@ -215,7 +226,7 @@ var Formalizer;
         case "horizontal":
             if (cfg.type === "checkbox") {
                 field.element.container["class"].push("col-sm-offset-2");
-                field.label["class"].push("col-sm-9");
+                field.label["class"].push("col-sm-12");
                 safe_array_remove(field.label["class"], "control-label");
             } else {
                 field.element.container["class"].push("col-sm-9");
@@ -228,27 +239,40 @@ var Formalizer;
             break;
         }
 
-        // specific config per field
-        this.parseField(cfg.type, field);
-
         return field;
     };
 
-    Formalizer.prototype.createField = function (field_data, field_id) {
+    Formalizer.prototype.createField = function (field_data, $scope, field_id) {
+        $scope.$field = field_data;
+
         var j,
             attrs,
             template,
             field;
 
         if (!field_data.name && field_data.type !== "raw") {
+            this.$log.log(field_data);
             throw new Error("invalid field without name");
         }
 
-        var field_in_scope = "$formalizer.__fields[" + field_id + "]";
-        var field_source = "$formalizer.__fields[" + field_id + "].source";
+        var field_in_scope = "$field.formalizer";
 
-        field = this.createFieldMeta(field_data, field_in_scope, field_id);
-        this.__fields[field_id] = field;
+        // specific config per field
+        this.callParser("pre", field_data);
+
+        // common metadata
+        field = this.createFieldMeta(field_data, field_in_scope, field_id, $scope);
+
+        // specific config per field
+        this.callParser("post", field);
+
+
+        Object.defineProperty(field_data, "formalizer", {
+            value: field,
+            writable : true,
+            enumerable : false,
+            configurable : false
+        });
 
         // join classes
         join_class(field.element.wrap);
@@ -278,8 +302,7 @@ var Formalizer;
         var html = template
                     .replace("%element-attributes%", attrs)
                     .replace("%element-error-list%", errs)
-                    .replace(/%scope-form-name%/g, this.name)
-                    .replace(/%scope-field-source%/g, field_source);
+                    .replace(/%scope-form-name%/g, this.name);
 
         // always escape!
         html = this.$interpolate(html)(field)
@@ -287,9 +310,31 @@ var Formalizer;
             // TODO this seem to be a bug in $interpolate
             .replace(/\\\{/g, "{").replace(/\\\}/g, "}");
 
+        var alt_html = this.callParser("html", field_data, html);
+
+        if (alt_html) {
+            html = alt_html;
+        };
+
         return html;
 
     };
+
+    Formalizer.prototype.createColumns = function (data, $scope) {
+        // sanitize check
+        var i;
+
+        for (i = 0; i < data.length; ++i) {
+            if (!data[i].cols) {
+                this.$log.error(data[i]);
+                throw new Error("cols is not defined");
+            }
+        }
+
+        // template
+        $scope.columns = data;
+        return this.getTemplate("columns");
+    }
 
     Formalizer.prototype.setModel = function (field_name, value, force) {
         var model = this.$scope.$eval(this.model);
@@ -329,8 +374,13 @@ var Formalizer;
 
     Formalizer.types["raw"] = "raw";
 
-    Formalizer.parsers["raw"] = function ($scope, field) {
-
+    Formalizer.parsers["raw"] = {
+        pre: function ($scope, field_data, $formalizer) {
+            field_data.template = $formalizer.$sce.trustAsHtml(field_data.template);
+        },
+        html: function($scope, field_data, $formalizer, html) {
+            return html.replace('%content%', field_data.template);
+        }
     };
 
 }());
@@ -376,7 +426,7 @@ var Formalizer;
 
         var mdl = field.source_model ? "." + field.source_model : "";
 
-        field.element.attrs["ng-options"] = "c" + mdl + " as c." + field.source_display + " for c in " + field.scope_name + ".source";
+        field.element.attrs["ng-options"] = "c" + mdl + " as c." + field.source_display + " for c in $field.formalizer.source";
 
         if (field.options.multiple) {
             field.element.attrs.multiple = "multiple";
@@ -485,9 +535,9 @@ var Formalizer;
     Formalizer.parsers.typeahead = function ($scope, field) {
         field.element.attrs.type = "text";
         if (field.source_display) {
-            field.element.attrs.typeahead = "p as p." + field.source_display + " for p in " + field.scope_name + ".source | filter:{" + field.source_display + ":$viewValue}";
+            field.element.attrs.typeahead = "p as p." + field.source_display + " for p in $field.formalizer.source | filter:{" + field.source_display + ":$viewValue}";
         } else {
-            field.element.attrs.typeahead = "for p in " + field.scope_name + ".source";
+            field.element.attrs.typeahead = "for p in $field.formalizer.source";
         }
 
         angular.forEach(typeahead_attrs, function (value) {
@@ -688,10 +738,10 @@ var Formalizer;
 
             mdl.splice(0, mdl.length);
             if (chkall) {
-                var src = $scope.$eval(field.scope_name + ".source");
+                var src = $scope.$eval("$field.formalizer.source");
                 src.forEach(function (el, k) {
                     mdl.push(
-                        $scope.$eval(field.scope_name + ".source[" + k + "]" + (field.source_model ? "." + field.source_model : ""))
+                        $scope.$eval("$field.formalizer.source[" + k + "]" + (field.source_model ? "." + field.source_model : ""))
                     );
 
                 });
@@ -754,8 +804,8 @@ var Formalizer;
     .value("FormalizerConfig", {})
 
     .directive("ngFormalizer", [
-        "$parse", "$compile", "$interpolate", "$http", "$templateCache", "$rootScope", "$timeout", "$q", "$log", "FormalizerConfig",
-        function ($parse, $compile, $interpolate, $http, $templateCache, $rootScope, $timeout, $q, $log, FormalizerConfig) {
+        "$parse", "$interpolate", "$http", "$templateCache", "$q", "$log", "FormalizerConfig",
+        function ($parse, $interpolate, $http, $templateCache, $q, $log, FormalizerConfig) {
             var $ready = Formalizer.loadTemplates($q, $http, $templateCache, FormalizerConfig),
                 v = angular.version;
 
@@ -846,12 +896,21 @@ var Formalizer;
 angular.module("formalizer")
 .directive("ngFormalizerField", ["$timeout", "$compile", function ($timeout, $compile) {
     return {
+        scope: true,
         link: function ($scope, $elm, $attrs) {
             var $ngFormalizer = $scope.$formalizer; // nasty hack but works!
 
-            var field_data = $scope.$eval($attrs.ngFormalizerField);
+            var field_data = $scope.$eval($attrs.ngFormalizerField),
+                html;
 
-            var html = $ngFormalizer.createField(field_data, $scope.$index);
+            if (Array.isArray(field_data)) {
+                // column configuration?
+                html = $ngFormalizer.createColumns(field_data, $scope);
+            } else {
+                // field configuration?
+                html = $ngFormalizer.createField(field_data, $scope, $scope.$index);
+            }
+
             var el = angular.element(html);
             $elm.append(el);
 
@@ -860,20 +919,14 @@ angular.module("formalizer")
 
                 $scope.$digest();
             });
-
         }
     };
 }]);
 angular.module("formalizer")
 .directive("ngFormalizerAttach", function () {
     return {
-        require: "^ngFormalizer",
         link: function ($scope, $elm, $attrs, $ngFormalizer) {
-            if (!$ngFormalizer) {
-                return;
-            }
-
-            $ngFormalizer.__fields[$attrs.ngFormalizerAttach].domElement = $elm;
+            $scope.$eval("$field").formalizer.domElement = $elm;
         }
     };
 });

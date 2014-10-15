@@ -1,23 +1,26 @@
-angular.module('formalizer-tpls', ['templates/formalizer-checkbox-list.tpl.html', 'templates/formalizer-checkbox.tpl.html', 'templates/formalizer-error-list.tpl.html', 'templates/formalizer-form-1.2.tpl.html', 'templates/formalizer-form-1.3.tpl.html', 'templates/formalizer-input.tpl.html', 'templates/formalizer-radio-list.tpl.html', 'templates/formalizer-raw.tpl.html', 'templates/formalizer-select.tpl.html', 'templates/formalizer-slider.tpl.html', 'templates/formalizer-submit.tpl.html', 'templates/formalizer-textarea.tpl.html', 'templates/formalizer-typeahead.tpl.html']);
+angular.module('formalizer-tpls', ['templates/formalizer-checkbox-list.tpl.html', 'templates/formalizer-checkbox.tpl.html', 'templates/formalizer-columns.tpl.html', 'templates/formalizer-error-list.tpl.html', 'templates/formalizer-form-1.2.tpl.html', 'templates/formalizer-form-1.3.tpl.html', 'templates/formalizer-input.tpl.html', 'templates/formalizer-radio-list.tpl.html', 'templates/formalizer-raw.tpl.html', 'templates/formalizer-select.tpl.html', 'templates/formalizer-slider.tpl.html', 'templates/formalizer-submit.tpl.html', 'templates/formalizer-textarea.tpl.html', 'templates/formalizer-typeahead.tpl.html']);
 
 angular.module("templates/formalizer-checkbox-list.tpl.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("templates/formalizer-checkbox-list.tpl.html",
     "<div class=\"{{container.class}}\">\n" +
-    "  <label class=\"{{label.class}}\">{{label.text}}</label>\n" +
+    "  <label class=\"{{label.class}}\" ng-bind=\"$field.label\"></label>\n" +
     "  <div class=\"{{element.container.class}}\">\n" +
     "    <div ng-show=\"{{scope_name}}.options.select_all\">\n" +
     "      <label for=\"{{element.attrs.name}}-select-all\">\n" +
-    "        <input name=\"{{element.attrs.name}}-select-all\" id=\"{{element.attrs.id}}-select-all\" value=\"true\" ng-checked=\"{{element.attrs['checklist-model']}}.length == %scope-field-source%.length\" type=\"checkbox\" ng-model=\"{{options.chkall_model}}\" ng-change=\"{{options.scope_name}}.options.check_all($event)\" />\n" +
+    "        <input name=\"{{element.attrs.name}}-select-all\" id=\"{{element.attrs.id}}-select-all\" value=\"true\" ng-checked=\"{{element.attrs['checklist-model']}}.length == $field['$$'].source.length\" type=\"checkbox\" ng-model=\"{{options.chkall_model}}\" ng-change=\"{{options.scope_name}}.options.check_all($event)\" />\n" +
     "        Select All\n" +
     "      </label>\n" +
     "    </div>\n" +
     "\n" +
-    "    <div class=\"{{element.wrap.class}}\" ng-repeat=\"checkbox_data in %scope-field-source%\">\n" +
+    "    <div class=\"{{element.wrap.class}}\" ng-repeat=\"checkbox_data in $field.formalizer.source\">\n" +
     "      <label for=\"{{element.attrs.name}}-\\{\\{$index\\}\\}\">\n" +
     "        <input name=\"{{element.attrs.name}}-\\{\\{$index\\}\\}\" id=\"{{element.attrs.id}}-\\{\\{$index\\}\\}\" %element-attributes%>\n" +
     "        \\{\\{checkbox_data['{{source_display}}']\\}\\}\n" +
     "      </label>\n" +
     "    </div>\n" +
+    "\n" +
+    "    <div class=\"help-block\" ng-bind=\"$field.help\"></div>\n" +
+    "\n" +
     "  </div>\n" +
     "</div>\n" +
     "\n" +
@@ -29,11 +32,22 @@ angular.module("templates/formalizer-checkbox.tpl.html", []).run(["$templateCach
     "<div class=\"{{container.class}}\">\n" +
     " <div class=\"{{element.container.class}}\">\n" +
     "  <label for=\"{{element.attrs.name}}\" class=\"{{label.class}}\">\n" +
-    "    <input %element-attributes% /><span>{{label.text}}</span>\n" +
+    "    <input %element-attributes% /><span ng-bind=\"$field.label\"></span>\n" +
     "  </label>\n" +
-    "  <p class=\"help-block\">{{helpText}}</p>\n" +
+    "\n" +
+    "  <div class=\"help-block\" ng-bind=\"$field.help\"></div>\n" +
+    "\n" +
     "  %element-error-list%\n" +
     " </div>\n" +
+    "</div>");
+}]);
+
+angular.module("templates/formalizer-columns.tpl.html", []).run(["$templateCache", function($templateCache) {
+  $templateCache.put("templates/formalizer-columns.tpl.html",
+    "<div class=\"row\">\n" +
+    "    <div ng-repeat=\"col in columns\" class=\"col-xs-{{col.cols}} col-sm-{{col.cols}} col-md-{{col.cols}} col-lg-{{col.cols}}\">\n" +
+    "        <div ng-formalizer-field=\"col\"></div>\n" +
+    "    </div>\n" +
     "</div>");
 }]);
 
@@ -103,9 +117,6 @@ angular.module("templates/formalizer-form-1.3.tpl.html", []).run(["$templateCach
     "            <div ng-formalizer-field=\"field\"></div>\n" +
     "        </div>\n" +
     "    </div>\n" +
-    "\n" +
-    "    <pre>{{form | json}}</pre>\n" +
-    "\n" +
     "  </fieldset>\n" +
     "\n" +
     "</form>");
@@ -114,14 +125,15 @@ angular.module("templates/formalizer-form-1.3.tpl.html", []).run(["$templateCach
 angular.module("templates/formalizer-input.tpl.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("templates/formalizer-input.tpl.html",
     "<div class=\"{{container.class}}\">\n" +
-    "  <label for=\"{{element.attrs.name}}\" class=\"{{label.class}}\">{{label.text}}</label>\n" +
+    "  <label for=\"{{element.attrs.name}}\" class=\"{{label.class}}\" ng-bind=\"$field.label\"></label>\n" +
     "  <div class=\"{{element.container.class}}\">\n" +
     "    <div class=\"{{element.wrap.class}}\">\n" +
     "        {{element.left}}\n" +
     "        <input %element-attributes% />\n" +
     "        {{element.right}}\n" +
     "    </div>\n" +
-    "    <div class=\"help-block\">{{help.text}}</div>\n" +
+    "\n" +
+    "    <div class=\"help-block\" ng-bind=\"$field.help\"></div>\n" +
     "\n" +
     "    %element-error-list%\n" +
     "\n" +
@@ -132,14 +144,19 @@ angular.module("templates/formalizer-input.tpl.html", []).run(["$templateCache",
 angular.module("templates/formalizer-radio-list.tpl.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("templates/formalizer-radio-list.tpl.html",
     "<div class=\"{{container.class}}\">\n" +
-    "  <label class=\"{{label.class}}\">{{label.text}}</label>\n" +
+    "  <label class=\"{{label.class}}\" ng-bind=\"$field.label\"></label>\n" +
     "  <div class=\"{{element.container.class}}\">\n" +
-    "    <div class=\"{{element.wrap.class}}\" ng-repeat=\"radio_data in %scope-field-source%\">\n" +
+    "    <div class=\"{{element.wrap.class}}\" ng-repeat=\"radio_data in $field.formalizer.source\">\n" +
     "      <label for=\"{{element.attrs.name}}-\\{\\{$index\\}\\}\">\n" +
     "        <input name=\"{{element.attrs.name}}\" id=\"{{element.attrs.id}}-\\{\\{$index\\}\\}\" value=\"\\{\\{radio_data{{source_model}}\\}\\}\" %element-attributes%>\n" +
     "        \\{\\{radio_data['{{source_display}}']\\}\\}\n" +
     "      </label>\n" +
     "    </div>\n" +
+    "\n" +
+    "    <div class=\"help-block\" ng-bind=\"$field.help\"></div>\n" +
+    "\n" +
+    "    %element-error-list%\n" +
+    "\n" +
     "  </div>\n" +
     "</div>\n" +
     "\n" +
@@ -148,29 +165,31 @@ angular.module("templates/formalizer-radio-list.tpl.html", []).run(["$templateCa
 
 angular.module("templates/formalizer-raw.tpl.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("templates/formalizer-raw.tpl.html",
-    "<div>\n" +
-    "{{options.template}}\n" +
-    "</div>");
+    "<div ng-bind-html=\"$field.template\">%content%</div>\n" +
+    "");
 }]);
 
 angular.module("templates/formalizer-select.tpl.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("templates/formalizer-select.tpl.html",
     "<div class=\"{{container.class}}\">\n" +
-    "  <label for=\"{{element.attrs.name}}\" class=\"{{label.class}}\">{{label.text}}</label>\n" +
+    "  <label for=\"{{element.attrs.name}}\" class=\"{{label.class}}\" ng-bind=\"$field.label\"></label>\n" +
     "  <div class=\"{{element.container.class}}\">\n" +
     "    <select %element-attributes%>\n" +
     "      {{defaultOption}}\n" +
     "    </select>\n" +
-    "    <p class=\"help-block\">{{helpText}}</p>\n" +
+    "\n" +
+    "    <div class=\"help-block\" ng-bind=\"$field.help\"></div>\n" +
+    "\n" +
     "    %element-error-list%\n" +
     "  </div>\n" +
-    "</div>");
+    "</div>\n" +
+    "<!-- <pre>\\{\\{$field | json\\}\\}</pre>-->");
 }]);
 
 angular.module("templates/formalizer-slider.tpl.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("templates/formalizer-slider.tpl.html",
     "<div class=\"{{container.class}}\">\n" +
-    "  <label for=\"{{element.attrs.name}}\" class=\"{{label.class}}\">{{label.text}}</label>\n" +
+    "  <label for=\"{{element.attrs.name}}\" class=\"{{label.class}}\" ng-bind=\"$field.label\"></label>\n" +
     "  <div class=\"{{element.container.class}}\">\n" +
     "    <p class=\"{{element.wrap.class}}\">\n" +
     "        {{element.left}}\n" +
@@ -178,7 +197,8 @@ angular.module("templates/formalizer-slider.tpl.html", []).run(["$templateCache"
     "        {{element.right}}\n" +
     "        <!-- hide an input with the value ?! -->\n" +
     "    </p>\n" +
-    "    <p class=\"help-block\">{{help.text}}</p>\n" +
+    "\n" +
+    "    <div class=\"help-block\" ng-bind=\"$field.help\"></div>\n" +
     "\n" +
     "    %element-error-list%\n" +
     "\n" +
@@ -190,21 +210,25 @@ angular.module("templates/formalizer-submit.tpl.html", []).run(["$templateCache"
   $templateCache.put("templates/formalizer-submit.tpl.html",
     "<div class=\"{{container.class}}\">\n" +
     "  <div class=\"col-sm-10 col-sm-offset-2\">\n" +
-    "    <button %element-attributes% ng-disabled=\"%scope-form-name%.$invalid\">{{label.text}}</button>\n" +
+    "    <button %element-attributes% ng-disabled=\"%scope-form-name%.$invalid\" ng-bind=\"$field.label\"></button>\n" +
     "  </div>\n" +
+    "\n" +
+    "  <div class=\"help-block\" ng-bind=\"$field.help\"></div>\n" +
+    "\n" +
     "</div>");
 }]);
 
 angular.module("templates/formalizer-textarea.tpl.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("templates/formalizer-textarea.tpl.html",
     "<div class=\"{{container.class}}\">\n" +
-    "  <label for=\"{{element.attrs.name}}\" class=\"{{label.class}}\">{{label.text}}</label>\n" +
+    "  <label for=\"{{element.attrs.name}}\" class=\"{{label.class}}\" ng-bind=\"$field.label\"></label>\n" +
     "  <div class=\"{{element.container.class}}\">\n" +
     "    <p class=\"{{element.wrap.class}}\">\n" +
     "        <textarea %element-attributes%>\n" +
     "        </textarea>\n" +
     "    </p>\n" +
-    "    <p class=\"help-block\">{{help.text}}</p>\n" +
+    "\n" +
+    "    <div class=\"help-block\" ng-bind=\"$field.help\"></div>\n" +
     "\n" +
     "    %element-error-list%\n" +
     "\n" +
@@ -215,14 +239,13 @@ angular.module("templates/formalizer-textarea.tpl.html", []).run(["$templateCach
 angular.module("templates/formalizer-typeahead.tpl.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("templates/formalizer-typeahead.tpl.html",
     "<div class=\"{{container.class}}\">\n" +
-    "  <label for=\"{{element.attrs.name}}\" class=\"{{label.class}}\">{{label.text}}</label>\n" +
+    "  <label for=\"{{element.attrs.name}}\" class=\"{{label.class}}\" ng-bind=\"$field.label\"></label>\n" +
     "  <div class=\"{{element.container.class}}\">\n" +
     "    <p class=\"{{element.wrap.class}}\">\n" +
     "\n" +
     "    <ul>\n" +
     "      <li ng-repeat=\"obj in entity.ta_list\">\n" +
-    "\n" +
-    "        <span>\\{\\{obj.name\\}\\} <a ng-click=\"{{options.del_fn}}(obj)\"><img src=\"/trash.png\" /></a></span>\n" +
+    "        <span>\\{\\{obj.name\\}\\} <a ng-click=\"{{options.del_fn}}(obj)\"><span class=\"glyphicon glyphicon-trash\"></span></a></span>\n" +
     "      </li>\n" +
     "    </ul>\n" +
     "\n" +
@@ -232,7 +255,8 @@ angular.module("templates/formalizer-typeahead.tpl.html", []).run(["$templateCac
     "        <input %element-attributes% />\n" +
     "        {{element.right}}\n" +
     "    </p>\n" +
-    "    <p class=\"help-block\">{{help.text}}</p>\n" +
+    "\n" +
+    "    <div class=\"help-block\" ng-bind=\"$field.help\"></div>\n" +
     "\n" +
     "    %element-error-list%\n" +
     "\n" +
