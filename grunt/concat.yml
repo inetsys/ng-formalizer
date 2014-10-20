@@ -23,6 +23,7 @@ concat:
             - lib/ng-datepicker-fix.js
             - lib/ng-populate.js
             - lib/ng-server-validation.js
+            - lib/ng-default.js
         dest: dist/ng-formalizer.js
     js_templates:
         src:

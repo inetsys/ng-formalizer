@@ -1,9 +1,9 @@
 # ng-formalizer [![Build Status](https://secure.travis-ci.org/llafuente/ng-formalizer.png?branch=master)](http://travis-ci.org/llafuente/ng-formalizer)
 
 
-## Notice
+## notice
 
-Still under construction, but API is final. Report any error and provide a test case.
+Rather stable. Report any bug and remember to provide a test case.
 
 
 ## dependencies
@@ -33,32 +33,29 @@ firefox http://localhost:6001
 
 
 ## usage
+
 ````js
-  // Add to app dependencies
+  // Add to your app dependencies
   var app = angular.module("app", ["formalizer"]);
 ````
 
 
-## development
-
-
-### markup
+### markup (html)
 
 ```html
 <div ng-formalizer="config"></div>
 ```
 
 
-### Configuration object
+### configuration (controller)
 
 ```js
-    // in the controller
-
-    $scope.onSubmit = function(dirty_data, files, entity, form) {
+    // handle submit
+    $scope.onSubmit = function(dirty_data, files, full_data, form_ctrl) {
         console.log("dirty_data", dirty_data);
         console.log("files", files);
-        console.log("entity", entity);
-        console.log("form", form);
+        console.log("full_data", full_data);
+        console.log("form_ctrl", form_ctrl);
     };
 
     $scope.entity = {};
@@ -77,23 +74,23 @@ firefox http://localhost:6001
     ];
 ```
 
-#### `legend`: String
+##### `legend`: String
 
-Form legend.
+Form legend text.
 
-#### `type`: String [horizontal, vertical, inline]
+##### `type`: String [horizontal, vertical, inline]
 
 How to display the form in the screen. ATM only horizontal is fully supported and tested.
 
-#### `name`: String
+##### `name`: String [**mandatory**]
 
-Form name.
+Form name attribute.
 
-#### `model`: String
+##### `model`: String [**mandatory**]
 
-Key in the scope that will hold all form information
+Key in the scope that will hold all form information (ng-model)
 
-#### `onSubmit`: String|Function [**mandatory**]
+##### `onSubmit`: String|Function [**mandatory**]
 
 * `dirty_data` Object
 
@@ -103,16 +100,16 @@ Key in the scope that will hold all form information
 
   List of files.
 
-* `entity` Object
+* `full_data` Object
 
-  Entity in the scope.
+  All data in the scope.
 
-* `form`
+* `form_ctrl`
 
   AngularJS Form controller
 
 
-#### `fields`: String|Array
+##### `fields`: String|Array
 
 Fields list. See below for more information.
 
@@ -140,15 +137,15 @@ Create an input with some constraints and error messages translated.
 ```
 
 
-#### `label`: String
+##### `label`: String
 
 Label text. *Can be real-time modified*.
 
-#### `help`: String
+##### `help`: String
 
 Help text. *Can be real-time modified*. You could be used to give extra feedback to user.
 
-#### `type`: String [**mandatory**]
+##### `type`: String [**mandatory**]
 * text
 * password
 * number
@@ -185,14 +182,19 @@ Help text. *Can be real-time modified*. You could be used to give extra feedback
   Raw HTML that will be included into the form. [example](#field-type-raw-example)
 
 
-#### `name`: String [**mandatory**]
+##### `name`: String [**mandatory**]
 
 Same as HTML
 
 
-#### `placeholder`: String
+##### `placeholder`: String
 
 No applicable to select, typeahead*, checkbox*, radio*
+
+
+##### `default`: String [**optional**]
+
+If model is `undefined` set this value. No more scope checks.
 
 
 ##### `source`: String|Array [**mandatory** in select, typeahead\*, checkbox\*, radio\*]
@@ -238,7 +240,7 @@ Example:
 }
 ```
 
-#### `options`: Object
+##### `options`: Object
 
 Extends current configuration with extra options for each type of field.
 
@@ -325,56 +327,15 @@ Extends current configuration with extra options for each type of field.
 * `sliderId`
 * `updateEvent`
 
-
-### Extending templates
-
-Here I expose some rules you need to know to write your own.
-
-This is an advanced tutorial. Take a look to [$interpolate](https://docs.angularjs.org/api/ng/service/$interpolate) and [$compile](https://docs.angularjs.org/api/ng/service/$compile) their knowledge will help you to understand formalizer passes and how to escape things.
-
-#### formalizer.error-list.html
-
-This file will be `$interpolate` twice (before injected in field template), and one more time after it.
-
-Take a look to this example:
-
-`<li ng-show="%form-name%['{{element.attrs.name}}'].$error.min">{{messages.min || 'Field minimum is \{\{element.attrs[\'ng-min\']\}\}'}}</li>`
-
-After the first `$interpolate`
-
-`<li ng-show="form['input_name'].$error.min">Field minimum is {{element.attrs['ng-min']}}</li>`
-
-After the second `$interpolate`
-
-`<li ng-show="form['input_name'].$error.min">Field minimum is 5</li>`
-
-Then the file is injected into the the form field template and will be `$interpolate` one more time.
-
-
-### Form field templates
-
-Templates has another two phase process.
-
-First replaces some internal values:
-* `%element-attributes%` element attributes as html-string example: `ng-model="xxxx" ng-class="xxx"`
-* `%element-error-list%` contents of `formalizer.error-list.html` after the process explained above.
-* `%scope-form-name%` name of the form in scope
-* `%scope-field-source%` name of the field config in the scope
-
-As you may notice `%scope-form-name%` appears in *formalizer.error-list.html* but it's replaced in this phase.
-
-After this replacement, `$interpolate`. Remember to escape `{{` and `}}` if you want them to be in the final html.
-
-When all fields are generated, we attach them to the fieldset and `$compile`.
-
+- - -
 
 ### constraints
 
-AngularJS provide with some constraints, like min/max/maxlength/minlength etc... those can be used.
+AngularJS provide some constraints, like min/max/maxlength/minlength etc... those can be used and formalizer will be transparent.
 
 Additionally we provide some more:
 
-#### populate
+##### populate
 
 Fill another field if a specific value is meet.
 
@@ -391,7 +352,7 @@ Example:
 ```
 
 
-#### blacklist (not in)
+##### blacklist (not in)
 
 Example:
 
@@ -401,7 +362,7 @@ Example:
 }
 ```
 
-#### decimal
+##### decimal
 
 Limit the decimals allowed.
 
@@ -413,7 +374,7 @@ Example:
 }
 ```
 
-#### equal-to
+##### equal-to
 
 Current field must be equal to something in the scope, could be or not a field.
 
@@ -425,7 +386,7 @@ Example:
 }
 ```
 
-#### only-alpha
+##### only-alpha
 
 Allow letters only.
 
@@ -435,7 +396,7 @@ Allow letters only.
 }
 ```
 
-#### only-iso
+##### only-iso
 
 Allow letters, digits, "-" and "_".
 
@@ -445,7 +406,7 @@ Allow letters, digits, "-" and "_".
 }
 ```
 
-#### one-upper
+##### one-upper
 
 At least one character must be uppercase
 
@@ -455,7 +416,7 @@ At least one character must be uppercase
 }
 ```
 
-#### one-lower
+##### one-lower
 
 At least one character must be lowercase
 
@@ -465,7 +426,7 @@ At least one character must be lowercase
 }
 ```
 
-#### one-number
+##### one-number
 
 At least one number must be lowercase
 
@@ -475,7 +436,7 @@ At least one number must be lowercase
 }
 ```
 
-#### one-alpha
+##### one-alpha
 
 At least one letter must be lowercase
 
@@ -485,7 +446,7 @@ At least one letter must be lowercase
 }
 ```
 
-#### no-spaces
+##### no-spaces
 
 Cannot contains any spaces
 
@@ -495,7 +456,7 @@ Cannot contains any spaces
 }
 ```
 
-#### hexadecimal
+##### hexadecimal
 
 hexadecimal number: 0-9 & a-f
 
@@ -505,7 +466,7 @@ hexadecimal number: 0-9 & a-f
 }
 ```
 
-#### hex-color
+##### hex-color
 
 A color: #ffffff (# is required)
 
@@ -515,7 +476,7 @@ A color: #ffffff (# is required)
 }
 ```
 
-#### server-validation
+##### server-validation
 
 Validate against server. $http send a JSON body with `request-key` and server must return a JSON with a boolean in `request-response`.
 
@@ -553,13 +514,13 @@ To do that you need to send the configuration object without `model`.
 Minimal example:
 ```json
 {
-  'name': 'form'
+  "name": "form"
 }
 ```
 
 Formalizer will be watching the scope until the `model` is set.
 
-`name` is required at first because angular will create a FormController without an appropriate name in the scope.
+`name` is the only required options. Angular will create a FormController without an appropriate name in the scope otherwise.
 
 ### snippets
 
@@ -587,28 +548,6 @@ $scope.disabled_weekend = function(date, mode) {
     return ( mode === 'day' && ( date.getDay() === 0 || date.getDay() === 6 ) );
 };
 ```
-
-
-## Extending ng-formalizer
-
-Formalizer class can be extended to support new types or overwrite current ones.
-
-Let's take a look to a simple case
-
-formalizer.textarea.js
-```js
-    // add to templates, so it will fetch templates/formalizer-textarea.tpl.hmtml
-    Formalizer.templates.push("textarea");
-
-    // add a new field.type = template to use
-    Formalizer.types.textarea = "textarea";
-
-    // do your staff here.
-    // take a look to: "lib/formalizer.**.js" for more code examples.
-    Formalizer.parsers.textarea = function ($scope, field, cfg) {
-    };
-```
-
 
 ## ng-datepicker-fix
 
@@ -638,6 +577,72 @@ your_module
 
 fix [TZ localization in date picker should be optional](https://github.com/angular-ui/bootstrap/issues/1891)
 
+- - -
+
+## Extending templates
+
+Here I expose some rules you need to know to write your own.
+
+This is an advanced tutorial. Take a look to [$interpolate](https://docs.angularjs.org/api/ng/service/$interpolate) and [$compile](https://docs.angularjs.org/api/ng/service/$compile) their knowledge will help you to understand formalizer passes and how to escape things.
+
+#### formalizer.error-list.html
+
+This file will be `$interpolate` twice (before injected in field template), and one more time after it. Three times total.
+
+Take a look to this example:
+
+`<li ng-show="%scope-form-name%['{{element.attrs.name}}'].$error.min">{{messages.min || 'Field minimum is \{\{element.attrs[\'ng-min\']\}\}'}}</li>`
+
+After the first `$interpolate`
+
+`<li ng-show="%scope-form-name%['input_name'].$error.min">Field minimum is {{element.attrs['ng-min']}}</li>`
+
+After the second `$interpolate`
+
+`<li ng-show="%scope-form-name%['input_name'].$error.min">Field minimum is 5</li>`
+
+Then the file is injected into the the form field template and will be `$interpolate` one more time.
+
+
+## Form field templates
+
+Templates has another two phase process.
+
+First replaces some internal values:
+* `%element-attributes%` element attributes as html-string example: `ng-model="xxxx" ng-class="xxx"`
+* `%element-error-list%` contents of `formalizer.error-list.html` after the process explained above.
+* `%scope-form-name%` name of the form in scope
+
+As you may notice `%scope-form-name%` appears in *formalizer.error-list.html* It's replaced now.
+
+After this replacement, `$interpolate`. Remember to escape `{{` and `}}` if you want them to be in the final html.
+
+When all fields are generated, we attach them to the fieldset and `$compile`.
+
+
+
+## Extending ng-formalizer (beyond templates)
+
+Formalizer class can be extended to support new types or overwrite current ones.
+
+Let's take a look to a simple case
+
+formalizer.textarea.js
+```js
+    // add to templates, so it will fetch templates/formalizer-textarea.tpl.hmtml
+    Formalizer.templates.push("textarea");
+
+    // add a new field.type = template to use
+    Formalizer.types.textarea = "textarea";
+
+    // do your staff here.
+    // take a look to: "lib/formalizer.**.js" for more code examples.
+    Formalizer.parsers.textarea = function ($scope, field, cfg) {
+    };
+```
+
+- - -
+
 ## testing
 
 Currently karma with phantomjs (so you need to install phantomjs)
@@ -654,6 +659,8 @@ npm test
 node_modules/karma/bin/karma start karma.js --browsers Firefox
 ```
 
+- - -
+
 ## TODO
 
 * add-option-if
@@ -661,8 +668,6 @@ node_modules/karma/bin/karma start karma.js --browsers Firefox
 * checkbox-inline (label@class)
 * radio-inline (label@class)
 * Timepicker
-* server validation?
-* raw -> direct html
 * include -> direct html (file)
 * tabs
   * tabs (cfg)
@@ -670,9 +675,7 @@ node_modules/karma/bin/karma start karma.js --browsers Firefox
 * matrix (table of radios|checkbox)
 * captcha (require server side so -> plugin system)
 * file upload (queue & instant)
-* columns (when found an array instead a config object 12 / length)
-* remove elements (add $$formalizer_key to each cfg to track changes)
-* casperjs tests with travis_ci support
+* protractor tests with travis_ci support
 
 util websites
 * http://bootsnipp.com/forms?version=3

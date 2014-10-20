@@ -192,6 +192,10 @@ var Formalizer;
             })
         };
 
+        if (cfg.default) {
+            field.element.attrs["ng-default"] = "$field.default";
+        }
+
         var name = field.element.attrs.name;
 
         // watch source for changes
@@ -1133,6 +1137,42 @@ angular.module("formalizer")
 
                 current_value = value;
                 //run_server_validation();
+
+                return value;
+            });
+        }
+    };
+}]);
+
+angular.module("formalizer")
+.directive("ngDefault", ["$timeout", function ($timeout) {
+    return {
+        require: "ngModel",
+        link: function ($scope, $elm, $attrs, $ngModel) {
+            var def_val = $scope.$eval($attrs.ngDefault);
+
+            function is_nan(val) {
+                return "number" === typeof val && ("" + val) === "NaN";
+            }
+
+            console.log(def_val);
+            console.log($ngModel);
+            $timeout(function () {
+                console.log("$timeout", $ngModel);
+                console.log(is_nan($ngModel.$modelValue), $ngModel.$modelValue === undefined);
+
+                if (is_nan($ngModel.$modelValue) || $ngModel.$modelValue === undefined) {
+                    //$ngModel.$setViewValue(def_val);
+                    $scope.$eval($attrs.ngModel + " = " + JSON.stringify(def_val));
+                }
+            });
+
+
+            $ngModel.$parsers.unshift(function (value) {
+                console.log("???!!");
+                if (value === undefined) {
+                    return def_val;
+                }
 
                 return value;
             });

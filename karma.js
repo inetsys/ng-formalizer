@@ -60,6 +60,7 @@ module.exports = function (config) {
       'lib/ng-decimal.js',
       'lib/ng-equalto.js',
       'lib/ng-datepicker-fix.js',
+      'lib/ng-default.js',
 
       // tests
       'tests/*.js',
