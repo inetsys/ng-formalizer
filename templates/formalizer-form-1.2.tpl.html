@@ -10,11 +10,10 @@
     <div class="fieldset-contents"></div>
 
     <div ng-if="$formalizer.model">
-        <div ng-repeat="field in $formalizer.fields">
-            <!-- <pre>{{field | json}}</pre> -->
-            <div ng-formalizer-field="field"></div>
-        </div>
+      <div ng-init="field.fields = $formalizer.fields"></div>
+      <div ng-include="'templates/formalizer.fields.tpl.html'"></div>
     </div>
+
   </fieldset>
 
 </form>

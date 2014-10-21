@@ -1,0 +1,8 @@
+<div ng-repeat="field in field.fields">
+    <!-- <pre>{{field | json}}</pre> -->
+    <div ng-formalizer-field="field"></div>
+
+    <div class="col-sm-offset-1">
+      <div ng-include="'templates/formalizer.fields.tpl.html'"></div>
+    </div>
+</div>
