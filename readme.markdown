@@ -240,25 +240,21 @@ Example:
 }
 ```
 
-##### `options`: Object
-
-Extends current configuration with extra options for each type of field.
-
-`raw` options
-
 <a name="field-type-raw-example"></a>
-* `template` HTML-string
+##### `template`: String (raw only)
 
-  HTML to be displayed directly in the form.
+HTML to be displayed directly in the form. Be aware that the HTML is not `$compile` on purpose.
 
 ```json
 {
     "type": "raw",
-    "options": {
-        "template": "<div class=\"col-sm-10 col-sm-offset-2\">Current avatar: {{entity.avatar}}</div>"
-    }
+    "template": "<div class=\"col-sm-10 col-sm-offset-2\">Current avatar: {{entity.avatar}}</div>"
 }
 ```
+
+##### `options`: Object
+
+Extends current configuration with extra options for each type of field.
 
 `checkbox-list` options
 
