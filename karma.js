@@ -66,7 +66,7 @@ module.exports = function (config) {
       'tests/*.js',
 
       // templates
-      'templates/*.html'
+      'templates/*.tpl.html'
     ],
 
     //logLevel: config.LOG_DEBUG,
