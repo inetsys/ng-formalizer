@@ -1,1 +1,1 @@
-form.ng-pristine .form-error-list{display:none}form.ng-dirty .form-error-list{display:block}
+form.ng-pristine .form-error-list{display:none}form.ng-dirty .form-error-list{display:block}.ng-required label:after{content:" *";color:#a94442}

@@ -5,3 +5,7 @@ form.ng-pristine .form-error-list {
 form.ng-dirty .form-error-list {
     display: block;
 }
+.ng-required label:after {
+    content: " *";
+    color: #a94442;
+}
