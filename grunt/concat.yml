@@ -24,6 +24,7 @@ concat:
             - lib/ng-populate.js
             - lib/ng-server-validation.js
             - lib/ng-default.js
+            - lib/ng-hide-groups.js
         dest: dist/ng-formalizer.js
     js_templates:
         src:

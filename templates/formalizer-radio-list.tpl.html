@@ -1,4 +1,4 @@
-<div class="{{container.class}}" ng-class="{ 'has-error' : (%scope-form-name%['{{element.attrs.name}}'].$invalid == true) }">
+<div class="{{container.class}}" ng-class="{ 'has-error' : (%scope-form-name%['{{element.attrs.name}}'].$invalid == true) }" ng-show="$field.formalizer.visible">
   <label class="{{label.class}}" ng-bind="$field.label"></label>
   <div class="{{element.container.class}}">
     <div class="{{element.wrap.class}}" ng-repeat="radio_data in $field.formalizer.source">

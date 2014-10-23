@@ -120,12 +120,15 @@ Fields list. See below for more information.
 Basic Example:
 Create an input with some constraints and error messages translated.
 
-```js
+```json
 {
     "label": "User",
     "type": "text",
     "name": "user",
     "placeholder": "Text",
+    "groups": "",
+    "actions": {
+    },
     "constraints": {
         "required": true,
         "minlength": 5
@@ -489,7 +492,8 @@ By default `request-key` is `value` and `request-response` is `success`
 ```
 
 
-**TODO**
+#### constraints todo list
+
 * IPv4/IPv6
 * After Date (Future Date)
 * Before Date
@@ -500,6 +504,34 @@ By default `request-key` is `value` and `request-response` is `success`
 * in
 * mime-type
 * file-size
+
+
+### actions
+
+Group of actions to do when value change.
+
+#### hide-group
+
+Hide target group(s) (show previous target).
+
+Use the same syntax as ng-class, keys are the values, values are the target group (coma separated)
+
+```json
+{
+    "label": "Lista",
+    "name": "lista",
+    "type": "select",
+    "source": [
+        { "id": 1, "label": "HIDE grp001 & grp002 is visible" },
+        { "id": 1, "label": "HIDE grp002 & grp001 is visible" }
+    ],
+    "source_display": "label",
+    "source_model": "id",
+    "actions": {
+        "hide-group": "{1: 'grp001', 2: 'grp002'}"
+    }
+}
+```
 
 ### Post initialization (late loading)
 
