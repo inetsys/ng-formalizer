@@ -126,7 +126,7 @@ Create an input with some constraints and error messages translated.
     "type": "text",
     "name": "user",
     "placeholder": "Text",
-    "groups": "",
+    "groups": "my-group",
     "actions": {
     },
     "constraints": {
@@ -510,6 +510,31 @@ By default `request-key` is `value` and `request-response` is `success`
 
 Group of actions to do when value change.
 
+
+#### hide-children
+
+Hide all children fields
+
+```json
+{
+    "label": "Lista",
+    "name": "lista",
+    "type": "select",
+    "source": [
+        { "id": 1, "label": "hide children" },
+        { "id": 2, "label": "show" },
+        { "id": 3, "label": "show, not need false in hide-children" }
+    ],
+    "source_display": "label",
+    "source_model": "id",
+    "actions": {
+        "hide-children": "{1: true, 2: false}"
+    },
+    fields: [{},{},{}]
+}
+```
+
+
 #### hide-group
 
 Hide target group(s) (show previous target).
@@ -523,7 +548,7 @@ Use the same syntax as ng-class, keys are the values, values are the target grou
     "type": "select",
     "source": [
         { "id": 1, "label": "HIDE grp001 & grp002 is visible" },
-        { "id": 1, "label": "HIDE grp002 & grp001 is visible" }
+        { "id": 2, "label": "HIDE grp002 & grp001 is visible" }
     ],
     "source_display": "label",
     "source_model": "id",
