@@ -163,6 +163,7 @@ var Formalizer;
 
         var field = {
             visible: true,
+            visible_children: true,
             type: cfg.type || "text",
             scope_name: field_in_scope,
             container: {
@@ -1240,3 +1241,53 @@ angular.module("formalizer")
         }
     };
 });
+angular.module("formalizer")
+.directive("ngHideChildren", function () {
+    return {
+        require: "ngModel",
+        link: function ($scope, $elm, $attrs, $ngModel) {
+            var check = $scope.$eval($attrs.ngHideChildren),
+                values = [],
+                i;
+
+            for (i in check) {
+                if (check[i]) {
+                    values.push(i);
+                }
+            }
+
+            $scope.$watch($attrs.ngModel, function(a, b) {
+                $scope.$field.formalizer.visible_children = values.indexOf("" + a) === -1;
+            });
+        }
+    };
+});
+/*
+ * listen angular changes in boolean attrs
+ */
+
+angular.forEach('Selected,Checked,Disabled,Readonly,Required,Open'.split(','), function(name) {
+
+    var normalized = 'ngOn' + name,
+        attr = name.toLowerCase();
+
+    angular.module("formalizer")
+    .directive(normalized, function() {
+        return {
+          restrict: 'A',
+          priority: 100,
+          link: function($scope, $elm, $attrs) {
+            $scope.$watch(function() {
+                return $elm.prop(attr);
+            }, function(val) {
+                var obj = {$element: $elm};
+                obj["$" + attr] = val;
+
+                $scope.$eval($attrs[normalized], obj);
+            });
+          }
+        };
+    });
+});
+
+

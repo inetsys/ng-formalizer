@@ -276,7 +276,7 @@ angular.module("templates/formalizer.fields.tpl.html", []).run(["$templateCache"
     "    <!-- <pre>{{field | json}}</pre> -->\n" +
     "    <div ng-formalizer-field=\"field\"></div>\n" +
     "\n" +
-    "    <div class=\"col-sm-offset-1\">\n" +
+    "    <div class=\"col-sm-offset-1\" ng-show=\"field.formalizer.visible_children\">\n" +
     "      <div ng-include=\"'templates/formalizer.fields.tpl.html'\"></div>\n" +
     "    </div>\n" +
     "</div>\n" +
@@ -448,6 +448,7 @@ var Formalizer;
 
         var field = {
             visible: true,
+            visible_children: true,
             type: cfg.type || "text",
             scope_name: field_in_scope,
             container: {
@@ -1525,3 +1526,53 @@ angular.module("formalizer")
         }
     };
 });
+angular.module("formalizer")
+.directive("ngHideChildren", function () {
+    return {
+        require: "ngModel",
+        link: function ($scope, $elm, $attrs, $ngModel) {
+            var check = $scope.$eval($attrs.ngHideChildren),
+                values = [],
+                i;
+
+            for (i in check) {
+                if (check[i]) {
+                    values.push(i);
+                }
+            }
+
+            $scope.$watch($attrs.ngModel, function(a, b) {
+                $scope.$field.formalizer.visible_children = values.indexOf("" + a) === -1;
+            });
+        }
+    };
+});
+/*
+ * listen angular changes in boolean attrs
+ */
+
+angular.forEach('Selected,Checked,Disabled,Readonly,Required,Open'.split(','), function(name) {
+
+    var normalized = 'ngOn' + name,
+        attr = name.toLowerCase();
+
+    angular.module("formalizer")
+    .directive(normalized, function() {
+        return {
+          restrict: 'A',
+          priority: 100,
+          link: function($scope, $elm, $attrs) {
+            $scope.$watch(function() {
+                return $elm.prop(attr);
+            }, function(val) {
+                var obj = {$element: $elm};
+                obj["$" + attr] = val;
+
+                $scope.$eval($attrs[normalized], obj);
+            });
+          }
+        };
+    });
+});
+
+

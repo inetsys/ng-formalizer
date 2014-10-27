@@ -276,7 +276,7 @@ angular.module("templates/formalizer.fields.tpl.html", []).run(["$templateCache"
     "    <!-- <pre>{{field | json}}</pre> -->\n" +
     "    <div ng-formalizer-field=\"field\"></div>\n" +
     "\n" +
-    "    <div class=\"col-sm-offset-1\">\n" +
+    "    <div class=\"col-sm-offset-1\" ng-show=\"field.formalizer.visible_children\">\n" +
     "      <div ng-include=\"'templates/formalizer.fields.tpl.html'\"></div>\n" +
     "    </div>\n" +
     "</div>\n" +
