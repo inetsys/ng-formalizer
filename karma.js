@@ -27,7 +27,7 @@ module.exports = function (config) {
       "bower_components/jquery/dist/jquery.js",
 
       "bower_components/angular-" + version +"/angular.js",
-      "bower_components/angular-mocks/angular-mocks.js",
+      "bower_components/angular-mocks-" + version +"/angular-mocks.js",
 
       "bower_components/angular-bootstrap/ui-bootstrap-tpls.js",
       "bower_components/checklist-model/checklist-model.js",
@@ -61,6 +61,9 @@ module.exports = function (config) {
       'lib/ng-equalto.js',
       'lib/ng-datepicker-fix.js',
       'lib/ng-default.js',
+      'lib/ng-hide-groups.js',
+      'lib/ng-hide-children.js',
+      'lib/ng-on-bool-attr-change.js',
 
       // tests
       'tests/*.js',
