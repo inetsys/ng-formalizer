@@ -26,6 +26,7 @@ concat:
             - lib/ng-default.js
             - lib/ng-hide-groups.js
             - lib/ng-hide-children.js
+            - lib/ng-on-bool-attr-change.js
         dest: dist/ng-formalizer.js
     js_templates:
         src:

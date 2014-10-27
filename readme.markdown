@@ -508,7 +508,16 @@ By default `request-key` is `value` and `request-response` is `success`
 
 ### actions
 
-Group of actions to do when value change.
+
+#### angular natives
+
+* show (ngShow)
+* hide (ngHide)
+* disabled (ngDisabled)
+* selected (ngSelected)
+* checked (ngChecked)
+* readonly (ngReadonly)
+* open (ngOpen)
 
 
 #### hide-children
@@ -558,6 +567,47 @@ Use the same syntax as ng-class, keys are the values, values are the target grou
 }
 ```
 
+#### on-selected
+#### on-checked
+#### on-disabled
+#### on-readonly
+#### on-required
+#### on-open
+
+Fired when given attribute is initialized or change.
+
+Special properties are exposed on the local scope:
+
+| Variable | Type | Details |
+|---|---|---|
+| $element | Node | Dom-Element |
+| $selected | boolean | is selected (on-selected only) |
+| $checked | boolean | is checked (on-checked only) |
+| $disabled | boolean | is disabled (on-disabled only) |
+| $readonly | boolean | is readonly (on-readonly only) |
+| $required | boolean | is required (on-required only) |
+| $open | boolean | is open (on-open only) |
+
+Example:
+
+```json
+[{
+    "label": "Disable field",
+    "name": "xxx_disabled",
+    "type": "checkbox",
+    "actions": {
+        "on-checked": "xxx_disabled = $checked;"
+    }
+},{
+    "label": "Disable field",
+    "name": "xxx_disabled",
+    "type": "text",
+    "actions": {
+        "disabled": "xxx_disabled"
+    }
+}]
+```
+
 ### Post initialization (late loading)
 
 Sometimes you could need to wait for an async event (request) to arrive before displaying the form.
@@ -581,7 +631,7 @@ Hide a form field.
 
 ```json
 {
-    "constraints": {
+    "actions": {
         "show": false
     }
 }
