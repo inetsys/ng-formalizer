@@ -1,4 +1,4 @@
-angular.module('formalizer-tpls', ['templates/formalizer-checkbox-list.tpl.html', 'templates/formalizer-checkbox.tpl.html', 'templates/formalizer-columns.tpl.html', 'templates/formalizer-error-list.tpl.html', 'templates/formalizer-form-1.2.tpl.html', 'templates/formalizer-form-1.3.tpl.html', 'templates/formalizer-input.tpl.html', 'templates/formalizer-radio-list.tpl.html', 'templates/formalizer-raw.tpl.html', 'templates/formalizer-select.tpl.html', 'templates/formalizer-slider.tpl.html', 'templates/formalizer-submit.tpl.html', 'templates/formalizer-textarea.tpl.html', 'templates/formalizer-typeahead.tpl.html', 'templates/formalizer.fields.tpl.html']);
+angular.module('formalizer-tpls', ['templates/formalizer-checkbox-list.tpl.html', 'templates/formalizer-checkbox.tpl.html', 'templates/formalizer-columns.tpl.html', 'templates/formalizer-error-list.tpl.html', 'templates/formalizer-form-1.2.tpl.html', 'templates/formalizer-form-1.3.tpl.html', 'templates/formalizer-input.tpl.html', 'templates/formalizer-radio-list.tpl.html', 'templates/formalizer-raw.tpl.html', 'templates/formalizer-richtext.tpl.html', 'templates/formalizer-select.tpl.html', 'templates/formalizer-slider.tpl.html', 'templates/formalizer-submit.tpl.html', 'templates/formalizer-textarea.tpl.html', 'templates/formalizer-typeahead.tpl.html', 'templates/formalizer.fields.tpl.html']);
 
 angular.module("templates/formalizer-checkbox-list.tpl.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("templates/formalizer-checkbox-list.tpl.html",
@@ -167,6 +167,24 @@ angular.module("templates/formalizer-radio-list.tpl.html", []).run(["$templateCa
 angular.module("templates/formalizer-raw.tpl.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("templates/formalizer-raw.tpl.html",
     "<div ng-formalizer-attach=\"\" ng-show=\"$field.formalizer.visible\">\n" +
+    "</div>\n" +
+    "");
+}]);
+
+angular.module("templates/formalizer-richtext.tpl.html", []).run(["$templateCache", function($templateCache) {
+  $templateCache.put("templates/formalizer-richtext.tpl.html",
+    "<div class=\"{{container.class}}\" ng-class=\"{ 'has-error' : (%scope-form-name%['{{element.attrs.name}}'].$invalid == true) }\" ng-show=\"$field.formalizer.visible\">\n" +
+    "  <label for=\"{{element.attrs.name}}\" class=\"{{label.class}}\" ng-bind=\"$field.label\"></label>\n" +
+    "  <div class=\"{{element.container.class}}\">\n" +
+    "    <div class=\"{{element.wrap.class}}\">\n" +
+    "        <div text-angular %element-attributes%></div>\n" +
+    "    </div>\n" +
+    "\n" +
+    "    <div class=\"help-block\" ng-bind=\"$field.help\"></div>\n" +
+    "\n" +
+    "    %element-error-list%\n" +
+    "\n" +
+    "  </div>\n" +
     "</div>\n" +
     "");
 }]);
@@ -1136,12 +1154,32 @@ var Formalizer;
 }());
 
 
+(function () {
+    "use strict";
+
+    function safe_array_remove(arr, item) {
+        var cut = arr.indexOf(item);
+        if (cut !== -1) {
+            return arr.splice(cut, 1);
+        }
+
+        return false;
+    }
+
+    Formalizer.templates.push("richtext");
+
+    Formalizer.types.richtext = "richtext";
+
+    Formalizer.parsers.richtext = function ($scope, field) {
+        safe_array_remove(field.element.attrs["class"], "form-control");
+    };
+}());
 "use strict";
 (function () {
 
     angular
 
-    .module("formalizer", ["ui.bootstrap", "checklist-model", "ui.bootstrap-slider", "formalizer-tpls"])
+    .module("formalizer", ["ui.bootstrap", "checklist-model", "ui.bootstrap-slider", "formalizer-tpls", "textAngular"])
 
     .value("FormalizerConfig", {})
 
@@ -1184,6 +1222,11 @@ var Formalizer;
                                 throw new Error("formalizer configuration must be sent");
                             }
 
+                            // do not allow directly insert the object, lead to some problems with watchers
+                            if ($attrs.ngFormalizer.indexOf("{") !== -1) {
+                                throw new Error("ng-formalizer must be a string");
+                            }
+
                             if (!config.name) {
                                 throw new Error("formalizer require form name");
                             }
@@ -1214,6 +1257,7 @@ var Formalizer;
 
                             $formalizer.horizontal = $formalizer.vertical = $formalizer.inline = false;
                             $formalizer[$formalizer.type] = true;
+
 
                             if ("string" === typeof config.fields) {
                                 $scope.$watch(config.fields, function fields_watcher (fields) {
@@ -1490,15 +1534,25 @@ angular.module("formalizer")
     return {
         require: "ngModel",
         link: function ($scope, $elm, $attrs, $ngModel) {
-            var def_val = $scope.$eval($attrs.ngDefault);
+            var def_val = $scope.$eval($attrs.ngDefault),
+                not_set_values = $scope.$eval($attrs.ngDefaultValues);
+
+            if (!not_set_values) {
+                not_set_values = [undefined];
+            } else if (Array.isArray(not_set_values)) {
+                not_set_values.push(undefined);
+            } else {
+                throw new Error("ngDefaultValues must be an array of values");
+            }
 
             function is_nan(val) {
                 return "number" === typeof val && ("" + val) === "NaN";
             }
 
+
             // wait model to be populated
             $timeout(function () {
-                if (is_nan($ngModel.$modelValue) || $ngModel.$modelValue === undefined) {
+                if (is_nan($ngModel.$modelValue) || not_set_values.indexOf($ngModel.$modelValue) !== -1) {
                     //$ngModel.$setViewValue(def_val);
                     $scope.$eval($attrs.ngModel + " = " + JSON.stringify(def_val));
                 }
