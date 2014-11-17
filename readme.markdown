@@ -6,14 +6,18 @@
 Rather stable. Report any bug and remember to provide a test case.
 
 
-## dependencies
+## dependencies (bower)
 
-* jquery: 2.1.*
-* angular: 1.2.*
-* angular-bootstrap : *
-* checklist-model: 0.1.3
-* bootstrap: ~3.2.0
-* moment: ~2.8. (optional, used in ng-datepicker-fix)
+* angular >=1.2.*
+* jquery >=2.1.*
+* angular-bootstrap *
+* checklist-model 0.1.3
+* bootstrap ~3.2.0
+* moment ~2.8.1
+* angular-bootstrap-slider ~0.0.5
+* textAngular ~1.2.2 & font-awesome 4.2.0
+
+
 
 
 ## install
@@ -150,6 +154,10 @@ Help text. *Can be real-time modified*. You could be used to give extra feedback
 
 ##### `type`: String [**mandatory**]
 * text
+* richtext
+
+  Small WYSIWYG HTML editor using [textangular](http://textangular.com/)
+
 * password
 * number
 * email

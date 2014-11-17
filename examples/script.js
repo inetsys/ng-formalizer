@@ -199,6 +199,12 @@ app.controller("MainCtrl", ["$scope", "$timeout", function ($scope, $timeout) {
         "source": "typeahead_items",
         "source_display": "name"
     }, {
+        "label": "richtext",
+        "type": "richtext",
+        "name": "richtext",
+        "options": {
+        },
+    }, {
         "label": "Submit now!",
         "type": "submit",
         "name": "submit",

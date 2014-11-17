@@ -53,6 +53,7 @@ module.exports = function (config) {
       'lib/formalizer.input.js',
       'lib/formalizer.checkbox-list.js',
       'lib/formalizer.slider.js',
+      'lib/formalizer.richtext.js',
       'lib/ng-formalizer.js',
       'lib/ng-formalizer-field.js',
       'lib/ng-formalizer-attach.js',
