@@ -1,4 +1,4 @@
-angular.module('formalizer-tpls', ['templates/formalizer-checkbox-list.tpl.html', 'templates/formalizer-checkbox.tpl.html', 'templates/formalizer-columns.tpl.html', 'templates/formalizer-error-list.tpl.html', 'templates/formalizer-form-1.2.tpl.html', 'templates/formalizer-form-1.3.tpl.html', 'templates/formalizer-input.tpl.html', 'templates/formalizer-radio-list.tpl.html', 'templates/formalizer-raw.tpl.html', 'templates/formalizer-richtext.tpl.html', 'templates/formalizer-select.tpl.html', 'templates/formalizer-slider.tpl.html', 'templates/formalizer-submit.tpl.html', 'templates/formalizer-textarea.tpl.html', 'templates/formalizer-typeahead.tpl.html', 'templates/formalizer.fields.tpl.html']);
+angular.module('formalizer-tpls', ['templates/formalizer-checkbox-list.tpl.html', 'templates/formalizer-checkbox-matrix.tpl.html', 'templates/formalizer-checkbox.tpl.html', 'templates/formalizer-columns.tpl.html', 'templates/formalizer-error-list.tpl.html', 'templates/formalizer-form-1.2.tpl.html', 'templates/formalizer-form-1.3.tpl.html', 'templates/formalizer-input.tpl.html', 'templates/formalizer-radio-list.tpl.html', 'templates/formalizer-raw.tpl.html', 'templates/formalizer-richtext.tpl.html', 'templates/formalizer-select.tpl.html', 'templates/formalizer-slider.tpl.html', 'templates/formalizer-submit.tpl.html', 'templates/formalizer-textarea.tpl.html', 'templates/formalizer-typeahead.tpl.html', 'templates/formalizer.fields.tpl.html']);
 
 angular.module("templates/formalizer-checkbox-list.tpl.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("templates/formalizer-checkbox-list.tpl.html",
@@ -19,6 +19,51 @@ angular.module("templates/formalizer-checkbox-list.tpl.html", []).run(["$templat
     "      </label>\n" +
     "    </div>\n" +
     "\n" +
+    "    <div class=\"help-block\" ng-bind=\"$field.help\"></div>\n" +
+    "\n" +
+    "  </div>\n" +
+    "</div>\n" +
+    "");
+}]);
+
+angular.module("templates/formalizer-checkbox-matrix.tpl.html", []).run(["$templateCache", function($templateCache) {
+  $templateCache.put("templates/formalizer-checkbox-matrix.tpl.html",
+    "<div class=\"{{container.class}}\" ng-class=\"{ 'has-error' : (%scope-form-name%['{{element.attrs.name}}'].$invalid == true) }\" ng-show=\"$field.formalizer.visible\">\n" +
+    "  <label class=\"{{label.class}}\" ng-bind=\"$field.label\"></label>\n" +
+    "  <div class=\"{{element.container.class}}\">\n" +
+    "\n" +
+    "<table>\n" +
+    "  <thead>\n" +
+    "    <tr>\n" +
+    "      <th></th>\n" +
+    "      <th ng-repeat=\"label in $field.formalizer.source_display[0]\">\n" +
+    "        \\{\\{label\\}\\}\n" +
+    "      </th>\n" +
+    "    </tr>\n" +
+    "  </thead>\n" +
+    "\n" +
+    "  <tbody>\n" +
+    "    <tr ng-repeat=\"(yidx, second_level) in $field.formalizer.source_display[1]\">\n" +
+    "      <th>\n" +
+    "        \\{\\{$field.formalizer.source_display[1][yidx]\\}\\}\n" +
+    "      </th>\n" +
+    "\n" +
+    "      <td ng-repeat=\"(xidx, first_level) in $field.formalizer.source_display[0]\">\n" +
+    "        <input name=\"{{options.name}}-\\{\\{first_level\\}\\}-\\{\\{$index\\}\\}\"\n" +
+    "        id=\"{{options.id}}-\\{\\{first_level\\}\\}-\\{\\{$index\\}\\}\"\n" +
+    "        ng-model=\"{{options.model}}[$field.formalizer.source_model[0][xidx]][$field.formalizer.source_model[1][yidx]]\"\n" +
+    "        %element-attributes% />\n" +
+    "      </td>\n" +
+    "    </tr>\n" +
+    "  </tbody>\n" +
+    "</table>\n" +
+    "\n" +
+    "<!--\n" +
+    "<pre>\n" +
+    "\\{\\{$field.formalizer | json\\}\\}\n" +
+    "\\{\\{$field.model | json\\}\\}\n" +
+    "</pre>\n" +
+    "-->\n" +
     "    <div class=\"help-block\" ng-bind=\"$field.help\"></div>\n" +
     "\n" +
     "  </div>\n" +
@@ -810,12 +855,22 @@ var Formalizer;
 (function () {
     "use strict";
 
+    function safe_array_remove(arr, item) {
+        var cut = arr.indexOf(item);
+        if (cut !== -1) {
+            return arr.splice(cut, 1);
+        }
+
+        return false;
+    }
+
     Formalizer.templates.push("checkbox");
 
     Formalizer.types.checkbox = "checkbox";
 
     Formalizer.parsers.checkbox = function ($scope, field, cfg) {
         field.container["class"].push("checkbox");
+        safe_array_remove(field.element.attrs["class"], "form-control");
     };
 }());
 
@@ -1119,6 +1174,55 @@ var Formalizer;
 
         safe_array_remove(field.element.attrs["class"], "form-control");
 
+    };
+}());
+
+
+(function () {
+    "use strict";
+
+    function safe_array_remove(arr, item) {
+        var cut = arr.indexOf(item);
+        if (cut !== -1) {
+            return arr.splice(cut, 1);
+        }
+
+        return false;
+    }
+
+    Formalizer.templates.push("checkbox-matrix");
+
+    Formalizer.types["checkbox-matrix"] = "checkbox-matrix";
+
+    Formalizer.parsers["checkbox-matrix"] = function ($scope, field, cfg) {
+        // this class should be used, but destroy the table style
+        // field.container["class"].push("checkbox");
+
+        safe_array_remove(field.element.attrs["class"], "form-control");
+
+        // swap places
+        field.options.model = field.element.attrs["ng-model"];
+        delete field.element.attrs["ng-model"];
+
+        field.options.name = field.element.attrs["name"];
+        delete field.element.attrs["name"];
+
+        field.options.id = field.element.attrs["id"];
+        delete field.element.attrs["id"];
+
+        field.element.attrs["type"] = "checkbox";
+
+        if (!field.source_model) {
+            field.source_model = [[],[]];
+
+            field.source_display[0].forEach(function() {
+                field.source_model[0].push(field.source_model[0].length);
+            });
+            field.source_display[1].forEach(function() {
+                field.source_model[1].push(field.source_model[1].length);
+            });
+
+        }
     };
 }());
 
