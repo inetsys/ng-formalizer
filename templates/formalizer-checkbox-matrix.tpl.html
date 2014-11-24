@@ -1,0 +1,40 @@
+<div class="{{container.class}}" ng-class="{ 'has-error' : (%scope-form-name%['{{element.attrs.name}}'].$invalid == true) }" ng-show="$field.formalizer.visible">
+  <label class="{{label.class}}" ng-bind="$field.label"></label>
+  <div class="{{element.container.class}}">
+
+<table>
+  <thead>
+    <tr>
+      <th></th>
+      <th ng-repeat="label in $field.formalizer.source_display[0]">
+        \{\{label\}\}
+      </th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <tr ng-repeat="(yidx, second_level) in $field.formalizer.source_display[1]">
+      <th>
+        \{\{$field.formalizer.source_display[1][yidx]\}\}
+      </th>
+
+      <td ng-repeat="(xidx, first_level) in $field.formalizer.source_display[0]">
+        <input name="{{options.name}}-\{\{first_level\}\}-\{\{$index\}\}"
+        id="{{options.id}}-\{\{first_level\}\}-\{\{$index\}\}"
+        ng-model="{{options.model}}[$field.formalizer.source_model[0][xidx]][$field.formalizer.source_model[1][yidx]]"
+        %element-attributes% />
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<!--
+<pre>
+\{\{$field.formalizer | json\}\}
+\{\{$field.model | json\}\}
+</pre>
+-->
+    <div class="help-block" ng-bind="$field.help"></div>
+
+  </div>
+</div>

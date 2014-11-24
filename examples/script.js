@@ -256,4 +256,73 @@ app.controller("MainCtrl", ["$scope", "$timeout", function ($scope, $timeout) {
 
     }, 5000);
 
+}])
+.controller("MatrixCtrl", ["$scope", "$timeout", function ($scope, $timeout) {
+    $scope.entity = {
+        matrix: [
+
+            [true, false, true],
+            [false, true, false],
+            [true, false, true],
+        ],
+        matrix2: {
+            "A": {"F": true, "G": false, "H": true},
+            "B": {"F": false, "G": true, "H": false},
+            "C": {"F": true, "G": false, "H": true}
+        }
+    };
+
+    $scope.onSubmit = function (dirty_data_only) {
+        console.log("onSubmit");
+        console.log(dirty_data_only);
+    };
+
+    console.log("MatrixCtrl end!");
+
+    $scope.form_cfg = {
+        "legend": "legend",
+        "type": "horizontal",
+        "name": "form",
+        "onSubmit": "onSubmit",
+        "model": "entity",
+        "fields": [{
+            "label": "Checkbox matrix (no source) map to array[array]",
+            "type": "checkbox-matrix",
+            "name": "matrix",
+            "placeholder": "",
+            "source_display": [
+                ["A", "B", "C"],
+                ["F", "G", "H"]
+            ],
+
+            "options": {
+                "select_all": true
+            }
+        },{
+            "label": "Checkbox matrix (with source) map to an object",
+            "type": "checkbox-matrix",
+            "name": "matrix2",
+            "placeholder": "",
+
+            "source_display": [
+                ["A", "B", "C"],
+                ["F", "G", "H"]
+            ],
+
+            "source_model": [
+                ["A", "B", "C"],
+                ["F", "G", "H"]
+            ],
+
+            "options": {
+                "select_all": true
+            }
+        }, {
+            "label": "Submit now!",
+            "type": "submit",
+            "name": "submit",
+            "class": "btn-primary"
+        }]
+    };
+
 }]);
