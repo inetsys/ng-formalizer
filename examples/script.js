@@ -289,20 +289,15 @@ app.controller("MainCtrl", ["$scope", "$timeout", function ($scope, $timeout) {
             "label": "Checkbox matrix (no source) map to array[array]",
             "type": "checkbox-matrix",
             "name": "matrix",
-            "placeholder": "",
+
             "source_display": [
                 ["A", "B", "C"],
                 ["F", "G", "H"]
-            ],
-
-            "options": {
-                "select_all": true
-            }
+            ]
         },{
             "label": "Checkbox matrix (with source) map to an object",
             "type": "checkbox-matrix",
             "name": "matrix2",
-            "placeholder": "",
 
             "source_display": [
                 ["A", "B", "C"],
@@ -312,11 +307,7 @@ app.controller("MainCtrl", ["$scope", "$timeout", function ($scope, $timeout) {
             "source_model": [
                 ["A", "B", "C"],
                 ["F", "G", "H"]
-            ],
-
-            "options": {
-                "select_all": true
-            }
+            ]
         }, {
             "label": "Submit now!",
             "type": "submit",

@@ -174,6 +174,8 @@ Help text. *Can be real-time modified*. You could be used to give extra feedback
 
   using [checklist-model](http://vitalets.github.io/checklist-model/)
 
+* checkbox-matrix
+
 * radio-list
 * typeahead (**IN PROGRESS**)
 
@@ -200,7 +202,7 @@ Same as HTML
 
 ##### `placeholder`: String
 
-No applicable to select, typeahead*, checkbox*, radio*
+No applicable to select, typeahead, typeahead-multi, checkbox*, radio*
 
 
 ##### `default`: String [**optional**]
@@ -208,27 +210,33 @@ No applicable to select, typeahead*, checkbox*, radio*
 If model is `undefined` set this value. No more scope checks.
 
 
-##### `source`: String|Array [**mandatory** in select, typeahead\*, checkbox\*, radio\*]
-
-##### `source_display`: String [**mandatory** in select, typeahead\*, checkbox\*, radio\*]
-
-##### `source_model`: String|null
+##### `source`, `source_display` & `source_model`
 
 These three options configure how your data source is displayed and what need to be stored in your model.
 
-**source**
+* `source`: String|Array
 
-Data source, must be an *array of objects* or a string if you want formalizer to watch the scope for changes.
+  **Mandatory** in: select, typeahead, typeahead-multi, checkbox, checkbox-list, radio\*
 
-*Can be real-time modified.*
+  Data source, must be an *array of objects* or a string if you want formalizer to watch the scope for changes.
 
-**source_display**
+  *Can be real-time modified.*
 
-What will be displayed, the key in the object.
+* `source_display`
 
-**source_model**
+  **Mandatory** in: select, typeahead, typeahead-multi, checkbox, checkbox-list, checkbox-matrix, radio\*, ]
 
-What will be inserted in your model. String if you want a specific key of your object or null if you want the entire object.
+  What will be displayed, the key in `source` object.
+
+  For `checkbox-matrix` it's a 2d-array first the columns, second the rows.
+
+* `source_model`: String|null
+
+  Optional.
+
+  What will be inserted in your model. String if you want a specific key of your object or null if you want the entire object.
+
+  For `checkbox-matrix` represent WHERE (rather than what) by default will map the model to a 2d-array.
 
 
 Example:
@@ -250,6 +258,41 @@ Example:
     }
 }
 ```
+
+`checkbox-matrix` example:
+
+Model
+
+```json
+{
+    matrix2: {
+        "A": {"F": true, "G": false, "H": true},
+        "B": {"F": false, "G": true, "H": false},
+        "C": {"F": true, "G": false, "H": true}
+    }
+}
+```
+
+Configuration
+
+```json
+{
+    "label": "Checkbox matrix",
+    "type": "checkbox-matrix",
+    "name": "matrix",
+
+    "source_display": [
+        ["A", "B", "C"],
+        ["F", "G", "H"]
+    ],
+
+    "source_model": [
+        ["A", "B", "C"],
+        ["F", "G", "H"]
+    ]
+}
+```
+
 
 <a name="field-type-raw-example"></a>
 ##### `template`: String (raw only)
