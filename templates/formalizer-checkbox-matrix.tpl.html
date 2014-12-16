@@ -1,13 +1,12 @@
 <div class="{{container.class}}" ng-class="{ 'has-error' : (%scope-form-name%['{{element.attrs.name}}'].$invalid == true) }" ng-show="$field.formalizer.visible">
-  <label class="{{label.class}}" ng-bind="$field.label"></label>
+  <label class="{{label.class}}" ng-compile="" ng-bind-html="$field.label"></label>
   <div class="{{element.container.class}}">
 
-<table>
+<table class="table table-striped">
   <thead>
     <tr>
       <th></th>
-      <th ng-repeat="label in $field.formalizer.source_display[0]">
-        \{\{label\}\}
+      <th ng-repeat="label in $field.formalizer.source_display[0]" ng-compile="" ng-bind-html="label">
       </th>
     </tr>
   </thead>
@@ -34,7 +33,7 @@
 \{\{$field.model | json\}\}
 </pre>
 -->
-    <div class="help-block" ng-bind="$field.help"></div>
+    <div class="help-block" ng-compile="" ng-bind-html="$field.help"></div>
 
   </div>
 </div>

@@ -16,4 +16,5 @@
   <li ng-show="%scope-form-name%['{{element.attrs.name}}'].$error['one-number']">{{messages['one-number'] || 'At least one number'}}</li>
   <li ng-show="%scope-form-name%['{{element.attrs.name}}'].$error['one-alpha']">{{messages['one-alpha'] || 'At least one letter'}}</li>
   <li ng-show="%scope-form-name%['{{element.attrs.name}}'].$error['server-validation']">{{messages['server-validation'] || 'Server validation fails'}}</li>
+  <li ng-show="%scope-form-name%['{{element.attrs.name}}'].$error['length']">{{messages['length'] || 'Field length must be exactly \{\{element.attrs[\'ng-length\']\}\}'}}</li>
 </ul>

@@ -1,8 +1,8 @@
 <div class="{{container.class}}" ng-show="$field.formalizer.visible">
   <div class="col-sm-10 col-sm-offset-2">
-    <button %element-attributes% ng-disabled="%scope-form-name%.$invalid" ng-bind="$field.label"></button>
+    <button %element-attributes% ng-disabled="%scope-form-name%.$invalid" ng-compile="" ng-bind-html="$field.label"></button>
   </div>
 
-  <div class="help-block" ng-bind="$field.help"></div>
+  <div class="help-block" ng-compile="" ng-bind-html="$field.help"></div>
 
 </div>

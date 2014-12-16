@@ -1,5 +1,5 @@
 <div class="{{container.class}}" ng-class="{ 'has-error' : (%scope-form-name%['{{element.attrs.name}}'].$invalid == true) }" ng-show="$field.formalizer.visible">
-  <label for="{{element.attrs.name}}" class="{{label.class}}" ng-bind="$field.label"></label>
+  <label for="{{element.attrs.name}}" class="{{label.class}}" ng-compile="" ng-bind-html="$field.label"></label>
   <div class="{{element.container.class}}">
     <p class="{{element.wrap.class}}">
         {{element.left}}
@@ -8,7 +8,7 @@
         <!-- hide an input with the value ?! -->
     </p>
 
-    <div class="help-block" ng-bind="$field.help"></div>
+    <div class="help-block" ng-compile="" ng-bind-html="$field.help"></div>
 
     %element-error-list%
 

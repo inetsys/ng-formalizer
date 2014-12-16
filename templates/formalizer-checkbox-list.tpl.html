@@ -1,5 +1,5 @@
 <div class="{{container.class}}" ng-class="{ 'has-error' : (%scope-form-name%['{{element.attrs.name}}'].$invalid == true) }" ng-show="$field.formalizer.visible">
-  <label class="{{label.class}}" ng-bind="$field.label"></label>
+  <label class="{{label.class}}" ng-compile="" ng-bind-html="$field.label"></label>
   <div class="{{element.container.class}}">
     <div ng-show="{{scope_name}}.options.select_all">
       <label for="{{element.attrs.name}}-select-all">
@@ -15,7 +15,7 @@
       </label>
     </div>
 
-    <div class="help-block" ng-bind="$field.help"></div>
+    <div class="help-block" ng-compile="" ng-bind-html="$field.help"></div>
 
   </div>
 </div>

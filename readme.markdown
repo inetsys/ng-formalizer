@@ -224,7 +224,8 @@ These three options configure how your data source is displayed and what need to
 
 * `source_display`
 
-  **Mandatory** in: select, typeahead, typeahead-multi, checkbox, checkbox-list, checkbox-matrix, radio\*, ]
+  **Mandatory** in: select, typeahead, typeahead-multi, checkbox, checkbox-list, checkbox-matrix, radio\*.
+
 
   What will be displayed, the key in `source` object.
 
