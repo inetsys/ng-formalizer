@@ -865,19 +865,31 @@ var Formalizer;
         field.element.attrs["type"] = "checkbox";
 
         if (!field.source_model) {
+          // model will be the index of the arrays
+          $scope.$watch("field.source_display", function (a, b) {
             field.source_model = [[],[]];
 
+            var mdl = field.options.model;
+
             field.source_display[0].forEach(function() {
-                field.source_model[0].push(field.source_model[0].length);
+                var idx = field.source_model[0].length;
+                field.source_model[0].push(idx);
+                // initialize the array, otherwise an object will be created and it's messy
+                $scope.$eval(
+                  mdl + "[" + idx + "] = " +
+                  mdl + "[" + idx + "] || [];"
+                );
             });
+
             field.source_display[1].forEach(function() {
                 field.source_model[1].push(field.source_model[1].length);
             });
 
+          }, true);
+
         }
     };
 }());
-
 
 (function () {
     "use strict";
@@ -936,6 +948,10 @@ var Formalizer;
     angular
 
     .module("formalizer", ["ui.bootstrap", "checklist-model", "ui.bootstrap-slider", "formalizer-tpls", "textAngular"])
+
+    .config(["$sceProvider", function($sceProvider) {
+      $sceProvider.enabled(false);
+    }])
 
     .value("FormalizerConfig", {})
 
@@ -1386,3 +1402,38 @@ angular.forEach('Selected,Checked,Disabled,Readonly,Required,Open'.split(','), f
 });
 
 
+
+angular.module("formalizer")
+.directive("ngCompile", ["$compile", "$timeout", function ($compile, $timeout) {
+  return {
+    link: function ($scope, $elm, $attrs, $ngModel) {
+      $attrs.$observe('ngBindHtml', function ( myTemplate ) {
+        $timeout(function() {
+          $compile($elm.contents())($scope);
+        });
+      });
+    }
+  };
+}]);
+
+angular.module("formalizer")
+.directive("ngLength", function () {
+  return {
+    require: "ngModel",
+    link: function ($scope, $elm, $attrs, $ngModel) {
+      $ngModel.$parsers.unshift(function (value) {
+        // do not test 'empty' things this task is for required
+        var length = parseInt($attrs.ngLength, 10);
+        if (Array.isArray(value) || "string" === typeof value) {
+          $ngModel.$setValidity("length", value.length === length);
+        } else {
+          // invalid length?
+          $ngModel.$setValidity("length", false);
+        }
+        
+
+        return value;
+      });
+    }
+  };
+});
