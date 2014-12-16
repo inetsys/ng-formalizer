@@ -29,6 +29,7 @@ concat:
             - lib/ng-hide-children.js
             - lib/ng-on-bool-attr-change.js
             - lib/ng-compile.js
+            - lib/ng-length.js
         dest: dist/ng-formalizer.js
     js_templates:
         src:
