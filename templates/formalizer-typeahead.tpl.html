@@ -4,10 +4,11 @@
     <p class="{{element.wrap.class}}">
 
     <ul>
-      <li ng-repeat="obj in entity.ta_list">
-        <span>\{\{obj.name\}\} <a ng-click="{{options.del_fn}}(obj)"><span class="glyphicon glyphicon-trash"></span></a></span>
+      <li ng-repeat="obj in taSelected()">
+        <span>\{\{obj[$field.source_display]\}\} <a ng-click="taRemove(obj)"><span class="glyphicon glyphicon-trash"></span></a></span>
       </li>
     </ul>
+
 
     </p>
     <p class="{{element.wrap.class}}">

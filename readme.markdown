@@ -323,6 +323,7 @@ Extends current configuration with extra options for each type of field.
 
 `typeahead` options [ui-bootstrap-typeahead](http://angular-ui.github.io/bootstrap/#/typeahead)
 
+* `typeahead-on-select` not available in typeahead-multi (use options.taAppend instead)
 * `typeahead-append-to-body`
 * `typeahead-editable`
 * `typeahead-input-formatter`
@@ -331,6 +332,59 @@ Extends current configuration with extra options for each type of field.
 * `typeahead-template-url`
 * `typeahead-wait-m`
 
+Typeahead multi callbacks.
+
+* `taAppend ($item, $model, $label)`
+
+  Append $item to list. If provided user must handle the append.
+
+* `taRemove ($item, $model, $label)`
+
+  Remove $item from list. If provided user must handle the removal.
+
+* `taRemove ($item, $model, $label)`
+
+  items selected. If provided user must handle what items are selected.
+
+With this three callbacks it possible to achieve complex behaviors to store information. Here is a small example.
+
+```js
+var listable_items = [{
+    label: "xxx",
+    list: true
+}, {
+    label: "yyy",
+    list: false
+}];
+
+var formalizer_cfg = {
+    // ...
+    "fields": [{
+      type: "typeahead-multi",
+      // name will be ignored, because taSelected, taAppend & taRemove is provided
+      // but need to be sent.
+      name: "listable",
+      label: "list filtered by bool",
+      source: listable_items,
+      source_display: "label",
+
+      options: {
+        taSelected: function() {
+          return listable_items.filter(function(obj) {
+            return obj.list;
+          });
+        },
+        taAppend: function ($item, $model, $label) {
+          $item.list = true;
+        },
+        taRemove: function ($item, $model, $label) {
+          $item.list = false;
+        }
+      }
+    }
+  }]
+};
+```
 
 `datepiker` options [ui-bootstrap-datepicker](http://angular-ui.github.io/bootstrap/#/datepicker)
 
