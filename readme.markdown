@@ -200,6 +200,16 @@ Help text. *Can be real-time modified*. You could be used to give extra feedback
 Same as HTML
 
 
+##### `label_size`: Number (default: 2)
+
+Label width in columns.
+
+
+##### `element_size`: Number (default: 10)
+
+Element width in columns.
+
+
 ##### `placeholder`: String
 
 No applicable to select, typeahead, typeahead-multi, checkbox*, radio*
