@@ -477,7 +477,7 @@ Example:
 }
 ```
 
-##### decimal
+##### decimals
 
 Limit the decimals allowed.
 
@@ -485,7 +485,19 @@ Example:
 
 ```json
 "constraints": {
-   "decimal": 4
+   "decimals": 4
+}
+```
+
+##### no-decimals
+
+Do not allowed decimals (give the error when try to type ',' or '.')
+
+Example:
+
+```json
+"constraints": {
+   "no-decimals": true
 }
 ```
 

@@ -1,7 +1,12 @@
+<!--
+<pre>\{\{element.attrs | json \}\}</pre>
+-->
+
 <ul class="form-error-list help-block">
+
   <li ng-show="$formalizer.$attemps > 0 && %scope-form-name%['{{element.attrs.name}}'].$error.required">{{messages.required || 'Field is required'}}</li>
-  <li ng-show="%scope-form-name%['{{element.attrs.name}}'].$error.min">{{messages.min || 'Field minimum is \{\{element.attrs[\'ng-min\']\}\}'}}</li>
-  <li ng-show="%scope-form-name%['{{element.attrs.name}}'].$error.max">{{messages.max || 'Field maximum is \{\{element.attrs[\'ng-max\']\}\}'}}</li>
+  <li ng-show="%scope-form-name%['{{element.attrs.name}}'].$error.min">{{messages.min || 'Field minimum is \{\{element.attrs[\'min\']\}\}'}}</li>
+  <li ng-show="%scope-form-name%['{{element.attrs.name}}'].$error.max">{{messages.max || 'Field maximum is \{\{element.attrs[\'max\']\}\}'}}</li>
   <li ng-show="%scope-form-name%['{{element.attrs.name}}'].$error.minlength">{{messages.minlength || 'Field is required to be at least \{\{element.attrs[\'ng-minlength\']\}\} characters'}}</li>
   <li ng-show="%scope-form-name%['{{element.attrs.name}}'].$error.maxlength">{{messages.maxlength || 'Field cannot be longer than \{\{element.attrs[\'ng-maxlength\']\}\} characters'}}</li>
   <li ng-show="%scope-form-name%['{{element.attrs.name}}'].$error.number">{{messages.number || 'Field is an invalid number'}}</li>
@@ -17,4 +22,6 @@
   <li ng-show="%scope-form-name%['{{element.attrs.name}}'].$error['one-alpha']">{{messages['one-alpha'] || 'At least one letter'}}</li>
   <li ng-show="%scope-form-name%['{{element.attrs.name}}'].$error['server-validation']">{{messages['server-validation'] || 'Server validation fails'}}</li>
   <li ng-show="%scope-form-name%['{{element.attrs.name}}'].$error['length']">{{messages['length'] || 'Field length must be exactly \{\{element.attrs[\'ng-length\']\}\}'}}</li>
+  <li ng-show="%scope-form-name%['{{element.attrs.name}}'].$error['decimals']">{{messages['decimals'] || 'Maximum decimals exceeded:  \{\{element.attrs[\'ng-decimals\']\}\}'}}</li>
+  <li ng-show="%scope-form-name%['{{element.attrs.name}}'].$error['no-decimals']">{{messages['no-decimals'] || 'Cannot contain decimals \{\{element.attrs[\'ng-no-decimals\']\}\}'}}</li>
 </ul>
