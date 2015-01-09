@@ -215,13 +215,13 @@ app.controller("MainCtrl", ["$scope", "$timeout", function ($scope, $timeout) {
     $scope.list = [{
         id: 1,
         label: "ELEMENT ID 1"
-    },{
+    }, {
         id: 2,
         label: "ELEMENT ID 2"
-    },{
+    }, {
         id: 3,
         label: "ELEMENT ID 3"
-    },{
+    }, {
         id: 4,
         label: "ELEMENT ID 4"
     }];
@@ -294,7 +294,7 @@ app.controller("MainCtrl", ["$scope", "$timeout", function ($scope, $timeout) {
                 ["A", "B", "C"],
                 ["F", "G", "H"]
             ]
-        },{
+        }, {
             "label": "Checkbox matrix (with source) map to an object",
             "type": "checkbox-matrix",
             "name": "matrix2",
@@ -316,4 +316,31 @@ app.controller("MainCtrl", ["$scope", "$timeout", function ($scope, $timeout) {
         }]
     };
 
+}]);
+
+app.controller("DisableWeekendsCtrl", ["$scope", "$timeout", function ($scope, $timeout) {
+    $scope.disabled_weekend = function (date, mode) {
+        return (mode === "day" && (date.getDay() === 0 || date.getDay() === 6));
+    };
+
+    $scope.form_cfg = {
+        "legend": "legend",
+        "type": "horizontal",
+        "name": "form",
+        "onSubmit": "onSubmit",
+        "model": "entity",
+        "fields": [{
+            "label": "datepicker",
+            "type": "datepicker",
+            "name": "datepicker",
+            "attrs": {
+                "date-disabled": "disabled_weekend(date, mode)"
+            }
+        }, {
+            "label": "Submit now!",
+            "type": "submit",
+            "name": "submit",
+            "class": "btn-primary"
+        }]
+    };
 }]);

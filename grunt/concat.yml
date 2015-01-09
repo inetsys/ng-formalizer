@@ -32,6 +32,8 @@ concat:
             - lib/ng-length.js
             - lib/ng-decimals.js
             - lib/ng-no-decimals.js
+            - lib/ng-past-date.js
+            - lib/ng-future-date.js
 
         dest: dist/ng-formalizer.js
     js_templates:

@@ -133,6 +133,8 @@ Create an input with some constraints and error messages translated.
     "groups": "my-group",
     "actions": {
     },
+    "attrs": {
+    },
     "constraints": {
         "required": true,
         "minlength": 5
@@ -331,9 +333,9 @@ Extends current configuration with extra options for each type of field.
 * `multiple`
 
 
-`typeahead` options [ui-bootstrap-typeahead](http://angular-ui.github.io/bootstrap/#/typeahead)
+`typeahead` & `typeahead-multi` attrs [ui-bootstrap-typeahead](http://angular-ui.github.io/bootstrap/#/typeahead)
 
-* `typeahead-on-select` not available in typeahead-multi (use options.taAppend instead)
+* `typeahead-on-select` not available in `typeahead-multi` (use options.taAppend instead)
 * `typeahead-append-to-body`
 * `typeahead-editable`
 * `typeahead-input-formatter`
@@ -342,17 +344,17 @@ Extends current configuration with extra options for each type of field.
 * `typeahead-template-url`
 * `typeahead-wait-m`
 
-Typeahead multi callbacks.
+`typeahead` options
 
-* `taAppend ($item, $model, $label)`
+* `taAppend` function($item, $model, $label)
 
   Append $item to list. If provided user must handle the append.
 
-* `taRemove ($item, $model, $label)`
+* `taRemove` function($item, $model, $label)
 
   Remove $item from list. If provided user must handle the removal.
 
-* `taRemove ($item, $model, $label)`
+* `taSelected` function()
 
   items selected. If provided user must handle what items are selected.
 
@@ -396,12 +398,12 @@ var formalizer_cfg = {
 };
 ```
 
-`datepiker` options [ui-bootstrap-datepicker](http://angular-ui.github.io/bootstrap/#/datepicker)
+`datepiker` attrs [ui-bootstrap-datepicker](http://angular-ui.github.io/bootstrap/#/datepicker)
 
 * `datepicker-mode`
 * `min-date`
 * `max-date`
-* `date-disabled`
+* `date-disabled` [usage example](#datepiker-date-disabled)
 * `show-weeks`
 * `starting-day`
 * `init-date`
@@ -423,7 +425,7 @@ var formalizer_cfg = {
 * `datepicker-option`
 
 
-`slider` options [angular-bootstrap-slider](https://github.com/seiyria/angular-bootstrap-slider)
+`slider` attrs [angular-bootstrap-slider](https://github.com/seiyria/angular-bootstrap-slider)
 
 * `min`
 * `max`
@@ -603,6 +605,26 @@ A color: #ffffff (# is required)
 }
 ```
 
+##### future-date
+
+Set datepicker range.
+
+```json
+"constraints": {
+   "future-date": true
+}
+```
+
+##### past-date
+
+Set datepicker range.
+
+```json
+"constraints": {
+   "past-date": true
+}
+```
+
 ##### server-validation
 
 Validate against server. $http send a JSON body with `request-key` and server must return a JSON with a boolean in `request-response`.
@@ -623,8 +645,6 @@ By default `request-key` is `value` and `request-response` is `success`
 #### constraints todo list
 
 * IPv4/IPv6
-* After Date (Future Date)
-* Before Date
 * alpha-dash
 * alpha-num
 * between (can be mimic with min/max really needed?)
@@ -736,6 +756,26 @@ Example:
 }]
 ```
 
+### attrs
+
+`attrs` object contains what you expect, extra attributes that will be added to the element.
+
+The atts are applied last, so you can override default behaviors.
+
+
+For example, this won't disable the form.
+```json
+{
+    "actions": {
+        "disable": false
+    },
+    "attrs": {
+        "ng-disable": true
+    }
+}
+```
+
+
 ### Post initialization (late loading)
 
 Sometimes you could need to wait for an async event (request) to arrive before displaying the form.
@@ -759,18 +799,19 @@ Hide a form field.
 
 ```json
 {
-    "actions": {
-        "show": false
+    "attrs": {
+        "ng-show": false
     }
 }
 ```
 
+<a name="datepiker-date-disabled"></a>
 Disable weekend selection @datepicker
 
 ```js
 field_cfg = [{
     //...
-    "constraints": {
+    "attrs": {
         "date-disabled": "disabled_weekend(date, mode)"
     }
 }];

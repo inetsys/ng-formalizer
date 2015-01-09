@@ -66,7 +66,6 @@ describe("specs-formalizer-number.js", function () {
         form = $scope.$$childTail.form;
         $formalizer = $scope.$$childTail.$formalizer;
         submit_el = element.find("#form-submit");
-        console.log(element.html());
     }));
 
     function nok() {

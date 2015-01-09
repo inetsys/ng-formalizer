@@ -70,7 +70,6 @@ describe("specs-formalizer-number.js", function () {
         $scope.$digest();
 
         $timeout.flush();
-        console.log(element.html());
 
         form = $scope.$$childTail.form;
         $formalizer = $scope.$$childTail.$formalizer;

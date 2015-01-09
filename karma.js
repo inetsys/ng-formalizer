@@ -69,6 +69,8 @@ module.exports = function (config) {
       'lib/ng-hide-groups.js',
       'lib/ng-hide-children.js',
       'lib/ng-on-bool-attr-change.js',
+      'lib/ng-past-date.js',
+      'lib/ng-future-date.js',
 
       // tests
       'tests/*.js',
