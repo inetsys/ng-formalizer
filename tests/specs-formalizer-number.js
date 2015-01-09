@@ -15,7 +15,7 @@ describe("specs-formalizer-number.js", function () {
             "constraints": {
                 "min": 10,
                 "max": 100,
-                "decimal": 2,
+                "decimals": 2,
                 "required": true
             },
         }, {
@@ -66,6 +66,7 @@ describe("specs-formalizer-number.js", function () {
         form = $scope.$$childTail.form;
         $formalizer = $scope.$$childTail.$formalizer;
         submit_el = element.find("#form-submit");
+        console.log(element.html());
     }));
 
     function nok() {
@@ -88,8 +89,7 @@ describe("specs-formalizer-number.js", function () {
         $scope.$apply();
         $scope.$digest();
 
-        form_state && ok();
-        !form_state && nok();
+        form_state ? ok() : nok();
     }
     // a single test
     // a single test

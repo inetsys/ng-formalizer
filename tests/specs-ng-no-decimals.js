@@ -27,7 +27,7 @@ describe("specs-ng-decimal.js", function () {
 
         var element = $compile(
             "<form name=\"form\">" +
-              "<input type=\"number\" name=\"decimal\" ng-model=\"entity.decimal\" ng-decimals=\"4\" />" +
+              "<input type=\"number\" name=\"decimal\" ng-model=\"entity.decimal\" ng-no-decimals=\"true\" />" +
             "</form>"
         )($rootScope);
 
@@ -38,15 +38,21 @@ describe("specs-ng-decimal.js", function () {
 
         expect(input.$valid).toEqual(true);
 
-        input.$setViewValue("0.123");
+        input.$setViewValue("0");
         expect(input.$valid).toEqual(true);
-        expect(input.$viewValue).toEqual("0.123");
-        expect($rootScope.entity.decimal).toEqual(0.123);
+        expect(input.$viewValue).toEqual("0");
+        expect($rootScope.entity.decimal).toEqual(0);
 
-        input.$setViewValue("0.12356");
+        input.$setViewValue("0.");
         expect(input.$valid).toEqual(false);
-        expect(input.$viewValue).toEqual("0.12356");
+        expect(input.$viewValue).toEqual("0.");
         $rootScope.$digest();
-        expect($rootScope.entity.decimal).toEqual(0.12356);
+        expect($rootScope.entity.decimal).toEqual(0);
+
+        input.$setViewValue("0,1");
+        expect(input.$valid).toEqual(false);
+        expect(input.$viewValue).toEqual("0,1");
+        $rootScope.$digest();
+        expect($rootScope.entity.decimal).toEqual(undefined); // almost NaN
     });
 });
