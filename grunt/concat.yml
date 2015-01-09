@@ -34,6 +34,7 @@ concat:
             - lib/ng-no-decimals.js
             - lib/ng-past-date.js
             - lib/ng-future-date.js
+            - lib/ng-till-today.js
 
         dest: dist/ng-formalizer.js
     js_templates:

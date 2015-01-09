@@ -625,6 +625,16 @@ Set datepicker range.
 }
 ```
 
+##### till-today
+
+Set datepicker range.
+
+```json
+"constraints": {
+   "till-today": true
+}
+```
+
 ##### server-validation
 
 Validate against server. $http send a JSON body with `request-key` and server must return a JSON with a boolean in `request-response`.
