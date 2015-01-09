@@ -97,10 +97,15 @@ angular.module("templates/formalizer-columns.tpl.html", []).run(["$templateCache
 
 angular.module("templates/formalizer-error-list.tpl.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("templates/formalizer-error-list.tpl.html",
+    "<!--\n" +
+    "<pre>\\{\\{element.attrs | json \\}\\}</pre>\n" +
+    "-->\n" +
+    "\n" +
     "<ul class=\"form-error-list help-block\">\n" +
+    "\n" +
     "  <li ng-show=\"$formalizer.$attemps > 0 && %scope-form-name%['{{element.attrs.name}}'].$error.required\">{{messages.required || 'Field is required'}}</li>\n" +
-    "  <li ng-show=\"%scope-form-name%['{{element.attrs.name}}'].$error.min\">{{messages.min || 'Field minimum is \\{\\{element.attrs[\\'ng-min\\']\\}\\}'}}</li>\n" +
-    "  <li ng-show=\"%scope-form-name%['{{element.attrs.name}}'].$error.max\">{{messages.max || 'Field maximum is \\{\\{element.attrs[\\'ng-max\\']\\}\\}'}}</li>\n" +
+    "  <li ng-show=\"%scope-form-name%['{{element.attrs.name}}'].$error.min\">{{messages.min || 'Field minimum is \\{\\{element.attrs[\\'min\\']\\}\\}'}}</li>\n" +
+    "  <li ng-show=\"%scope-form-name%['{{element.attrs.name}}'].$error.max\">{{messages.max || 'Field maximum is \\{\\{element.attrs[\\'max\\']\\}\\}'}}</li>\n" +
     "  <li ng-show=\"%scope-form-name%['{{element.attrs.name}}'].$error.minlength\">{{messages.minlength || 'Field is required to be at least \\{\\{element.attrs[\\'ng-minlength\\']\\}\\} characters'}}</li>\n" +
     "  <li ng-show=\"%scope-form-name%['{{element.attrs.name}}'].$error.maxlength\">{{messages.maxlength || 'Field cannot be longer than \\{\\{element.attrs[\\'ng-maxlength\\']\\}\\} characters'}}</li>\n" +
     "  <li ng-show=\"%scope-form-name%['{{element.attrs.name}}'].$error.number\">{{messages.number || 'Field is an invalid number'}}</li>\n" +
@@ -116,6 +121,8 @@ angular.module("templates/formalizer-error-list.tpl.html", []).run(["$templateCa
     "  <li ng-show=\"%scope-form-name%['{{element.attrs.name}}'].$error['one-alpha']\">{{messages['one-alpha'] || 'At least one letter'}}</li>\n" +
     "  <li ng-show=\"%scope-form-name%['{{element.attrs.name}}'].$error['server-validation']\">{{messages['server-validation'] || 'Server validation fails'}}</li>\n" +
     "  <li ng-show=\"%scope-form-name%['{{element.attrs.name}}'].$error['length']\">{{messages['length'] || 'Field length must be exactly \\{\\{element.attrs[\\'ng-length\\']\\}\\}'}}</li>\n" +
+    "  <li ng-show=\"%scope-form-name%['{{element.attrs.name}}'].$error['decimals']\">{{messages['decimals'] || 'Maximum decimals exceeded:  \\{\\{element.attrs[\\'ng-decimals\\']\\}\\}'}}</li>\n" +
+    "  <li ng-show=\"%scope-form-name%['{{element.attrs.name}}'].$error['no-decimals']\">{{messages['no-decimals'] || 'Cannot contain decimals \\{\\{element.attrs[\\'ng-no-decimals\\']\\}\\}'}}</li>\n" +
     "</ul>\n" +
     "");
 }]);
@@ -311,11 +318,12 @@ angular.module("templates/formalizer-typeahead.tpl.html", []).run(["$templateCac
     "  <div class=\"{{element.container.class}}\">\n" +
     "    <p class=\"{{element.wrap.class}}\">\n" +
     "\n" +
-    "    <ul>\n" +
-    "      <li ng-repeat=\"obj in entity.ta_list\">\n" +
-    "        <span>\\{\\{obj.name\\}\\} <a ng-click=\"{{options.del_fn}}(obj)\"><span class=\"glyphicon glyphicon-trash\"></span></a></span>\n" +
+    "    <ul class=\"formalizer-typeahead-muli formalizer-typeahead-muli-selected\">\n" +
+    "      <li ng-repeat=\"obj in taSelected()\">\n" +
+    "        <span>\\{\\{obj[$field.source_display]\\}\\} <a ng-click=\"taRemove(obj)\"><span class=\"glyphicon glyphicon-trash\"></span></a></span>\n" +
     "      </li>\n" +
     "    </ul>\n" +
+    "\n" +
     "\n" +
     "    </p>\n" +
     "    <p class=\"{{element.wrap.class}}\">\n" +
@@ -508,6 +516,7 @@ var Formalizer;
 
         var constraints = cfg.constraints || {};
         var actions = cfg.actions || {};
+        var attrs = cfg.attrs || {};
 
         var field = {
             visible: true,
@@ -518,9 +527,11 @@ var Formalizer;
                 "class": ["form-group"]
             },
             label: {
-                "class": ["control-label"].concat((cfg.labelClass || "").split(" "))
+                "class": ["control-label"].concat((cfg.labelClass || "").split(" ")),
+                size: parseInt(cfg.label_size, 10) || 2
             },
             element: {
+                size: parseInt(cfg.element_size, 10),
                 container: {
                     "class": []
                 },
@@ -547,6 +558,8 @@ var Formalizer;
                 scope_name: field_in_scope
             })
         };
+
+        field.container.class.push("formalizer-" + field.type);
 
         if (cfg.default !== undefined) {
             field.element.attrs["ng-default"] = "$field.default";
@@ -575,7 +588,7 @@ var Formalizer;
         // constraints
         var kattr;
         for (key in constraints) {
-            if (key === "min" || key === "max") {
+            if (["min", "max", "max-date", "min-date"].indexOf(key) !== -1) {
                 field.element.attrs[key] = constraints[key];
                 field.container.class.push(key);
             } else {
@@ -590,16 +603,25 @@ var Formalizer;
             field.element.attrs[kattr] = actions[key];
         }
 
+        // overwrite everything use it with caution!
+        for (key in attrs) {
+            field.element.attrs[key] = attrs[key];
+        }
+
+
 
         switch (this.type) {
         case "horizontal":
+            var l = field.label.size,
+                r = field.element.size || (12 - field.label.size);
+
             if (cfg.type === "checkbox") {
-                field.element.container["class"].push("col-sm-offset-2");
+                field.element.container["class"].push("col-sm-offset-" + l);
                 field.label["class"].push("col-sm-12");
                 safe_array_remove(field.label["class"], "control-label");
             } else {
-                field.element.container["class"].push("col-sm-9");
-                field.label["class"].push("col-sm-2");
+                field.element.container["class"].push("col-sm-" + r); // 1 padding ?
+                field.label["class"].push("col-sm-" + l);
             }
             break;
         case "vertical":
@@ -917,22 +939,6 @@ var Formalizer;
         "typeahead-wait-ms"
     ];
 
-    var SPECIAL_CHARS_REGEXP = /([\:\-\_]+(.))/g;
-    var MOZ_HACK_REGEXP = /^moz([A-Z])/;
-
-    /**
-     * Converts snake_case to camelCase.
-     * Also there is special case for Moz prefix starting with upper case letter.
-     * @param name Name to normalize
-     */
-    function camelCase(name) {
-        return name
-            .replace(SPECIAL_CHARS_REGEXP, function (_, separator, letter, offset) {
-                return offset ? letter.toUpperCase() : letter;
-            })
-            .replace(MOZ_HACK_REGEXP, "Moz$1");
-    }
-
     function safe_array_remove(arr, item) {
         var cut = arr.indexOf(item);
         if (cut !== -1) {
@@ -952,7 +958,7 @@ var Formalizer;
         if (field.source_display) {
             field.element.attrs.typeahead = "p as p." + field.source_display + " for p in $field.formalizer.source | filter:{" + field.source_display + ":$viewValue}";
         } else {
-            field.element.attrs.typeahead = "for p in $field.formalizer.source";
+            field.element.attrs.typeahead = "p for p in $field.formalizer.source";
         }
 
         angular.forEach(typeahead_attrs, function (value) {
@@ -964,8 +970,6 @@ var Formalizer;
 
     Formalizer.parsers["typeahead-multi"] = function ($scope, field) {
         var name = field.element.attrs.name,
-            add_fn = camelCase("add-" + name),
-            del_fn = camelCase("del-" + name),
             ta_model = field.element.attrs["ng-model"],
             ta_model_selected = field.element.attrs["ng-model"] + "_sel";
 
@@ -977,28 +981,32 @@ var Formalizer;
             $scope.$eval(ta_model + " = []");
         }
 
-        $scope[add_fn] = function ($item, $model, $label) {
-            //console.log(add_fn);
-            var target = $scope.$eval(ta_model);
+        $scope["taSelected"] = field.options.taSelected || function () {
+            return $scope.$eval(ta_model);
+        };
 
-            if (target.indexOf($item) === -1) {
-                target.push($item);
+        $scope["taAppend"] = function ($item, $model, $label) {
+            if (field.options.taAppend) {
+                field.options.taAppend($item, $model, $label);
+            } else {
+                var target = $scope.$eval(ta_model);
+
+                if (target.indexOf($item) === -1) {
+                    target.push($item);
+                }
             }
 
             $scope.$eval(ta_model_selected + " = ''");
         };
 
 
-        $scope[del_fn] = function ($item) {
+        $scope["taRemove"] = field.options.taRemove || function ($item) {
             var target = $scope.$eval(ta_model);
 
             safe_array_remove(target, $item);
         };
 
-        field.options.model = ta_model;
-        field.options.del_fn = del_fn;
-
-        field.element.attrs["typeahead-on-select"] = add_fn + "($item, $model, $label)";
+        field.element.attrs["typeahead-on-select"] = "taAppend($item, $model, $label)";
 
         Formalizer.parsers.typeahead($scope, field);
     };
@@ -1689,12 +1697,13 @@ angular.module("formalizer")
                 values = Object.keys(groups);
 
             $scope.$watch($attrs.ngModel, function(a, b) {
-                if (values.indexOf("" + a) >= 0) {
-                    $scope.$formalizer.hideGroups(groups[a]);
-                }
-
+                // fix: first show, then hide bacause if model is set a == b
                 if (values.indexOf("" + b) >= 0) {
                     $scope.$formalizer.showGroups(groups[b]);
+                }
+
+                if (values.indexOf("" + a) >= 0) {
+                    $scope.$formalizer.hideGroups(groups[a]);
                 }
             });
         }
@@ -1784,4 +1793,89 @@ angular.module("formalizer")
       });
     }
   };
+});
+
+angular.module("formalizer")
+.directive("ngDecimals", function () {
+    return {
+        require: "ngModel",
+        link: function ($scope, $elm, $attrs, $ngModel) {
+            var max_decimals = parseInt($attrs.ngDecimals, 10) || 4;
+
+            $ngModel.$parsers.unshift(function (value) {
+                var fnum = parseFloat(value),
+                    fstr = "" + fnum,
+                    fdec = 0;
+
+                if (fstr.indexOf(".") !== -1) {
+                    fdec = fstr.split(".")[1].length;
+                }
+
+                $ngModel.$setValidity("decimals", !isNaN(fnum) && fdec <= max_decimals);
+
+                return value;
+            });
+        }
+    };
+});
+angular.module("formalizer")
+.directive("ngNoDecimals", function () {
+    return {
+        require: "ngModel",
+        link: function ($scope, $elm, $attrs, $ngModel) {
+            $ngModel.$parsers.unshift(function (value) {
+                var fstr = "" + value;
+
+                $ngModel.$setValidity("no-decimals",
+                    fstr.indexOf(".") === -1 && fstr.indexOf(",") === -1);
+
+                return value;
+            });
+        }
+    };
+});
+angular.module("formalizer")
+.directive("ngPastDate", function () {
+    return {
+        priority: -9000, // higher than ui-datepicker
+        link: function ($scope, $elm, $attrs) {
+            var date = new Date();
+            date.setMilliseconds(0);
+            date.setSeconds(0);
+            date.setMinutes(0);
+            date.setHours(0);
+            date.setTime(date.getTime() - 24 * 60 * 60 * 1000);
+
+            $attrs.$set('maxDate', JSON.stringify(date));
+
+        }
+    };
+});
+angular.module("formalizer")
+.directive("ngFutureDate", function () {
+    return {
+        priority: -9000, // higher than ui-datepicker
+        link: function ($scope, $elm, $attrs) {
+            var date = new Date();
+            date.setMilliseconds(0);
+            date.setSeconds(0);
+            date.setMinutes(0);
+            date.setHours(0);
+            date.setTime(date.getTime() + 24 * 60 * 60 * 1000);
+
+            $attrs.$set('maxDate', JSON.stringify(date));
+
+        }
+    };
+});
+angular.module("formalizer")
+.directive("ngTillToday", function () {
+    return {
+        priority: -9000, // higher than ui-datepicker
+        link: function ($scope, $elm, $attrs) {
+            var date = new Date();
+
+            $attrs.$set('maxDate', JSON.stringify(date));
+        }
+    };
 });

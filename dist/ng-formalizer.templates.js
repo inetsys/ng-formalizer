@@ -97,10 +97,15 @@ angular.module("templates/formalizer-columns.tpl.html", []).run(["$templateCache
 
 angular.module("templates/formalizer-error-list.tpl.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("templates/formalizer-error-list.tpl.html",
+    "<!--\n" +
+    "<pre>\\{\\{element.attrs | json \\}\\}</pre>\n" +
+    "-->\n" +
+    "\n" +
     "<ul class=\"form-error-list help-block\">\n" +
+    "\n" +
     "  <li ng-show=\"$formalizer.$attemps > 0 && %scope-form-name%['{{element.attrs.name}}'].$error.required\">{{messages.required || 'Field is required'}}</li>\n" +
-    "  <li ng-show=\"%scope-form-name%['{{element.attrs.name}}'].$error.min\">{{messages.min || 'Field minimum is \\{\\{element.attrs[\\'ng-min\\']\\}\\}'}}</li>\n" +
-    "  <li ng-show=\"%scope-form-name%['{{element.attrs.name}}'].$error.max\">{{messages.max || 'Field maximum is \\{\\{element.attrs[\\'ng-max\\']\\}\\}'}}</li>\n" +
+    "  <li ng-show=\"%scope-form-name%['{{element.attrs.name}}'].$error.min\">{{messages.min || 'Field minimum is \\{\\{element.attrs[\\'min\\']\\}\\}'}}</li>\n" +
+    "  <li ng-show=\"%scope-form-name%['{{element.attrs.name}}'].$error.max\">{{messages.max || 'Field maximum is \\{\\{element.attrs[\\'max\\']\\}\\}'}}</li>\n" +
     "  <li ng-show=\"%scope-form-name%['{{element.attrs.name}}'].$error.minlength\">{{messages.minlength || 'Field is required to be at least \\{\\{element.attrs[\\'ng-minlength\\']\\}\\} characters'}}</li>\n" +
     "  <li ng-show=\"%scope-form-name%['{{element.attrs.name}}'].$error.maxlength\">{{messages.maxlength || 'Field cannot be longer than \\{\\{element.attrs[\\'ng-maxlength\\']\\}\\} characters'}}</li>\n" +
     "  <li ng-show=\"%scope-form-name%['{{element.attrs.name}}'].$error.number\">{{messages.number || 'Field is an invalid number'}}</li>\n" +
@@ -116,6 +121,8 @@ angular.module("templates/formalizer-error-list.tpl.html", []).run(["$templateCa
     "  <li ng-show=\"%scope-form-name%['{{element.attrs.name}}'].$error['one-alpha']\">{{messages['one-alpha'] || 'At least one letter'}}</li>\n" +
     "  <li ng-show=\"%scope-form-name%['{{element.attrs.name}}'].$error['server-validation']\">{{messages['server-validation'] || 'Server validation fails'}}</li>\n" +
     "  <li ng-show=\"%scope-form-name%['{{element.attrs.name}}'].$error['length']\">{{messages['length'] || 'Field length must be exactly \\{\\{element.attrs[\\'ng-length\\']\\}\\}'}}</li>\n" +
+    "  <li ng-show=\"%scope-form-name%['{{element.attrs.name}}'].$error['decimals']\">{{messages['decimals'] || 'Maximum decimals exceeded:  \\{\\{element.attrs[\\'ng-decimals\\']\\}\\}'}}</li>\n" +
+    "  <li ng-show=\"%scope-form-name%['{{element.attrs.name}}'].$error['no-decimals']\">{{messages['no-decimals'] || 'Cannot contain decimals \\{\\{element.attrs[\\'ng-no-decimals\\']\\}\\}'}}</li>\n" +
     "</ul>\n" +
     "");
 }]);
@@ -311,11 +318,12 @@ angular.module("templates/formalizer-typeahead.tpl.html", []).run(["$templateCac
     "  <div class=\"{{element.container.class}}\">\n" +
     "    <p class=\"{{element.wrap.class}}\">\n" +
     "\n" +
-    "    <ul>\n" +
-    "      <li ng-repeat=\"obj in entity.ta_list\">\n" +
-    "        <span>\\{\\{obj.name\\}\\} <a ng-click=\"{{options.del_fn}}(obj)\"><span class=\"glyphicon glyphicon-trash\"></span></a></span>\n" +
+    "    <ul class=\"formalizer-typeahead-muli formalizer-typeahead-muli-selected\">\n" +
+    "      <li ng-repeat=\"obj in taSelected()\">\n" +
+    "        <span>\\{\\{obj[$field.source_display]\\}\\} <a ng-click=\"taRemove(obj)\"><span class=\"glyphicon glyphicon-trash\"></span></a></span>\n" +
     "      </li>\n" +
     "    </ul>\n" +
+    "\n" +
     "\n" +
     "    </p>\n" +
     "    <p class=\"{{element.wrap.class}}\">\n" +
