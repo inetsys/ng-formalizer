@@ -582,7 +582,8 @@ var Formalizer;
 
         field.element.attrs["ng-model"] = cfg.model || this.model + "." + name;
         field.element.attrs["class"] = ["form-control"].concat((cfg["class"] || "").split(" "));
-        field.element.attrs["ng-class"] = "{'has-error': $formalizer.attempts > 0 && " + this.name + "." + field.element.attrs.name + ".$invalid}";
+        field.element.attrs["ng-class"] =
+            '{"has-error": $formalizer.attempts > 0 && ' + this.name + "." + field.element.attrs.name + '.$invalid}';
         field.element.attrs["ng-placeholder"] = cfg.placeholder || "";
 
         // constraints
@@ -608,6 +609,12 @@ var Formalizer;
             field.element.attrs[key] = attrs[key];
         }
 
+        // escape double quotes!
+        for (key in field.element.attrs) {
+            if ("string" === typeof field.element.attrs[key]) {
+                field.element.attrs[key] = field.element.attrs[key].replace(/\"/g, "&quot;");
+            }
+        }
 
 
         switch (this.type) {
@@ -1665,6 +1672,10 @@ angular.module("formalizer")
             var def_val = $scope.$eval($attrs.ngDefault),
                 not_set_values = $scope.$eval($attrs.ngDefaultValues);
 
+            if ("number" === $attrs.type) {
+                def_val = parseFloat(def_val, 10);
+            }
+
             if (!not_set_values) {
                 not_set_values = [undefined];
             } else if (Array.isArray(not_set_values)) {
@@ -1676,7 +1687,6 @@ angular.module("formalizer")
             function is_nan(val) {
                 return "number" === typeof val && ("" + val) === "NaN";
             }
-
 
             // wait model to be populated
             $timeout(function () {
