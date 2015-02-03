@@ -39,6 +39,8 @@ module.exports = function (config) {
       "bower_components/textAngular/dist/textAngular.min.js",
       "bower_components/textAngular/dist/textAngular-sanitize.min.js",
 
+      "bower_components/angular-i18n-1.3/angular-locale_es.js",
+
 
       "bower_components/moment/moment.js",
 
@@ -71,6 +73,7 @@ module.exports = function (config) {
       'lib/ng-on-bool-attr-change.js',
       'lib/ng-past-date.js',
       'lib/ng-future-date.js',
+      'lib/ng-use-locale.js',
 
       // tests
       'tests/*.js',

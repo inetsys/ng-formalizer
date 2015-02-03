@@ -344,3 +344,39 @@ app.controller("DisableWeekendsCtrl", ["$scope", "$timeout", function ($scope, $
         }]
     };
 }]);
+
+
+
+app
+.controller("NumberCtrl", ["$scope", "$timeout", function ($scope, $timeout) {
+  $scope.entity = {
+    num: 5000000.99
+  };
+
+  $scope.onSubmit = function (dirty_data_only) {
+    console.log("onSubmit");
+    console.log(dirty_data_only);
+  };
+
+  $scope.form_cfg = {
+    "legend": "legend",
+    "type": "horizontal",
+    "name": "form",
+    "onSubmit": "onSubmit",
+    "model": "entity",
+    "fields": [{
+      "label": "number",
+      "type": "number",
+      "name": "num",
+      "actions": {
+        "use-locale":""
+      }
+    }, {
+      "label": "Submit now!",
+      "type": "submit",
+      "name": "submit",
+      "class": "btn-primary"
+    }]
+  };
+
+}]);
