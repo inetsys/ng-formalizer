@@ -861,6 +861,22 @@ fix [TZ localization in date picker should be optional](https://github.com/angul
 
 - - -
 
+## Internalization
+
+Input number can be internalized allowing enter a number with "." or "," as
+decimal separator depending on current ngLocale ($locale).
+
+```js
+{ // field
+  "type":"number",
+  "attrs": {
+    "use-locale": ""
+  }
+}
+```
+
+- - -
+
 ## Extending templates
 
 Here I expose some rules you need to know to write your own.
