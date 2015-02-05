@@ -73,6 +73,10 @@ app.controller("MainCtrl", ["$scope", "$timeout", function ($scope, $timeout) {
             "request-key": "username",
             "response-key": "success"
         },
+        // raw-overwirte of container attrs
+        "cattrs": {
+          "class": ["WTF!!!"]
+        },
         "messages": {
             "minlength": "más de 5 caracters majo!",
             "server-validation": "the only free name is pepe123"

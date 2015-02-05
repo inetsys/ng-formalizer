@@ -1,4 +1,4 @@
-<div class="{{container.class}}" ng-class="{ 'has-error' : (%scope-form-name%['{{element.attrs.name}}'].$invalid == true) }" ng-show="$field.formalizer.visible">
+<div {{container.attrs_text}}>
   <label for="{{element.attrs.name}}" class="{{label.class}}" ng-compile="" ng-bind-html="$field.label"></label>
   <div class="{{element.container.class}}">
     <select %element-attributes%>
