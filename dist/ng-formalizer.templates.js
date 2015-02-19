@@ -2,7 +2,7 @@ angular.module('formalizer-tpls', ['templates/formalizer-checkbox-list.tpl.html'
 
 angular.module("templates/formalizer-checkbox-list.tpl.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("templates/formalizer-checkbox-list.tpl.html",
-    "<div class=\"{{container.class}}\" ng-class=\"{ 'has-error' : (%scope-form-name%['{{element.attrs.name}}'].$invalid == true) }\" ng-show=\"$field.formalizer.visible\">\n" +
+    "<div {{container.attrs_text}}>\n" +
     "  <label class=\"{{label.class}}\" ng-compile=\"\" ng-bind-html=\"$field.label\"></label>\n" +
     "  <div class=\"{{element.container.class}}\">\n" +
     "    <div ng-show=\"{{scope_name}}.options.select_all\">\n" +
@@ -28,7 +28,7 @@ angular.module("templates/formalizer-checkbox-list.tpl.html", []).run(["$templat
 
 angular.module("templates/formalizer-checkbox-matrix.tpl.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("templates/formalizer-checkbox-matrix.tpl.html",
-    "<div class=\"{{container.class}}\" ng-class=\"{ 'has-error' : (%scope-form-name%['{{element.attrs.name}}'].$invalid == true) }\" ng-show=\"$field.formalizer.visible\">\n" +
+    "<div {{container.attrs_text}}>\n" +
     "  <label class=\"{{label.class}}\" ng-compile=\"\" ng-bind-html=\"$field.label\"></label>\n" +
     "  <div class=\"{{element.container.class}}\">\n" +
     "\n" +
@@ -72,7 +72,7 @@ angular.module("templates/formalizer-checkbox-matrix.tpl.html", []).run(["$templ
 
 angular.module("templates/formalizer-checkbox.tpl.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("templates/formalizer-checkbox.tpl.html",
-    "<div class=\"{{container.class}}\" ng-class=\"{ 'has-error' : (%scope-form-name%['{{element.attrs.name}}'].$invalid == true) }\" ng-show=\"$field.formalizer.visible\">\n" +
+    "<div {{container.attrs_text}}>\n" +
     "  <div class=\"{{element.container.class}}\">\n" +
     "    <label for=\"{{element.attrs.name}}\" class=\"{{label.class}}\">\n" +
     "      <input %element-attributes% /><span ng-compile=\"\" ng-bind-html=\"$field.label\"></span>\n" +
@@ -88,11 +88,12 @@ angular.module("templates/formalizer-checkbox.tpl.html", []).run(["$templateCach
 
 angular.module("templates/formalizer-columns.tpl.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("templates/formalizer-columns.tpl.html",
-    "<div class=\"row\">\n" +
-    "    <div ng-repeat=\"col in columns\" class=\"col-xs-{{col.cols}} col-sm-{{col.cols}} col-md-{{col.cols}} col-lg-{{col.cols}}\">\n" +
-    "        <div ng-formalizer-field=\"col\"></div>\n" +
-    "    </div>\n" +
-    "</div>");
+    "<div class=\"col-xs-12 col-sm-12 col-md-12\">\n" +
+    "  <div ng-repeat=\"col in columns\" class=\"col-xs-{{col.cols}} col-sm-{{col.cols}} col-md-{{col.cols}} col-lg-{{col.cols}}\">\n" +
+    "    <div ng-formalizer-field=\"col\"></div>\n" +
+    "  </div>\n" +
+    "</div>\n" +
+    "");
 }]);
 
 angular.module("templates/formalizer-error-list.tpl.html", []).run(["$templateCache", function($templateCache) {
@@ -177,7 +178,7 @@ angular.module("templates/formalizer-form-1.3.tpl.html", []).run(["$templateCach
 
 angular.module("templates/formalizer-input.tpl.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("templates/formalizer-input.tpl.html",
-    "<div class=\"{{container.class}}\" ng-class=\"{ 'has-error' : (%scope-form-name%['{{element.attrs.name}}'].$invalid == true) }\" ng-show=\"$field.formalizer.visible\">\n" +
+    "<div {{container.attrs_text}}>\n" +
     "  <label for=\"{{element.attrs.name}}\" class=\"{{label.class}}\" ng-compile=\"\" ng-bind-html=\"$field.label\"></label>\n" +
     "  <div class=\"{{element.container.class}}\">\n" +
     "    <div class=\"{{element.wrap.class}}\">\n" +
@@ -197,7 +198,7 @@ angular.module("templates/formalizer-input.tpl.html", []).run(["$templateCache",
 
 angular.module("templates/formalizer-radio-list.tpl.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("templates/formalizer-radio-list.tpl.html",
-    "<div class=\"{{container.class}}\" ng-class=\"{ 'has-error' : (%scope-form-name%['{{element.attrs.name}}'].$invalid == true) }\" ng-show=\"$field.formalizer.visible\">\n" +
+    "<div {{container.attrs_text}}>\n" +
     "  <label class=\"{{label.class}}\" ng-compile=\"\" ng-bind-html=\"$field.label\"></label>\n" +
     "  <div class=\"{{element.container.class}}\">\n" +
     "    <div class=\"{{element.wrap.class}}\" ng-repeat=\"radio_data in $field.formalizer.source\">\n" +
@@ -218,14 +219,14 @@ angular.module("templates/formalizer-radio-list.tpl.html", []).run(["$templateCa
 
 angular.module("templates/formalizer-raw.tpl.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("templates/formalizer-raw.tpl.html",
-    "<div ng-formalizer-attach=\"\" ng-show=\"$field.formalizer.visible\">\n" +
+    "<div {{container.attrs_text}} ng-formalizer-attach=\"\">\n" +
     "</div>\n" +
     "");
 }]);
 
 angular.module("templates/formalizer-richtext.tpl.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("templates/formalizer-richtext.tpl.html",
-    "<div class=\"{{container.class}}\" ng-class=\"{ 'has-error' : (%scope-form-name%['{{element.attrs.name}}'].$invalid == true) }\" ng-show=\"$field.formalizer.visible\">\n" +
+    "<div {{container.attrs_text}}>\n" +
     "  <label for=\"{{element.attrs.name}}\" class=\"{{label.class}}\" ng-compile=\"\" ng-bind-html=\"$field.label\"></label>\n" +
     "  <div class=\"{{element.container.class}}\">\n" +
     "    <div class=\"{{element.wrap.class}}\">\n" +
@@ -243,7 +244,7 @@ angular.module("templates/formalizer-richtext.tpl.html", []).run(["$templateCach
 
 angular.module("templates/formalizer-select.tpl.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("templates/formalizer-select.tpl.html",
-    "<div class=\"{{container.class}}\" ng-class=\"{ 'has-error' : (%scope-form-name%['{{element.attrs.name}}'].$invalid == true) }\" ng-show=\"$field.formalizer.visible\">\n" +
+    "<div {{container.attrs_text}}>\n" +
     "  <label for=\"{{element.attrs.name}}\" class=\"{{label.class}}\" ng-compile=\"\" ng-bind-html=\"$field.label\"></label>\n" +
     "  <div class=\"{{element.container.class}}\">\n" +
     "    <select %element-attributes%>\n" +
@@ -260,7 +261,7 @@ angular.module("templates/formalizer-select.tpl.html", []).run(["$templateCache"
 
 angular.module("templates/formalizer-slider.tpl.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("templates/formalizer-slider.tpl.html",
-    "<div class=\"{{container.class}}\" ng-class=\"{ 'has-error' : (%scope-form-name%['{{element.attrs.name}}'].$invalid == true) }\" ng-show=\"$field.formalizer.visible\">\n" +
+    "<div {{container.attrs_text}}>\n" +
     "  <label for=\"{{element.attrs.name}}\" class=\"{{label.class}}\" ng-compile=\"\" ng-bind-html=\"$field.label\"></label>\n" +
     "  <div class=\"{{element.container.class}}\">\n" +
     "    <p class=\"{{element.wrap.class}}\">\n" +
@@ -281,7 +282,7 @@ angular.module("templates/formalizer-slider.tpl.html", []).run(["$templateCache"
 
 angular.module("templates/formalizer-submit.tpl.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("templates/formalizer-submit.tpl.html",
-    "<div class=\"{{container.class}}\" ng-show=\"$field.formalizer.visible\">\n" +
+    "<div {{container.attrs_text}}>\n" +
     "  <div class=\"col-sm-10 col-sm-offset-2\">\n" +
     "    <button %element-attributes% ng-disabled=\"%scope-form-name%.$invalid\" ng-compile=\"\" ng-bind-html=\"$field.label\"></button>\n" +
     "  </div>\n" +
@@ -294,7 +295,7 @@ angular.module("templates/formalizer-submit.tpl.html", []).run(["$templateCache"
 
 angular.module("templates/formalizer-textarea.tpl.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("templates/formalizer-textarea.tpl.html",
-    "<div class=\"{{container.class}}\" ng-class=\"{ 'has-error' : (%scope-form-name%['{{element.attrs.name}}'].$invalid == true) }\" ng-show=\"$field.formalizer.visible\">\n" +
+    "<div {{container.attrs_text}}>\n" +
     "  <label for=\"{{element.attrs.name}}\" class=\"{{label.class}}\" ng-compile=\"\" ng-bind-html=\"$field.label\"></label>\n" +
     "  <div class=\"{{element.container.class}}\">\n" +
     "    <p class=\"{{element.wrap.class}}\">\n" +
@@ -313,7 +314,7 @@ angular.module("templates/formalizer-textarea.tpl.html", []).run(["$templateCach
 
 angular.module("templates/formalizer-typeahead.tpl.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("templates/formalizer-typeahead.tpl.html",
-    "<div class=\"{{container.class}}\" ng-class=\"{ 'has-error' : (%scope-form-name%['{{element.attrs.name}}'].$invalid == true) }\" ng-show=\"$field.formalizer.visible\">\n" +
+    "<div {{container.attrs_text}}>\n" +
     "  <label for=\"{{element.attrs.name}}\" class=\"{{label.class}}\" ng-compile=\"\" ng-bind-html=\"$field.label\"></label>\n" +
     "  <div class=\"{{element.container.class}}\">\n" +
     "    <p class=\"{{element.wrap.class}}\">\n" +

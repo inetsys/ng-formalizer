@@ -20,6 +20,21 @@ var Formalizer;
         }).join(" ");
     }
 
+    function join_attrs(attrs) {
+      var txt = [],
+        j;
+
+      // escape double quotes!
+      for (j in attrs) {
+        if ("string" === typeof attrs[j]) {
+          txt.push(j + "=\"" + (attrs[j].replace(/\"/g, "&quot;")) + "\"");
+        } else {
+          txt.push(j + "=\"" + attrs[j] + "\"");
+        }
+      }
+      return txt.join(" ");
+    }
+
 
     Formalizer = function ($scope, $parse, $interpolate, $log) {
         this.fields = [];
@@ -161,6 +176,7 @@ var Formalizer;
         var constraints = cfg.constraints || {};
         var actions = cfg.actions || {};
         var attrs = cfg.attrs || {};
+        var cattrs = cfg.cattrs || {};
 
         var field = {
             visible: true,
@@ -168,7 +184,9 @@ var Formalizer;
             type: cfg.type || "text",
             scope_name: field_in_scope,
             container: {
-                "class": ["form-group"]
+                "class": ["form-group"], //, "col-xs-12 col-sm-12 col-md-12"],
+                "ng-class": null,
+                "ng-show" : "$field.formalizer.visible"
             },
             label: {
                 "class": ["control-label"].concat((cfg.labelClass || "").split(" ")),
@@ -202,8 +220,15 @@ var Formalizer;
                 scope_name: field_in_scope
             })
         };
+        //cfg.formalzier = field;
 
         field.container.class.push("formalizer-" + field.type);
+        field.container["ng-class"] =
+        '{' +
+          "\"has-error\" : (" + this.name + "[\"" + field.element.attrs.name + "\"].$invalid == true)" +
+        '}';
+
+
 
         if (cfg.default !== undefined) {
             field.element.attrs["ng-default"] = "$field.default";
@@ -253,13 +278,9 @@ var Formalizer;
             field.element.attrs[key] = attrs[key];
         }
 
-        // escape double quotes!
-        for (key in field.element.attrs) {
-            if ("string" === typeof field.element.attrs[key]) {
-                field.element.attrs[key] = field.element.attrs[key].replace(/\"/g, "&quot;");
-            }
+        for (key in cattrs) {
+            field.container[key] = cattrs[key];
         }
-
 
         switch (this.type) {
         case "horizontal":
@@ -271,9 +292,10 @@ var Formalizer;
                 field.label["class"].push("col-sm-12");
                 safe_array_remove(field.label["class"], "control-label");
             } else {
-                field.element.container["class"].push("col-sm-" + r); // 1 padding ?
                 field.label["class"].push("col-sm-" + l);
             }
+
+            field.element.container["class"].push("col-sm-" + r); // 1 padding ?
             break;
         case "vertical":
             break;
@@ -288,7 +310,6 @@ var Formalizer;
         $scope.$field = field_data;
 
         var j,
-            attrs,
             template,
             field;
 
@@ -327,12 +348,9 @@ var Formalizer;
         join_class(field.element.container);
         join_class(field.element.attrs);
         join_class(field.label);
-
-        attrs = [];
-        for (j in field.element.attrs) {
-            attrs.push(j + "=\"" + field.element.attrs[j] + "\"");
-        }
-        attrs = attrs.join(" ");
+        // TODO update using this method
+        // field.element.attrs_text = join_attrs(field.element.attrs);
+        field.container.attrs_text = join_attrs(field.container);
 
         template = this.getTemplate(field.type);
 
@@ -347,10 +365,9 @@ var Formalizer;
         }
 
         var html = template
-                    .replace("%element-attributes%", attrs)
+                    .replace("%element-attributes%", join_attrs(field.element.attrs))
                     .replace("%element-error-list%", errs)
                     .replace(/%scope-form-name%/g, this.name);
-
         // always escape!
         html = this.$interpolate(html)(field)
 
@@ -442,10 +459,8 @@ var Formalizer;
             }
         });
     };
-
-
-
 }());
+
 (function () {
     "use strict";
 
@@ -769,10 +784,14 @@ var Formalizer;
     Formalizer.types.tel = "input";
     Formalizer.types.url = "input";
     Formalizer.types.file = "input";
+    Formalizer.types.lcheckbox = "input";
 
     // do not need anything more :)
+    Formalizer.parsers.lcheckbox = function ($scope, field, cfg) {
+      console.log("field", field);
+      field.element.attrs.type = "checkbox";
+    };
 }());
-
 
 (function () {
     "use strict";
@@ -1117,21 +1136,34 @@ angular.module("formalizer")
 angular.module("formalizer")
 .directive("ngEqualTo", function () {
     return {
-        require: "?ngModel",
+        require: 'ngModel',
         link: function ($scope, $elm, $attrs, $ngModel) {
             if (!$ngModel) {
                 return;
             }
 
-            $scope.$watch($attrs.ngEqualTo, function ngEqualToWatch(value) {
-                var this_val = $ngModel.$modelValue === "" ? null : ($ngModel.$modelValue || null),
-                    eq_val = value === "" ? null : (value || null);
+            var my_value = null;
+            function check() {
+              var this_val = $ngModel.$modelValue === "" ? null : ($ngModel.$modelValue || null),
+                eq_val = my_value === "" ? null : (my_value || null);
 
-                $ngModel.$setValidity("equal-to", eq_val == this_val);
+              $ngModel.$setValidity("equal-to", eq_val == this_val);
+            }
+
+            $scope.$watch($attrs.ngModel, function() {
+              console.info("change model");
+              check();
+            });
+
+            $scope.$watch($attrs.ngEqualTo, function ngEqualToWatch(value) {
+              console.info("change target");
+              my_value = value;
+              check();
             });
         }
     };
 });
+
 (function() {
     "use strict";
 
