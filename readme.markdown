@@ -176,6 +176,10 @@ Help text. *Can be real-time modified*. You could be used to give extra feedback
 
   using [checklist-model](http://vitalets.github.io/checklist-model/)
 
+* lcheckbox
+
+  left labeled checkbox.
+
 * checkbox-matrix
 
 * radio-list
