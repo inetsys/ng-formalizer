@@ -19,6 +19,9 @@ var Formalizer;
             return cls && cls.length ? cls : false;
         }).join(" ");
     }
+    function join_ngclass(target) {
+      target["ng-class"] = "{" + target["ng-class"].join(",") + "}";
+    }
 
     function join_attrs(attrs) {
       var txt = [],
@@ -223,10 +226,9 @@ var Formalizer;
         //cfg.formalzier = field;
 
         field.container.class.push("formalizer-" + field.type);
-        field.container["ng-class"] =
-        '{' +
-          "\"has-error\" : (" + this.name + "[\"" + field.element.attrs.name + "\"].$invalid == true)" +
-        '}';
+        field.container["ng-class"] = [
+          "\"has-error\" : (" + this.name + "[\"" + field.element.attrs.name + "\"].$invalid == true)",
+        ];
 
 
 
@@ -251,14 +253,23 @@ var Formalizer;
 
         field.element.attrs["ng-model"] = cfg.model || this.model + "." + name;
         field.element.attrs["class"] = ["form-control"].concat((cfg["class"] || "").split(" "));
-        field.element.attrs["ng-class"] =
-            '{"has-error": $formalizer.attempts > 0 && ' + this.name + "." + field.element.attrs.name + '.$invalid}';
+        field.element.attrs["ng-class"] = [
+            "\"has-error\": $formalizer.attempts > 0 && " + this.name + "." + field.element.attrs.name + ".$invalid"
+        ];
         field.element.attrs["ng-placeholder"] = cfg.placeholder || "";
 
         // constraints
         var kattr;
         for (key in constraints) {
-            if (["min", "max", "max-date", "min-date"].indexOf(key) !== -1) {
+            // watchable attrs
+            if (["required", "disabled"].indexOf(key) !== -1) {
+              kattr = "ng-" + key;
+              field.element.attrs[kattr] = constraints[key];
+              field.container["ng-class"].push(
+                JSON.stringify(kattr) + ":" + constraints[key]
+              );
+            // attrs withtout 'ng-'
+            } else if (["min", "max", "max-date", "min-date"].indexOf(key) !== -1) {
                 field.element.attrs[key] = constraints[key];
                 field.container.class.push(key);
             } else {
@@ -348,6 +359,9 @@ var Formalizer;
         join_class(field.element.container);
         join_class(field.element.attrs);
         join_class(field.label);
+
+        join_ngclass(field.container);
+        join_ngclass(field.element.attrs);
         // TODO update using this method
         // field.element.attrs_text = join_attrs(field.element.attrs);
         field.container.attrs_text = join_attrs(field.container);
@@ -562,7 +576,6 @@ var Formalizer;
     };
 }());
 
-
 (function () {
     "use strict";
 
@@ -774,8 +787,16 @@ var Formalizer;
 (function () {
     "use strict";
 
-    Formalizer.templates.push("input");
+    function safe_array_remove(arr, item) {
+      var cut = arr.indexOf(item);
+      if (cut !== -1) {
+        return arr.splice(cut, 1);
+      }
 
+      return false;
+    }
+
+    Formalizer.templates.push("input");
 
     Formalizer.types.text = "input";
     Formalizer.types.password = "input";
@@ -788,8 +809,12 @@ var Formalizer;
 
     // do not need anything more :)
     Formalizer.parsers.lcheckbox = function ($scope, field, cfg) {
-      console.log("field", field);
       field.element.attrs.type = "checkbox";
+
+      field.element.container["class"].push("checkbox");
+      safe_array_remove(field.element.attrs["class"], "form-control");
+
+      console.log("field", JSON.stringify(field, null, 2));
     };
 }());
 
@@ -847,14 +872,13 @@ var Formalizer;
         field.element.attrs["checklist-value"] = "checkbox_data" + (field.source_model ? "." + field.source_model : "");
 
         field.element.attrs.type = "checkbox";
-        field.container["class"].push("checkbox");
+        field.element.container["class"].push("checkbox");
         //checkbox-inline
 
         safe_array_remove(field.element.attrs["class"], "form-control");
 
     };
 }());
-
 
 (function () {
     "use strict";
