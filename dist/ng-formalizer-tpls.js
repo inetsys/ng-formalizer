@@ -377,7 +377,9 @@ var Formalizer;
         }).join(" ");
     }
     function join_ngclass(target) {
-      target["ng-class"] = "{" + target["ng-class"].join(",") + "}";
+      if (target["ng-class"]) {
+        target["ng-class"] = "{" + target["ng-class"].join(",") + "}";
+      }
     }
 
     function join_attrs(attrs) {
