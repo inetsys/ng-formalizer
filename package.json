@@ -13,7 +13,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/llafuente/ng-formalizer.git"
+    "url": "git://github.com/inetsys/ng-formalizer.git"
   },
   "author": {
     "name": "Luis Lafuente",

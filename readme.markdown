@@ -1,4 +1,4 @@
-# ng-formalizer [![Build Status](https://secure.travis-ci.org/llafuente/ng-formalizer.png?branch=master)](http://travis-ci.org/llafuente/ng-formalizer)
+# ng-formalizer [![Build Status](https://secure.travis-ci.org/inetsys/ng-formalizer.png?branch=master)](http://travis-ci.org/inetsys/ng-formalizer)
 
 
 ## notice
