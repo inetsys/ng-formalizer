@@ -953,14 +953,13 @@ var Formalizer;
 
     Formalizer.parsers["radio-list"] = function ($scope, field) {
         field.element.attrs.type = "radio";
-        field.container["class"].push("radio");
+        field.element.container["class"].push("radio");
         safe_array_remove(field.element.attrs["class"], "form-control");
 
         field.source_model = (field.source_model ? "." + field.source_model : "");
     };
 
 }());
-
 
 (function () {
     "use strict";
@@ -1965,12 +1964,10 @@ angular.module("formalizer")
               value  = value.substr(0, i) +
                 "." + value.substr(i + 1);
             }
-            /*
-            // group separator is just ignored!
-             else if (value[i] == $locale.NUMBER_FORMATS.GROUP_SEP) {
+            // group separators are just removed
+            else if (value[i] == $locale.NUMBER_FORMATS.GROUP_SEP) {
               value  = value.substr(0, i) + value.substr(i + 1);
             }
-            */
           }
 
           return value;
