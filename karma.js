@@ -36,6 +36,11 @@ module.exports = function (config) {
       "bower_components/angular-bootstrap-slider/slider.js",
       "bower_components/seiyria-bootstrap-slider/js/bootstrap-slider.js",
 
+      // textAngular
+      "bower_components/rangy/rangy-core.min.js",
+      "bower_components/rangy/rangy-cssclassapplier.min.js",
+      "bower_components/rangy/rangy-selectionsaverestore.min.js",
+      "bower_components/rangy/rangy-serializer.min.js",
       "bower_components/textAngular/dist/textAngular.min.js",
       "bower_components/textAngular/dist/textAngular-sanitize.min.js",
 
