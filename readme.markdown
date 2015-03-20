@@ -8,11 +8,11 @@ Rather stable. Report any bug and remember to provide a test case.
 
 ## dependencies (bower)
 
-* angular >=1.2.*
-* jquery >=2.1.*
+* angular 1.3.x (1.2.x is tested and working)
+* jquery 2.1.x
 * angular-bootstrap *
 * checklist-model 0.1.3
-* bootstrap ~3.2.0
+* bootstrap *
 * moment ~2.8.1
 * angular-bootstrap-slider ~0.0.5
 * textAngular ~1.2.2 & font-awesome 4.2.0

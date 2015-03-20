@@ -17,14 +17,14 @@
     "node_modules"
   ],
   "dependencies": {
-    "angular": ">=1.2.*",
-    "jquery": ">=2.1.*",
+    "angular": "1.3.x",
+    "jquery": "2.1.x",
     "angular-bootstrap": "*",
-    "checklist-model": "0.1.3",
-    "bootstrap": "~3.2.0",
+    "checklist-model": "0.1.4",
+    "bootstrap": "*",
     "moment": "~2.8.1",
-    "angular-bootstrap-slider": "~0.0.5",
-    "textAngular": "~1.2.2"
+    "angular-bootstrap-slider": "0.1.x",
+    "textAngular": "1.3.x"
   },
   "devDependencies": {
     "angular-1.2": "angular#1.2.x",
@@ -35,6 +35,6 @@
     "angular-i18n-1.3": "angular-i18n#1.3.x"
   },
   "resolutions": {
-    "angular": "1.3.0"
+    "angular": "^1.2.x"
   }
 }
