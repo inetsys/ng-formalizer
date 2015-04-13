@@ -1223,17 +1223,24 @@ angular.module("formalizer")
                 require: 'ngModel',
                 link: function($scope, $elm, $attr, $ngModel) {
                     $ngModel.$parsers.unshift(function (value) {
-                        // do not test 'empty' things this task is for required
-                        if (value !== undefined && value !== null && ("" + value).length > 0) {
-                            $ngModel.$setValidity(key, regex.test(value));
+                        var str_val = ("" + value);
+                        // for this test, use required
+                        if (value === undefined || value === null || str_val.length === 0) {
+                          $ngModel.$setValidity(key, true);
+                          return value;
                         }
-                        return value;
+
+                        // do not test 'empty' things this task is for required
+                        $ngModel.$setValidity(key, regex.test(str_val));
+
+                        return str_val;
                     });
                 }
             };
         });
     });
 }());
+
 //
 // fix https://github.com/angular-ui/bootstrap/issues/1891
 // TZ issues
@@ -1517,18 +1524,25 @@ angular.module("formalizer")
                 var fnum = parseFloat(value),
                     fstr = "" + fnum,
                     fdec = 0;
+                // fix clear field
+                // if it's NaN give number error not this one.
+                if (!value || isNaN(fnum)) {
+                  $ngModel.$setValidity("decimals", true);
+                  return value;
+                }
 
                 if (fstr.indexOf(".") !== -1) {
                     fdec = fstr.split(".")[1].length;
                 }
 
-                $ngModel.$setValidity("decimals", !isNaN(fnum) && fdec <= max_decimals);
+                $ngModel.$setValidity("decimals", fdec <= max_decimals);
 
                 return value;
             });
         }
     };
 });
+
 angular.module("formalizer")
 .directive("ngNoDecimals", function () {
     return {
