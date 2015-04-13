@@ -80,6 +80,7 @@ var Formalizer;
         return $q.all(this.templates.concat([
             "error-list",
             "input",
+            "hidden",
             "textarea",
             "checkbox",
             "select",
@@ -798,6 +799,7 @@ var Formalizer;
     }
 
     Formalizer.templates.push("input");
+    Formalizer.templates.push("hidden");
 
     Formalizer.types.text = "input";
     Formalizer.types.password = "input";
@@ -807,6 +809,7 @@ var Formalizer;
     Formalizer.types.url = "input";
     Formalizer.types.file = "input";
     Formalizer.types.lcheckbox = "input";
+    Formalizer.types.hidden = "hidden";
 
     // do not need anything more :)
     Formalizer.parsers.lcheckbox = function ($scope, field, cfg) {
