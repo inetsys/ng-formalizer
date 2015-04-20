@@ -350,13 +350,15 @@ angular.module("templates/formalizer-typeahead.tpl.html", []).run(["$templateCac
 
 angular.module("templates/formalizer.fields.tpl.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("templates/formalizer.fields.tpl.html",
-    "<div ng-repeat=\"field in field.fields\">\n" +
-    "    <!-- <pre>{{field | json}}</pre> -->\n" +
-    "    <div ng-formalizer-field=\"field\"></div>\n" +
+    "<div class=\"formalizer-group\">\n" +
+    "  <div ng-repeat=\"field in field.fields\" class=\"formalizer-element-container\">\n" +
+    "      <!-- <pre>{{field | json}}</pre> -->\n" +
+    "      <div ng-formalizer-field=\"field\"></div>\n" +
     "\n" +
-    "    <div class=\"col-sm-offset-1\" ng-show=\"field.formalizer.visible_children\">\n" +
-    "      <div ng-include=\"'templates/formalizer.fields.tpl.html'\"></div>\n" +
-    "    </div>\n" +
+    "      <div class=\"col-sm-offset-1\" ng-show=\"field.formalizer.visible_children\">\n" +
+    "        <div ng-include=\"'templates/formalizer.fields.tpl.html'\"></div>\n" +
+    "      </div>\n" +
+    "  </div>\n" +
     "</div>\n" +
     "");
 }]);

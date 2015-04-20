@@ -1,8 +1,10 @@
-<div ng-repeat="field in field.fields">
-    <!-- <pre>{{field | json}}</pre> -->
-    <div ng-formalizer-field="field"></div>
+<div class="formalizer-group">
+  <div ng-repeat="field in field.fields" class="formalizer-element-container">
+      <!-- <pre>{{field | json}}</pre> -->
+      <div ng-formalizer-field="field"></div>
 
-    <div class="col-sm-offset-1" ng-show="field.formalizer.visible_children">
-      <div ng-include="'templates/formalizer.fields.tpl.html'"></div>
-    </div>
+      <div class="col-sm-offset-1" ng-show="field.formalizer.visible_children">
+        <div ng-include="'templates/formalizer.fields.tpl.html'"></div>
+      </div>
+  </div>
 </div>

@@ -190,7 +190,7 @@ var Formalizer;
             type: cfg.type || "text",
             scope_name: field_in_scope,
             container: {
-                "class": ["form-group"], //, "col-xs-12 col-sm-12 col-md-12"],
+                "class": ["form-group", "formalizer-element"], //, "col-xs-12 col-sm-12 col-md-12"],
                 "ng-class": null,
                 "ng-show" : "$field.formalizer.visible"
             },
