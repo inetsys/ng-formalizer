@@ -6,14 +6,14 @@ angular.module("templates/formalizer-checkbox-list.tpl.html", []).run(["$templat
     "  <label class=\"{{label.class}}\" ng-compile=\"\" ng-bind-html=\"$field.label\"></label>\n" +
     "  <div class=\"{{element.container.class}}\">\n" +
     "    <div ng-show=\"{{scope_name}}.options.select_all\">\n" +
-    "      <label for=\"{{element.attrs.name}}-select-all\">\n" +
+    "      <label for=\"{{element.attrs.id}}-select-all\">\n" +
     "        <input name=\"{{element.attrs.name}}-select-all\" id=\"{{element.attrs.id}}-select-all\" value=\"true\" ng-checked=\"{{element.attrs['checklist-model']}}.length == $field['$$'].source.length\" type=\"checkbox\" ng-model=\"{{options.chkall_model}}\" ng-change=\"{{options.scope_name}}.options.check_all($event)\" />\n" +
     "        Select All\n" +
     "      </label>\n" +
     "    </div>\n" +
     "\n" +
     "    <div class=\"{{element.wrap.class}}\" ng-repeat=\"checkbox_data in $field.formalizer.source\">\n" +
-    "      <label for=\"{{element.attrs.name}}-\\{\\{$index\\}\\}\">\n" +
+    "      <label for=\"{{element.attrs.id}}-\\{\\{$index\\}\\}\">\n" +
     "        <input name=\"{{element.attrs.name}}-\\{\\{$index\\}\\}\" id=\"{{element.attrs.id}}-\\{\\{$index\\}\\}\" %element-attributes%>\n" +
     "        \\{\\{checkbox_data['{{source_display}}']\\}\\}\n" +
     "      </label>\n" +
@@ -74,7 +74,7 @@ angular.module("templates/formalizer-checkbox.tpl.html", []).run(["$templateCach
   $templateCache.put("templates/formalizer-checkbox.tpl.html",
     "<div {{container.attrs_text}}>\n" +
     "  <div class=\"{{element.container.class}}\">\n" +
-    "    <label for=\"{{element.attrs.name}}\" class=\"{{label.class}}\">\n" +
+    "    <label for=\"{{element.attrs.id}}\" class=\"{{label.class}}\">\n" +
     "      <input %element-attributes% /><span ng-compile=\"\" ng-bind-html=\"$field.label\"></span>\n" +
     "    </label>\n" +
     "\n" +
@@ -185,7 +185,7 @@ angular.module("templates/formalizer-hidden.tpl.html", []).run(["$templateCache"
 angular.module("templates/formalizer-input.tpl.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("templates/formalizer-input.tpl.html",
     "<div {{container.attrs_text}}>\n" +
-    "  <label for=\"{{element.attrs.name}}\" class=\"{{label.class}}\" ng-compile=\"\" ng-bind-html=\"$field.label\"></label>\n" +
+    "  <label for=\"{{element.attrs.id}}\" class=\"{{label.class}}\" ng-compile=\"\" ng-bind-html=\"$field.label\"></label>\n" +
     "  <div class=\"{{element.container.class}}\">\n" +
     "    <div class=\"{{element.wrap.class}}\">\n" +
     "        {{element.left}}\n" +
@@ -208,7 +208,7 @@ angular.module("templates/formalizer-radio-list.tpl.html", []).run(["$templateCa
     "  <label class=\"{{label.class}}\" ng-compile=\"\" ng-bind-html=\"$field.label\"></label>\n" +
     "  <div class=\"{{element.container.class}}\">\n" +
     "    <div class=\"{{element.wrap.class}}\" ng-repeat=\"radio_data in $field.formalizer.source\">\n" +
-    "      <label for=\"{{element.attrs.name}}-\\{\\{$index\\}\\}\">\n" +
+    "      <label for=\"{{element.attrs.id}}-\\{\\{$index\\}\\}\">\n" +
     "        <input name=\"{{element.attrs.name}}\" id=\"{{element.attrs.id}}-\\{\\{$index\\}\\}\" value=\"\\{\\{radio_data{{source_model}}\\}\\}\" %element-attributes%>\n" +
     "        \\{\\{radio_data['{{source_display}}']\\}\\}\n" +
     "      </label>\n" +
@@ -233,7 +233,7 @@ angular.module("templates/formalizer-raw.tpl.html", []).run(["$templateCache", f
 angular.module("templates/formalizer-richtext.tpl.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("templates/formalizer-richtext.tpl.html",
     "<div {{container.attrs_text}}>\n" +
-    "  <label for=\"{{element.attrs.name}}\" class=\"{{label.class}}\" ng-compile=\"\" ng-bind-html=\"$field.label\"></label>\n" +
+    "  <label for=\"{{element.attrs.id}}\" class=\"{{label.class}}\" ng-compile=\"\" ng-bind-html=\"$field.label\"></label>\n" +
     "  <div class=\"{{element.container.class}}\">\n" +
     "    <div class=\"{{element.wrap.class}}\">\n" +
     "        <div text-angular %element-attributes%></div>\n" +
@@ -251,7 +251,7 @@ angular.module("templates/formalizer-richtext.tpl.html", []).run(["$templateCach
 angular.module("templates/formalizer-select.tpl.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("templates/formalizer-select.tpl.html",
     "<div {{container.attrs_text}}>\n" +
-    "  <label for=\"{{element.attrs.name}}\" class=\"{{label.class}}\" ng-compile=\"\" ng-bind-html=\"$field.label\"></label>\n" +
+    "  <label for=\"{{element.attrs.id}}\" class=\"{{label.class}}\" ng-compile=\"\" ng-bind-html=\"$field.label\"></label>\n" +
     "  <div class=\"{{element.container.class}}\">\n" +
     "    <select %element-attributes%>\n" +
     "      {{defaultOption}}\n" +
@@ -268,7 +268,7 @@ angular.module("templates/formalizer-select.tpl.html", []).run(["$templateCache"
 angular.module("templates/formalizer-slider.tpl.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("templates/formalizer-slider.tpl.html",
     "<div {{container.attrs_text}}>\n" +
-    "  <label for=\"{{element.attrs.name}}\" class=\"{{label.class}}\" ng-compile=\"\" ng-bind-html=\"$field.label\"></label>\n" +
+    "  <label for=\"{{element.attrs.id}}\" class=\"{{label.class}}\" ng-compile=\"\" ng-bind-html=\"$field.label\"></label>\n" +
     "  <div class=\"{{element.container.class}}\">\n" +
     "    <p class=\"{{element.wrap.class}}\">\n" +
     "        {{element.left}}\n" +
@@ -302,7 +302,7 @@ angular.module("templates/formalizer-submit.tpl.html", []).run(["$templateCache"
 angular.module("templates/formalizer-textarea.tpl.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("templates/formalizer-textarea.tpl.html",
     "<div {{container.attrs_text}}>\n" +
-    "  <label for=\"{{element.attrs.name}}\" class=\"{{label.class}}\" ng-compile=\"\" ng-bind-html=\"$field.label\"></label>\n" +
+    "  <label for=\"{{element.attrs.id}}\" class=\"{{label.class}}\" ng-compile=\"\" ng-bind-html=\"$field.label\"></label>\n" +
     "  <div class=\"{{element.container.class}}\">\n" +
     "    <p class=\"{{element.wrap.class}}\">\n" +
     "        <textarea %element-attributes%>\n" +
@@ -321,7 +321,7 @@ angular.module("templates/formalizer-textarea.tpl.html", []).run(["$templateCach
 angular.module("templates/formalizer-typeahead.tpl.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("templates/formalizer-typeahead.tpl.html",
     "<div {{container.attrs_text}}>\n" +
-    "  <label for=\"{{element.attrs.name}}\" class=\"{{label.class}}\" ng-compile=\"\" ng-bind-html=\"$field.label\"></label>\n" +
+    "  <label for=\"{{element.attrs.id}}\" class=\"{{label.class}}\" ng-compile=\"\" ng-bind-html=\"$field.label\"></label>\n" +
     "  <div class=\"{{element.container.class}}\">\n" +
     "    <p class=\"{{element.wrap.class}}\">\n" +
     "\n" +

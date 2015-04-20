@@ -2,14 +2,14 @@
   <label class="{{label.class}}" ng-compile="" ng-bind-html="$field.label"></label>
   <div class="{{element.container.class}}">
     <div ng-show="{{scope_name}}.options.select_all">
-      <label for="{{element.attrs.name}}-select-all">
+      <label for="{{element.attrs.id}}-select-all">
         <input name="{{element.attrs.name}}-select-all" id="{{element.attrs.id}}-select-all" value="true" ng-checked="{{element.attrs['checklist-model']}}.length == $field['$$'].source.length" type="checkbox" ng-model="{{options.chkall_model}}" ng-change="{{options.scope_name}}.options.check_all($event)" />
         Select All
       </label>
     </div>
 
     <div class="{{element.wrap.class}}" ng-repeat="checkbox_data in $field.formalizer.source">
-      <label for="{{element.attrs.name}}-\{\{$index\}\}">
+      <label for="{{element.attrs.id}}-\{\{$index\}\}">
         <input name="{{element.attrs.name}}-\{\{$index\}\}" id="{{element.attrs.id}}-\{\{$index\}\}" %element-attributes%>
         \{\{checkbox_data['{{source_display}}']\}\}
       </label>
