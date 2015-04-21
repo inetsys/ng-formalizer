@@ -36,6 +36,7 @@ concat:
             - lib/ng-future-date.js
             - lib/ng-till-today.js
             - lib/ng-use-locale.js
+            - lib/ng-hide-ex.js
 
         dest: dist/ng-formalizer.js
     js_templates:

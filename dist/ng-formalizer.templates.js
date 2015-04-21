@@ -351,7 +351,7 @@ angular.module("templates/formalizer-typeahead.tpl.html", []).run(["$templateCac
 angular.module("templates/formalizer.fields.tpl.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("templates/formalizer.fields.tpl.html",
     "<div class=\"formalizer-group\">\n" +
-    "  <div ng-repeat=\"field in field.fields\" class=\"formalizer-element-container\">\n" +
+    "  <div ng-repeat=\"field in field.fields\" class=\"formalizer-element-container\" ng-hide-catch=\"\">\n" +
     "      <!-- <pre>{{field | json}}</pre> -->\n" +
     "      <div ng-formalizer-field=\"field\"></div>\n" +
     "\n" +
