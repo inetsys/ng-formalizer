@@ -503,7 +503,6 @@ var Formalizer;
                     continue;
                 }
 
-                //console.log(i, form[i]);
                 field_data = this.fields.filter(function (v) { return v.formalizer.element.attrs.name === i; });
 
                 if (form[i].$dirty) {
@@ -525,7 +524,7 @@ var Formalizer;
             return on_submit(data, files, this.$scope.$eval(this.model), form);
         }
 
-        this.$log.info("$invalid = true, no submit");
+        this.$log.info("form is $invalid, no submit");
     };
 
     Formalizer.prototype.callParser = function (event, $scope, field, args) {
@@ -696,7 +695,7 @@ var Formalizer;
             field;
 
         if (!field_data.name && field_data.type !== "raw") {
-            this.$log.log(field_data);
+            this.$log.error(field_data);
             throw new Error("invalid field without name");
         }
 
@@ -785,9 +784,9 @@ var Formalizer;
         return this.getTemplate("columns");
     };
 
-    Formalizer.prototype.attach = function ($scope, $elm, field) {
+    Formalizer.prototype.attach = function ($scope, $elm, field, $compile) {
         field.formalizer.domElement = $elm;
-        this.callParser("attached", $scope, field);
+        this.callParser("attached", $scope, field, $compile);
     };
 
 
@@ -854,15 +853,19 @@ var Formalizer;
     Formalizer.types["raw"] = "raw";
 
     Formalizer.parsers["raw"] = {
-        attached: function($scope, $field, $formalizer) {
+        attached: function($scope, $field, $formalizer, $compile) {
+            var $elm = $field.formalizer.domElement;
             $scope.$watch("$field.template", function(a, b) {
-                $field.formalizer.domElement.html(a);
+                $elm.html(a);
+                console.log("$field.template", $field);
+                if ($field.options.compile) {
+                  $compile($elm.contents())($scope);
+                }
             });
         }
     };
 
 }());
-
 
 (function () {
     "use strict";
@@ -1026,7 +1029,6 @@ var Formalizer;
 
         var target = $scope.$eval(ta_model);
         if (target === undefined) {
-            //console.log("set model to default value!");
             $scope.$eval(ta_model + " = []");
         }
 
@@ -1061,7 +1063,6 @@ var Formalizer;
     };
 
 }());
-
 
 (function () {
     "use strict";
@@ -1185,8 +1186,6 @@ var Formalizer;
 
       field.element.container["class"].push("checkbox");
       safe_array_remove(field.element.attrs["class"], "form-control");
-
-      console.log("field", JSON.stringify(field, null, 2));
     };
 }());
 
@@ -1433,8 +1432,6 @@ var Formalizer;
                                 var config_watcher;
 
                                  $scope.$watch($attrs.ngFormalizer, function config_watcher (config) {
-                                    //$log.log("config_watcher", config);
-
                                     ["name", "type", "model", "legend", "onSubmit"].forEach(function (key) {
                                         $formalizer[key] = config[key];
                                     });
@@ -1455,8 +1452,6 @@ var Formalizer;
 
                             if ("string" === typeof config.fields) {
                                 $scope.$watch(config.fields, function fields_watcher (fields) {
-                                    //$log.log("fields_watcher", fields);
-
                                     $formalizer.fields = fields;
                                 }, true);
                             } else {
@@ -1503,13 +1498,14 @@ angular.module("formalizer")
     };
 }]);
 angular.module("formalizer")
-.directive("ngFormalizerAttach", function () {
+.directive("ngFormalizerAttach", function ($compile) {
     return {
         link: function ($scope, $elm, $attrs, $ngFormalizer) {
-            $scope.$formalizer.attach($scope, $elm, $scope.$eval("$field"));
+            $scope.$formalizer.attach($scope, $elm, $scope.$eval("$field"), $compile);
         }
     };
 });
+
 angular.module("formalizer")
 .directive("ngBlacklist", function () {
     return {
@@ -1547,12 +1543,10 @@ angular.module("formalizer")
             }
 
             $scope.$watch($attrs.ngModel, function() {
-              console.info("change model");
               check();
             });
 
             $scope.$watch($attrs.ngEqualTo, function ngEqualToWatch(value) {
-              console.info("change target");
               my_value = value;
               check();
             });
@@ -1681,7 +1675,6 @@ angular.module("formalizer")
             var object = $scope.$eval($attrs.ngPopulate);
 
             $ngModel.$parsers.push(function (value) {
-                //console.log("ngPopulate", value, object);
                 if (object && object[value]) {
                     // populate!
                     $ngFormalizer.setModel(
@@ -1696,6 +1689,7 @@ angular.module("formalizer")
         }
     };
 });
+
 angular.module("formalizer")
 .directive("ngServerValidation", ["$http", function ($http) {
     return {
@@ -1906,9 +1900,11 @@ angular.module("formalizer")
                     fdec = fstr.split(".")[1].length;
                 }
 
-                $ngModel.$setValidity("decimals", fdec <= max_decimals);
+                var valid = fdec <= max_decimals;
 
-                return value;
+                $ngModel.$setValidity("decimals", valid);
+
+                return valid ? value : null;
             });
         }
     };
@@ -1922,14 +1918,15 @@ angular.module("formalizer")
             $ngModel.$parsers.unshift(function (value) {
                 var fstr = "" + value;
 
-                $ngModel.$setValidity("no-decimals",
-                    fstr.indexOf(".") === -1 && fstr.indexOf(",") === -1);
+                var valid = fstr.indexOf(".") === -1;
+                $ngModel.$setValidity("no-decimals", valid);
 
-                return value;
+                return valid ? value : null;
             });
         }
     };
 });
+
 angular.module("formalizer")
 .directive("ngPastDate", function () {
     return {
@@ -1979,14 +1976,14 @@ angular.module("formalizer")
 * ng-use-locale=""
 */
 angular.module("formalizer")
-.directive("ngUseLocale", ["$locale", "numberFilter", function ($locale, numberFilter) {
+.directive("ngUseLocale", ["$locale", "numberFilter", "$log", function ($locale, numberFilter, $log) {
   return {
     require: "ngModel",
     priority: 10000, // lowest priority directive -> unshift => highest priority parser
-    link: function ($scope, $elm, $attrs, $ngModel) {
+    link: function ngUseLocale($scope, $elm, $attrs, $ngModel) {
       if ($attrs.type == "number") {
         // parse from locale to "real-c-english-number"
-        $ngModel.$parsers.unshift(function (value) {
+        $ngModel.$parsers.unshift(function ngUseLocaleParser(value) {
           for (i = 0; i < value.length; ++i) {
             if (value[i] == $locale.NUMBER_FORMATS.DECIMAL_SEP) {
               value  = value.substr(0, i) +
@@ -2002,7 +1999,7 @@ angular.module("formalizer")
         });
 
         // use number (filter) to display
-        $ngModel.$formatters.unshift(function(value) {
+        $ngModel.$formatters.unshift(function ngUseLocaleFormatter(value) {
           if (!value) return value;
 
           value = "" + value;
@@ -2018,7 +2015,7 @@ angular.module("formalizer")
         });
 
       } else {
-        console && console.info("use locale not supportted for: ", $attrs.type);
+        $log.info("use locale not supportted for: ", $attrs.type);
       }
     }
   };
@@ -2030,9 +2027,7 @@ angular.module("formalizer")
     restrict: 'A',
     multiElement: true,
     link: function(scope, element, attr) {
-      console.log("ngHideEmit", attr.ngHide, scope.field); //$$hashKey
       scope.$watch(attr.ngHide, function ngHideWatchAction(value) {
-        console.log("visibility change!", scope.field.label); //$$hashKey
         scope.$emit("hide", [scope.field, element, value]);
       });
     }
@@ -2045,23 +2040,16 @@ angular.module("formalizer")
     restrict: 'A',
     multiElement: true,
     link: function(scope, element, attr) {
-      console.log("ngHideCatch", scope.field);
 
       scope.$on("hide", function(ev, args) {
         ev.stopPropagation();
 
-        console.log("EVENT UP", arguments);
-        console.log(scope.field.name, args[0].name);
-
         // name should be unique, so it could be safe to use to compare
         if (scope.field.name == args[0].name) {
-          console.log("HIDE!?");
           $animate[args[2] ? 'addClass' : 'removeClass'](element, "ng-hide", {
             tempClasses: "ng-hide-animate"
           });
         }
-
-        console.log(scope.field.label, args);
       });
     }
   };
