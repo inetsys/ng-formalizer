@@ -47,12 +47,12 @@ describe("specs-ng-decimal.js", function () {
         expect(input.$valid).toEqual(false);
         expect(input.$viewValue).toEqual("0.");
         $rootScope.$digest();
-        expect($rootScope.entity.decimal).toEqual(0);
+        expect($rootScope.entity.decimal).toEqual(null); //  invalid
 
         input.$setViewValue("0,1");
         expect(input.$valid).toEqual(false);
         expect(input.$viewValue).toEqual("0,1");
         $rootScope.$digest();
-        expect($rootScope.entity.decimal).toEqual(undefined); // almost NaN
+        expect($rootScope.entity.decimal).toEqual(null); // NaN
     });
 });
