@@ -322,7 +322,6 @@ HTML to be displayed directly in the form. Be aware that the HTML is not `$compi
     "template": "<div class=\"col-sm-10 col-sm-offset-2\">Current avatar: {{entity.avatar}}</div>"
 }
 ```
-
 ##### `options`: Object
 
 Extends current configuration with extra options for each type of field.
@@ -447,6 +446,10 @@ var formalizer_cfg = {
 * `naturalArrowKeys`
 * `sliderId`
 * `updateEvent`
+
+`raw` options
+
+* `compile` $compile the content, each time template is modified
 
 - - -
 
