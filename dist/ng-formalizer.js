@@ -493,7 +493,7 @@ var Formalizer;
             $scope.$watch("$field.template", function(a, b) {
                 $elm.html(a);
                 console.log("$field.template", $field);
-                if ($field.options.compile) {
+                if ($field.options && $field.options.compile) {
                   $compile($elm.contents())($scope);
                 }
             });
