@@ -1178,6 +1178,7 @@ var Formalizer;
     Formalizer.types.url = "input";
     Formalizer.types.file = "input";
     Formalizer.types.lcheckbox = "input";
+    Formalizer.types.colorpicker = "input";
     Formalizer.types.hidden = "hidden";
 
     // do not need anything more :)
@@ -1187,6 +1188,14 @@ var Formalizer;
       field.element.container["class"].push("checkbox");
       safe_array_remove(field.element.attrs["class"], "form-control");
     };
+    Formalizer.parsers.colorpicker = function ($scope, field, cfg) {
+      field.element.wrap["class"].push("row");
+      field.element.left = "<div class=\"col-sm-6\">";
+      field.element.right = "</div>" +
+          "<div class=\"col-sm-6\">" +
+          "<spectrum-colorpicker ng-model=\"" + field.element.attrs["ng-model"] + "\"></spectrum-colorpicker>" +
+          "</div>";
+    }
 }());
 
 (function () {
@@ -1368,7 +1377,7 @@ var Formalizer;
 
     angular
 
-    .module("formalizer", ["ui.bootstrap", "checklist-model", "ui.bootstrap-slider", "formalizer-tpls", "textAngular"])
+    .module("formalizer", ["ui.bootstrap", "checklist-model", "ui.bootstrap-slider", "formalizer-tpls", "textAngular", "angularSpectrumColorpicker"])
 
     .config(["$sceProvider", function($sceProvider) {
       $sceProvider.enabled(false);

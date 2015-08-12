@@ -199,7 +199,9 @@ Help text. *Can be real-time modified*. You could be used to give extra feedback
 * raw
 
   Raw HTML that will be included into the form. [example](#field-type-raw-example)
+* colorpiker
 
+  using [angular-spectrum-colorpicker](https://github.com/Jimdo/angular-spectrum-colorpicker)
 
 ##### `name`: String [**mandatory**]
 
