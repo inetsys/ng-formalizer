@@ -35,6 +35,7 @@ concat:
             - lib/ng-past-date.js
             - lib/ng-future-date.js
             - lib/ng-till-today.js
+            - lib/ng-from-today.js
             - lib/ng-use-locale.js
             - lib/ng-hide-ex.js
 
