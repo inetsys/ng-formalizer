@@ -53,6 +53,6 @@ describe("specs-ng-decimal.js", function () {
         expect(input.$valid).toEqual(false);
         expect(input.$viewValue).toEqual("0,1");
         $rootScope.$digest();
-        expect($rootScope.entity.decimal).toEqual(null); // NaN
+        expect($rootScope.entity.decimal).toBeFalsy(); // NaN
     });
 });

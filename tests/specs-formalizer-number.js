@@ -56,7 +56,7 @@ describe("specs-formalizer-number.js", function () {
 
         $scope.config = config;
 
-        element = angular.element("<div ng-formalizer=\"config\"></div>");
+        var element = angular.element("<div ng-formalizer=\"config\"></div>");
         $compile(element)($scope);
 
         $scope.$digest();
@@ -77,8 +77,7 @@ describe("specs-formalizer-number.js", function () {
     function ok() {
         expect(form.$invalid).toEqual(false);
         expect(form.number.$invalid).toEqual(false);
-        expect(submit_el.attr("disabled")).toEqual(null);
-
+        expect(submit_el.attr("disabled")).toBeFalsy();
     }
 
     function set_number(val, form_state) {
@@ -103,4 +102,3 @@ describe("specs-formalizer-number.js", function () {
         set_number(-10, false);
     });
 });
-

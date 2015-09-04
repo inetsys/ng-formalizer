@@ -4,10 +4,8 @@ describe("specs-formalizer-text.js", function () {
     var $compile,
         $scope,
         form,
-        input,
         submited = false,
-        element,
-        form;
+        element;
 
     // Load the myApp module, which contains the directive
     beforeEach(module("formalizer-tpls"));
@@ -68,11 +66,7 @@ describe("specs-formalizer-text.js", function () {
 
     // a single test
     it("test input@text", function () {
-
-        //debug: console.log($("<div />").append(element).html());
-
-        var input = element.find("#form-text"),
-            submit = element.find("#form-submit");
+        var submit = element.find("#form-submit");
 
         expect(form.$invalid).toEqual(true);
         expect(form.text.$invalid).toEqual(true);
@@ -84,7 +78,7 @@ describe("specs-formalizer-text.js", function () {
 
         expect(form.$invalid).toEqual(false);
         expect(form.text.$invalid).toEqual(false);
-        expect(submit.attr("disabled")).toEqual(null);
+        expect(submit.attr("disabled")).toBeFalsy();
 
 
         element.submit();

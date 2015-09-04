@@ -37,7 +37,7 @@ describe("specs-ng-equal-to.js", function () {
 
         form = $rootScope.form;
         input = $rootScope.form.text1;
-        input2 = $rootScope.form.text2;
+        var input2 = $rootScope.form.text2;
 
         expect(input.$valid).toEqual(true);
 

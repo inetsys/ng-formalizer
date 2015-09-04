@@ -16,9 +16,6 @@ describe("specs-formalizer-empty.js", function () {
         $rootScope = _$rootScope_;
     }));
 
-    var form,
-        input;
-
     // a single test
     it("Create an empty formalizer", function () {
         var submited = false;
@@ -58,7 +55,8 @@ describe("specs-formalizer-empty.js", function () {
 
         var submit = element.find("#form-submit");
         expect(submit.hasClass("btn-primary")).toEqual(true);
-        expect(submit.attr("disabled")).toEqual(null);
+        expect(submit.attr("disabled")).toBeFalsy();
+
 
         element.submit();
 

@@ -7,11 +7,6 @@ describe("specs-ng-use-locale.js", function () {
   // Load the myApp module, which contains the directive
   beforeEach(module("formalizer"));
 
-  set_input = function(elm, value) {
-    elm.val(value);
-    browserTrigger(elm, 'input');
-  };
-
   // Store references to $rootScope and $compile
   // so they are available to all tests in this describe block
   beforeEach(inject(function (_$compile_, _$rootScope_) {
@@ -30,7 +25,7 @@ describe("specs-ng-use-locale.js", function () {
       num: 0
     };
 
-    var form_el = $compile(
+    var element = $compile(
       "<form name=\"form\">" +
       "<input type=\"number\" name=\"num\" ng-model=\"entity.num\" ng-use-locale=\"\" />" +
       "</form>"
@@ -40,7 +35,6 @@ describe("specs-ng-use-locale.js", function () {
 
     form = $rootScope.form;
     input = $rootScope.form.num;
-    input_el = form_el.find('input').eq(0);
 
     expect(input.$valid).toEqual(true);
 

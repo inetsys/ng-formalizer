@@ -1,4 +1,4 @@
-describe("specs-formalizer-number.js", function () {
+describe("specs-formalizer-select.js", function () {
     console.log("--> ", this.description);
 
     var config = {
@@ -62,7 +62,7 @@ describe("specs-formalizer-number.js", function () {
 
         $scope.config = config;
 
-        element = angular.element("<div ng-formalizer=\"config\"></div>");
+        var element = angular.element("<div ng-formalizer=\"config\"></div>");
         $compile(element)($scope);
 
         $scope.$digest();
@@ -83,7 +83,7 @@ describe("specs-formalizer-number.js", function () {
     function ok() {
         expect(form.$invalid).toEqual(false);
         expect(form.select.$invalid).toEqual(false);
-        expect(submit_el.attr("disabled")).toEqual(null);
+        expect(submit_el.attr("disabled")).toBeFalsy();
 
     }
 
@@ -108,4 +108,3 @@ describe("specs-formalizer-number.js", function () {
         set_select(null, false);
     });
 });
-

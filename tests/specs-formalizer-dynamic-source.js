@@ -1,4 +1,4 @@
-describe("specs-formalizer-number.js", function () {
+describe("specs-formalizer-dynamic-source.js", function () {
     console.log("--> ", this.description);
 
     var config = {
@@ -52,8 +52,7 @@ describe("specs-formalizer-number.js", function () {
 
     // Store references to $scope and $compile
     // so they are available to all tests in this describe block
-    beforeEach(inject(function (FormalizerConfig, $compile, $rootScope, $timeout) {
-        // The injector unwraps the underscores (_) from around the parameter names when matching
+    beforeEach(inject(function ($compile, $rootScope, $timeout) {
         $scope = $rootScope.$new();
 
         $scope.onSubmit = function (clean) {
@@ -89,4 +88,3 @@ describe("specs-formalizer-number.js", function () {
         expect(element.find("input").length).toEqual(6);
     });
 });
-

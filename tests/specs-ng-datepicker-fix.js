@@ -1,12 +1,10 @@
-describe("specs-formalizer-text.js", function () {
+describe("specs-ng-datepicker-fix.js", function () {
     console.log("--> ", this.description);
 
     var $compile,
         $scope,
         form,
-        input,
         element,
-        form,
         __datepickerPopupFix;
 
     // Load the myApp module, which contains the directive
@@ -31,7 +29,7 @@ describe("specs-formalizer-text.js", function () {
         datepickerPopupFix.datepickerTZ = "+0000";
         __datepickerPopupFix = datepickerPopupFix;
 
-        $scope.onSubmit = function(clean) {
+        $scope.onSubmit = function() {
         };
 
         $scope.entity = {
@@ -74,12 +72,11 @@ describe("specs-formalizer-text.js", function () {
     it("test input@datepicker no tz", function () {
         __datepickerPopupFix.datepickerTZ = undefined;
 
-        var input = element.find("#form-datepicker"),
-            submit = element.find("#form-submit");
+        var submit = element.find("#form-submit");
 
         expect(form.$invalid).toEqual(false);
         expect(form.datepicker.$invalid).toEqual(false);
-        expect(submit.attr("disabled")).toEqual(null);
+        expect(submit.attr("disabled")).toBeFalsy();
 
 
         form.datepicker.$setViewValue("15/03/2014");
@@ -91,15 +88,11 @@ describe("specs-formalizer-text.js", function () {
 
     // a single test
     it("test input@datepicker", function () {
-
-        //debug: console.log($("<div />").append(element).html());
-
-        var input = element.find("#form-datepicker"),
-            submit = element.find("#form-submit");
+        var submit = element.find("#form-submit");
 
         expect(form.$invalid).toEqual(false);
         expect(form.datepicker.$invalid).toEqual(false);
-        expect(submit.attr("disabled")).toEqual(null);
+        expect(submit.attr("disabled")).toBeFalsy();
 
 
         form.datepicker.$setViewValue("15/03/2014");
