@@ -4,8 +4,8 @@
     <p class="{{element.wrap.class}}">
 
     <ul class="formalizer-typeahead-muli formalizer-typeahead-muli-selected">
-      <li ng-repeat="obj in taSelected()">
-        <span>\{\{obj[$field.source_display]\}\} <a ng-click="taRemove(obj)"><span class="glyphicon glyphicon-trash"></span></a></span>
+      <li ng-repeat="obj in taSelected({{element.attrs["ong-model"]}})">
+        <span>\{\{obj[$field.source_display]\}\} <a ng-click="taRemove(obj, {{element.attrs["ong-model"]}})"><span class="glyphicon glyphicon-trash"></span></a></span>
       </li>
     </ul>
 
