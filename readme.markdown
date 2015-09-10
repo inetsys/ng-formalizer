@@ -228,7 +228,7 @@ No applicable to select, typeahead, typeahead-multi, checkbox*, radio*
 If model is `undefined` set this value. No more scope checks.
 
 
-##### `source`, `source_display` & `source_model`
+##### `source`, `source_display` & `source_model` & `source_filter`
 
 These three options configure how your data source is displayed and what need to be stored in your model.
 
@@ -257,6 +257,11 @@ These three options configure how your data source is displayed and what need to
 
   For `checkbox-matrix` represent WHERE (rather than what) by default will map the model to a 2d-array.
 
+* `source_filter`: String|null
+
+  Optional, only available to select.
+
+  Add filter function to ng-options
 
 Example:
 
