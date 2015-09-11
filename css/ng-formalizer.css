@@ -9,3 +9,7 @@ form.ng-dirty .form-error-list {
     content: " *";
     color: #a94442;
 }
+/* to keep the same design using ui-select/select2 theme*/
+.select2-container {
+  min-width: 100%;
+}

@@ -15,6 +15,7 @@ concat:
             - lib/formalizer.checkbox-matrix.js
             - lib/formalizer.slider.js
             - lib/formalizer.richtext.js
+            - lib/formalizer.ui-select.js
             - lib/ng-formalizer.js
             - lib/ng-formalizer-field.js
             - lib/ng-formalizer-attach.js
