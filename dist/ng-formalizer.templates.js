@@ -1,4 +1,4 @@
-angular.module('formalizer-tpls', ['templates/formalizer-checkbox-list.tpl.html', 'templates/formalizer-checkbox-matrix.tpl.html', 'templates/formalizer-checkbox.tpl.html', 'templates/formalizer-columns.tpl.html', 'templates/formalizer-error-list.tpl.html', 'templates/formalizer-form-1.2.tpl.html', 'templates/formalizer-form-1.3.tpl.html', 'templates/formalizer-hidden.tpl.html', 'templates/formalizer-input.tpl.html', 'templates/formalizer-radio-list.tpl.html', 'templates/formalizer-raw.tpl.html', 'templates/formalizer-richtext.tpl.html', 'templates/formalizer-select.tpl.html', 'templates/formalizer-slider.tpl.html', 'templates/formalizer-submit.tpl.html', 'templates/formalizer-textarea.tpl.html', 'templates/formalizer-typeahead.tpl.html', 'templates/formalizer.fields.tpl.html']);
+angular.module('formalizer-tpls', ['templates/formalizer-checkbox-list.tpl.html', 'templates/formalizer-checkbox-matrix.tpl.html', 'templates/formalizer-checkbox.tpl.html', 'templates/formalizer-columns.tpl.html', 'templates/formalizer-error-list.tpl.html', 'templates/formalizer-form-1.2.tpl.html', 'templates/formalizer-form-1.3.tpl.html', 'templates/formalizer-hidden.tpl.html', 'templates/formalizer-input.tpl.html', 'templates/formalizer-radio-list.tpl.html', 'templates/formalizer-raw.tpl.html', 'templates/formalizer-richtext.tpl.html', 'templates/formalizer-select.tpl.html', 'templates/formalizer-slider.tpl.html', 'templates/formalizer-submit.tpl.html', 'templates/formalizer-textarea.tpl.html', 'templates/formalizer-typeahead.tpl.html', 'templates/formalizer-ui-select.tpl.html', 'templates/formalizer.fields.tpl.html']);
 
 angular.module("templates/formalizer-checkbox-list.tpl.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("templates/formalizer-checkbox-list.tpl.html",
@@ -326,8 +326,8 @@ angular.module("templates/formalizer-typeahead.tpl.html", []).run(["$templateCac
     "    <p class=\"{{element.wrap.class}}\">\n" +
     "\n" +
     "    <ul class=\"formalizer-typeahead-muli formalizer-typeahead-muli-selected\">\n" +
-    "      <li ng-repeat=\"obj in taSelected()\">\n" +
-    "        <span>\\{\\{obj[$field.source_display]\\}\\} <a ng-click=\"taRemove(obj)\"><span class=\"glyphicon glyphicon-trash\"></span></a></span>\n" +
+    "      <li ng-repeat=\"obj in taSelected({{element.attrs[\"ong-model\"]}})\">\n" +
+    "        <span>\\{\\{obj[$field.source_display]\\}\\} <a ng-click=\"taRemove(obj, {{element.attrs[\"ong-model\"]}})\"><span class=\"glyphicon glyphicon-trash\"></span></a></span>\n" +
     "      </li>\n" +
     "    </ul>\n" +
     "\n" +
@@ -338,6 +338,30 @@ angular.module("templates/formalizer-typeahead.tpl.html", []).run(["$templateCac
     "        <input %element-attributes% />\n" +
     "        {{element.right}}\n" +
     "    </p>\n" +
+    "\n" +
+    "    <div class=\"help-block\" ng-compile=\"\" ng-bind-html=\"$field.help\"></div>\n" +
+    "\n" +
+    "    %element-error-list%\n" +
+    "\n" +
+    "  </div>\n" +
+    "</div>\n" +
+    "");
+}]);
+
+angular.module("templates/formalizer-ui-select.tpl.html", []).run(["$templateCache", function($templateCache) {
+  $templateCache.put("templates/formalizer-ui-select.tpl.html",
+    "<div {{container.attrs_text}}>\n" +
+    "  <label for=\"{{element.attrs.id}}\" class=\"{{label.class}}\" ng-compile=\"\" ng-bind-html=\"$field.label\"></label>\n" +
+    "  <div class=\"{{element.container.class}}\">\n" +
+    "    <div class=\"{{element.wrap.class}}\">\n" +
+    "      <!-- theme=\"bootstrap\" -->\n" +
+    "      <ui-select %element-attributes%>\n" +
+    "        <ui-select-match placeholder=\"{{placeholder || \"\"}}\">\\{\\{$select.selected{{source_display? \".\" + source_display : source_display}}\\}\\}</ui-select-match>\n" +
+    "        <ui-select-choices repeat=\"data{{source_model ? \".\" + source_model: source_model}} as data in $field.formalizer.source | filter: $select.search\">\n" +
+    "          <span ng-bind-html=\"data{{source_display? \".\" + source_display : source_display}} | highlight: $select.search\"></span>\n" +
+    "        </ui-select-choices>\n" +
+    "      </ui-select>\n" +
+    "    </div>\n" +
     "\n" +
     "    <div class=\"help-block\" ng-compile=\"\" ng-bind-html=\"$field.help\"></div>\n" +
     "\n" +

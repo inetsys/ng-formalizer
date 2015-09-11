@@ -21,7 +21,12 @@ var Formalizer;
     }
     function join_ngclass(target) {
       if (target["ng-class"]) {
-        target["ng-class"] = "{" + target["ng-class"].join(",") + "}";
+        if (target["ng-class"].length) {
+          target["ng-class"] = "{" + target["ng-class"].join(",") + "};";
+        } else {
+          delete target["ng-class"];
+        }
+
       }
     }
 
@@ -221,6 +226,7 @@ var Formalizer;
             source: null,
             source_display: cfg.source_display || null,
             source_model: cfg.source_model || null,
+            source_filter: cfg.source_filter || null,
             options: angular.extend(cfg.options || {}, {
                 scope_name: field_in_scope
             })
@@ -544,12 +550,15 @@ var Formalizer;
 
         field.element.attrs["ng-options"] = "c" + mdl + " as c." + field.source_display + " for c in $field.formalizer.source";
 
+        if (field.source_filter) {
+          field.element.attrs["ng-options"] += " | " + field.source_filter + ":c";
+        }
+
         if (field.options.multiple) {
             field.element.attrs.multiple = "multiple";
         }
     };
 }());
-
 
 (function () {
     "use strict";
@@ -660,6 +669,7 @@ var Formalizer;
             ta_model = field.element.attrs["ng-model"],
             ta_model_selected = field.element.attrs["ng-model"] + "_sel";
 
+        field.element.attrs["ong-model"] = field.element.attrs["ng-model"];
         field.element.attrs["ng-model"] = ta_model_selected;
 
         var target = $scope.$eval(ta_model);
@@ -673,7 +683,7 @@ var Formalizer;
 
         $scope["taAppend"] = function ($item, $model, $label) {
             if (field.options.taAppend) {
-                field.options.taAppend($item, $model, $label);
+                field.options.taAppend($item, $scope.$eval(ta_model), $label);
             } else {
                 var target = $scope.$eval(ta_model);
 
@@ -1007,12 +1017,51 @@ var Formalizer;
         safe_array_remove(field.element.attrs["class"], "form-control");
     };
 }());
+(function () {
+    "use strict";
+
+    function safe_array_remove(arr, item) {
+        var cut = arr.indexOf(item);
+        if (cut !== -1) {
+            return arr.splice(cut, 1);
+        }
+
+        return false;
+    }
+
+    Formalizer.templates.push("ui-select");
+
+    Formalizer.types["ui-select"] = "ui-select";
+
+    Formalizer.parsers["ui-select"] = function ($scope, field, cfg) {
+        field.source_display = field.source_display || "label";
+
+        field.element.attrs["ng-class"] = [];
+
+        safe_array_remove(field.element.attrs["class"], "form-control");
+
+        /*
+        var mdl = field.source_model ? "." + field.source_model : "";
+
+        field.element.attrs["ng-options"] = "c" + mdl + " as c." + field.source_display + " for c in $field.formalizer.source";
+
+        if (field.source_filter) {
+          field.element.attrs["ng-options"] += " | " + field.source_filter + ":c";
+        }
+
+        if (field.options.multiple) {
+            field.element.attrs.multiple = "multiple";
+        }
+        */
+    };
+}());
+
 "use strict";
 (function () {
 
     angular
 
-    .module("formalizer", ["ui.bootstrap", "checklist-model", "ui.bootstrap-slider", "formalizer-tpls", "textAngular", "angularSpectrumColorpicker"])
+    .module("formalizer", ["ui.bootstrap", "checklist-model", "ui.bootstrap-slider", "formalizer-tpls", "textAngular", "angularSpectrumColorpicker", "ui.select"])
 
     .config(["$sceProvider", function($sceProvider) {
       $sceProvider.enabled(false);

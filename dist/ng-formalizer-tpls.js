@@ -1,4 +1,4 @@
-angular.module('formalizer-tpls', ['templates/formalizer-checkbox-list.tpl.html', 'templates/formalizer-checkbox-matrix.tpl.html', 'templates/formalizer-checkbox.tpl.html', 'templates/formalizer-columns.tpl.html', 'templates/formalizer-error-list.tpl.html', 'templates/formalizer-form-1.2.tpl.html', 'templates/formalizer-form-1.3.tpl.html', 'templates/formalizer-hidden.tpl.html', 'templates/formalizer-input.tpl.html', 'templates/formalizer-radio-list.tpl.html', 'templates/formalizer-raw.tpl.html', 'templates/formalizer-richtext.tpl.html', 'templates/formalizer-select.tpl.html', 'templates/formalizer-slider.tpl.html', 'templates/formalizer-submit.tpl.html', 'templates/formalizer-textarea.tpl.html', 'templates/formalizer-typeahead.tpl.html', 'templates/formalizer.fields.tpl.html']);
+angular.module('formalizer-tpls', ['templates/formalizer-checkbox-list.tpl.html', 'templates/formalizer-checkbox-matrix.tpl.html', 'templates/formalizer-checkbox.tpl.html', 'templates/formalizer-columns.tpl.html', 'templates/formalizer-error-list.tpl.html', 'templates/formalizer-form-1.2.tpl.html', 'templates/formalizer-form-1.3.tpl.html', 'templates/formalizer-hidden.tpl.html', 'templates/formalizer-input.tpl.html', 'templates/formalizer-radio-list.tpl.html', 'templates/formalizer-raw.tpl.html', 'templates/formalizer-richtext.tpl.html', 'templates/formalizer-select.tpl.html', 'templates/formalizer-slider.tpl.html', 'templates/formalizer-submit.tpl.html', 'templates/formalizer-textarea.tpl.html', 'templates/formalizer-typeahead.tpl.html', 'templates/formalizer-ui-select.tpl.html', 'templates/formalizer.fields.tpl.html']);
 
 angular.module("templates/formalizer-checkbox-list.tpl.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("templates/formalizer-checkbox-list.tpl.html",
@@ -326,8 +326,8 @@ angular.module("templates/formalizer-typeahead.tpl.html", []).run(["$templateCac
     "    <p class=\"{{element.wrap.class}}\">\n" +
     "\n" +
     "    <ul class=\"formalizer-typeahead-muli formalizer-typeahead-muli-selected\">\n" +
-    "      <li ng-repeat=\"obj in taSelected()\">\n" +
-    "        <span>\\{\\{obj[$field.source_display]\\}\\} <a ng-click=\"taRemove(obj)\"><span class=\"glyphicon glyphicon-trash\"></span></a></span>\n" +
+    "      <li ng-repeat=\"obj in taSelected({{element.attrs[\"ong-model\"]}})\">\n" +
+    "        <span>\\{\\{obj[$field.source_display]\\}\\} <a ng-click=\"taRemove(obj, {{element.attrs[\"ong-model\"]}})\"><span class=\"glyphicon glyphicon-trash\"></span></a></span>\n" +
     "      </li>\n" +
     "    </ul>\n" +
     "\n" +
@@ -338,6 +338,30 @@ angular.module("templates/formalizer-typeahead.tpl.html", []).run(["$templateCac
     "        <input %element-attributes% />\n" +
     "        {{element.right}}\n" +
     "    </p>\n" +
+    "\n" +
+    "    <div class=\"help-block\" ng-compile=\"\" ng-bind-html=\"$field.help\"></div>\n" +
+    "\n" +
+    "    %element-error-list%\n" +
+    "\n" +
+    "  </div>\n" +
+    "</div>\n" +
+    "");
+}]);
+
+angular.module("templates/formalizer-ui-select.tpl.html", []).run(["$templateCache", function($templateCache) {
+  $templateCache.put("templates/formalizer-ui-select.tpl.html",
+    "<div {{container.attrs_text}}>\n" +
+    "  <label for=\"{{element.attrs.id}}\" class=\"{{label.class}}\" ng-compile=\"\" ng-bind-html=\"$field.label\"></label>\n" +
+    "  <div class=\"{{element.container.class}}\">\n" +
+    "    <div class=\"{{element.wrap.class}}\">\n" +
+    "      <!-- theme=\"bootstrap\" -->\n" +
+    "      <ui-select %element-attributes%>\n" +
+    "        <ui-select-match placeholder=\"{{placeholder || \"\"}}\">\\{\\{$select.selected{{source_display? \".\" + source_display : source_display}}\\}\\}</ui-select-match>\n" +
+    "        <ui-select-choices repeat=\"data{{source_model ? \".\" + source_model: source_model}} as data in $field.formalizer.source | filter: $select.search\">\n" +
+    "          <span ng-bind-html=\"data{{source_display? \".\" + source_display : source_display}} | highlight: $select.search\"></span>\n" +
+    "        </ui-select-choices>\n" +
+    "      </ui-select>\n" +
+    "    </div>\n" +
     "\n" +
     "    <div class=\"help-block\" ng-compile=\"\" ng-bind-html=\"$field.help\"></div>\n" +
     "\n" +
@@ -386,7 +410,12 @@ var Formalizer;
     }
     function join_ngclass(target) {
       if (target["ng-class"]) {
-        target["ng-class"] = "{" + target["ng-class"].join(",") + "}";
+        if (target["ng-class"].length) {
+          target["ng-class"] = "{" + target["ng-class"].join(",") + "};";
+        } else {
+          delete target["ng-class"];
+        }
+
       }
     }
 
@@ -586,6 +615,7 @@ var Formalizer;
             source: null,
             source_display: cfg.source_display || null,
             source_model: cfg.source_model || null,
+            source_filter: cfg.source_filter || null,
             options: angular.extend(cfg.options || {}, {
                 scope_name: field_in_scope
             })
@@ -909,12 +939,15 @@ var Formalizer;
 
         field.element.attrs["ng-options"] = "c" + mdl + " as c." + field.source_display + " for c in $field.formalizer.source";
 
+        if (field.source_filter) {
+          field.element.attrs["ng-options"] += " | " + field.source_filter + ":c";
+        }
+
         if (field.options.multiple) {
             field.element.attrs.multiple = "multiple";
         }
     };
 }());
-
 
 (function () {
     "use strict";
@@ -1025,6 +1058,7 @@ var Formalizer;
             ta_model = field.element.attrs["ng-model"],
             ta_model_selected = field.element.attrs["ng-model"] + "_sel";
 
+        field.element.attrs["ong-model"] = field.element.attrs["ng-model"];
         field.element.attrs["ng-model"] = ta_model_selected;
 
         var target = $scope.$eval(ta_model);
@@ -1038,7 +1072,7 @@ var Formalizer;
 
         $scope["taAppend"] = function ($item, $model, $label) {
             if (field.options.taAppend) {
-                field.options.taAppend($item, $model, $label);
+                field.options.taAppend($item, $scope.$eval(ta_model), $label);
             } else {
                 var target = $scope.$eval(ta_model);
 
@@ -1372,12 +1406,51 @@ var Formalizer;
         safe_array_remove(field.element.attrs["class"], "form-control");
     };
 }());
+(function () {
+    "use strict";
+
+    function safe_array_remove(arr, item) {
+        var cut = arr.indexOf(item);
+        if (cut !== -1) {
+            return arr.splice(cut, 1);
+        }
+
+        return false;
+    }
+
+    Formalizer.templates.push("ui-select");
+
+    Formalizer.types["ui-select"] = "ui-select";
+
+    Formalizer.parsers["ui-select"] = function ($scope, field, cfg) {
+        field.source_display = field.source_display || "label";
+
+        field.element.attrs["ng-class"] = [];
+
+        safe_array_remove(field.element.attrs["class"], "form-control");
+
+        /*
+        var mdl = field.source_model ? "." + field.source_model : "";
+
+        field.element.attrs["ng-options"] = "c" + mdl + " as c." + field.source_display + " for c in $field.formalizer.source";
+
+        if (field.source_filter) {
+          field.element.attrs["ng-options"] += " | " + field.source_filter + ":c";
+        }
+
+        if (field.options.multiple) {
+            field.element.attrs.multiple = "multiple";
+        }
+        */
+    };
+}());
+
 "use strict";
 (function () {
 
     angular
 
-    .module("formalizer", ["ui.bootstrap", "checklist-model", "ui.bootstrap-slider", "formalizer-tpls", "textAngular", "angularSpectrumColorpicker"])
+    .module("formalizer", ["ui.bootstrap", "checklist-model", "ui.bootstrap-slider", "formalizer-tpls", "textAngular", "angularSpectrumColorpicker", "ui.select"])
 
     .config(["$sceProvider", function($sceProvider) {
       $sceProvider.enabled(false);
