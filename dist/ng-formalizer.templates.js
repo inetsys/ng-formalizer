@@ -1,4 +1,4 @@
-angular.module('formalizer-tpls', ['templates/formalizer-checkbox-list.tpl.html', 'templates/formalizer-checkbox-matrix.tpl.html', 'templates/formalizer-checkbox.tpl.html', 'templates/formalizer-columns.tpl.html', 'templates/formalizer-error-list.tpl.html', 'templates/formalizer-form-1.2.tpl.html', 'templates/formalizer-form-1.3.tpl.html', 'templates/formalizer-hidden.tpl.html', 'templates/formalizer-input.tpl.html', 'templates/formalizer-radio-list.tpl.html', 'templates/formalizer-raw.tpl.html', 'templates/formalizer-richtext.tpl.html', 'templates/formalizer-select.tpl.html', 'templates/formalizer-slider.tpl.html', 'templates/formalizer-submit.tpl.html', 'templates/formalizer-textarea.tpl.html', 'templates/formalizer-typeahead.tpl.html', 'templates/formalizer-ui-select.tpl.html', 'templates/formalizer.fields.tpl.html']);
+angular.module('formalizer-tpls', ['templates/formalizer-checkbox-list.tpl.html', 'templates/formalizer-checkbox-matrix.tpl.html', 'templates/formalizer-checkbox.tpl.html', 'templates/formalizer-columns.tpl.html', 'templates/formalizer-error-list.tpl.html', 'templates/formalizer-form-1.2.tpl.html', 'templates/formalizer-form-1.3.tpl.html', 'templates/formalizer-form-1.4.tpl.html', 'templates/formalizer-hidden.tpl.html', 'templates/formalizer-input.tpl.html', 'templates/formalizer-radio-list.tpl.html', 'templates/formalizer-raw.tpl.html', 'templates/formalizer-richtext.tpl.html', 'templates/formalizer-select.tpl.html', 'templates/formalizer-slider.tpl.html', 'templates/formalizer-submit.tpl.html', 'templates/formalizer-textarea.tpl.html', 'templates/formalizer-typeahead.tpl.html', 'templates/formalizer-ui-select.tpl.html', 'templates/formalizer.fields.tpl.html']);
 
 angular.module("templates/formalizer-checkbox-list.tpl.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("templates/formalizer-checkbox-list.tpl.html",
@@ -159,6 +159,30 @@ angular.module("templates/formalizer-form-1.3.tpl.html", []).run(["$templateCach
     "    ng-submit=\"$formalizer.submit()\"\n" +
     "    ng-class=\"{'form-horizontal': $formalizer.horizontal, 'form-vertical': $formalizer.vertical, 'form-inline': $formalizer.inline}\"\n" +
     "    name=\"$parent.{{$formalizer.name}}\"\n" +
+    "    ng-formalizer-form-attach=\"$formalizer.name\"\n" +
+    "    novalidate>\n" +
+    "  <fieldset>\n" +
+    "    <legend ng-if=\"$formalizer.legend\">{{$formalizer.legend}}</legend>\n" +
+    "    <div class=\"fieldset-contents\"></div>\n" +
+    "\n" +
+    "    <div ng-if=\"$formalizer.model\">\n" +
+    "      <div ng-init=\"field.fields = $formalizer.fields\"></div>\n" +
+    "      <div ng-include=\"'templates/formalizer.fields.tpl.html'\"></div>\n" +
+    "    </div>\n" +
+    "\n" +
+    "  </fieldset>\n" +
+    "\n" +
+    "</form>\n" +
+    "");
+}]);
+
+angular.module("templates/formalizer-form-1.4.tpl.html", []).run(["$templateCache", function($templateCache) {
+  $templateCache.put("templates/formalizer-form-1.4.tpl.html",
+    "<form\n" +
+    "    role=\"form\"\n" +
+    "    ng-submit=\"$formalizer.submit()\"\n" +
+    "    ng-class=\"{'form-horizontal': $formalizer.horizontal, 'form-vertical': $formalizer.vertical, 'form-inline': $formalizer.inline}\"\n" +
+    "    name=\"{{$formalizer.name}}\"\n" +
     "    ng-formalizer-form-attach=\"$formalizer.name\"\n" +
     "    novalidate>\n" +
     "  <fieldset>\n" +

@@ -1079,7 +1079,7 @@ var Formalizer;
                 restrict: "A",
                 replace: true,
                 scope: true,
-                templateUrl: "templates/formalizer-form-" + v.major + "." + Math.min(3, v.minor) + ".tpl.html",
+                templateUrl: "templates/formalizer-form-" + v.major + "." + Math.min(4, v.minor) + ".tpl.html",
                 priority: 500,
 
                 controller: function ($scope) {
