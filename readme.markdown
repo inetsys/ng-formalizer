@@ -8,7 +8,9 @@ Rather stable. Report any bug and remember to provide a test case.
 
 ## dependencies (bower)
 
-* angular 1.3.x (1.2.x is tested and working)
+* angular >1.4.4 (1.4.3/2/1 are not compatible due to some braking changes...)
+* angular 1.3.x
+* angular 1.2.x
 * jquery 2.1.x
 * angular-bootstrap *
 * checklist-model 0.1.3

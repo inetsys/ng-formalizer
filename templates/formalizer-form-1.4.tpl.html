@@ -1,0 +1,19 @@
+<form
+    role="form"
+    ng-submit="$formalizer.submit()"
+    ng-class="{'form-horizontal': $formalizer.horizontal, 'form-vertical': $formalizer.vertical, 'form-inline': $formalizer.inline}"
+    name="{{$formalizer.name}}"
+    ng-formalizer-form-attach="$formalizer.name"
+    novalidate>
+  <fieldset>
+    <legend ng-if="$formalizer.legend">{{$formalizer.legend}}</legend>
+    <div class="fieldset-contents"></div>
+
+    <div ng-if="$formalizer.model">
+      <div ng-init="field.fields = $formalizer.fields"></div>
+      <div ng-include="'templates/formalizer.fields.tpl.html'"></div>
+    </div>
+
+  </fieldset>
+
+</form>
