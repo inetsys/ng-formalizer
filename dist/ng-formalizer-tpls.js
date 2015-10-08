@@ -5,14 +5,14 @@ angular.module("templates/formalizer-checkbox-list.tpl.html", []).run(["$templat
     "<div {{container.attrs_text}}>\n" +
     "  <label class=\"{{label.class}}\" ng-compile=\"\" ng-bind-html=\"$field.label\"></label>\n" +
     "  <div class=\"{{element.container.class}}\">\n" +
-    "    <div ng-show=\"{{scope_name}}.options.select_all\">\n" +
+    "    <div ng-show=\"$field.options.select_all\">\n" +
     "      <label for=\"{{element.attrs.id}}-select-all\">\n" +
-    "        <input name=\"{{element.attrs.name}}-select-all\" id=\"{{element.attrs.id}}-select-all\" value=\"true\" ng-checked=\"{{element.attrs['checklist-model']}}.length == $field['$$'].source.length\" type=\"checkbox\" ng-model=\"{{options.chkall_model}}\" ng-change=\"{{options.scope_name}}.options.check_all($event)\" />\n" +
+    "        <input name=\"{{element.attrs.name}}-select-all\" id=\"{{element.attrs.id}}-select-all\" value=\"true\" ng-checked=\"{{element.attrs['checklist-model']}}.length == $field['$$'].source.length\" type=\"checkbox\" ng-model=\"{{options.chkall_model}}\" ng-change=\"$configuration.$check_all($event)\" />\n" +
     "        Select All\n" +
     "      </label>\n" +
     "    </div>\n" +
     "\n" +
-    "    <div class=\"{{element.wrap.class}}\" ng-repeat=\"checkbox_data in $field.formalizer.source\">\n" +
+    "    <div class=\"{{element.wrap.class}}\" ng-repeat=\"checkbox_data in $configuration.source\">\n" +
     "      <label for=\"{{element.attrs.id}}-\\{\\{$index\\}\\}\">\n" +
     "        <input name=\"{{element.attrs.name}}-\\{\\{$index\\}\\}\" id=\"{{element.attrs.id}}-\\{\\{$index\\}\\}\" %element-attributes%>\n" +
     "        \\{\\{checkbox_data['{{source_display}}']\\}\\}\n" +
@@ -99,31 +99,37 @@ angular.module("templates/formalizer-columns.tpl.html", []).run(["$templateCache
 angular.module("templates/formalizer-error-list.tpl.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("templates/formalizer-error-list.tpl.html",
     "<!--\n" +
-    "<pre>\\{\\{element.attrs | json \\}\\}</pre>\n" +
+    "<pre>\n" +
+    "  $formalizer.formalizer.attempts = \\{\\{$formalizer.formalizer.attempts}}\n" +
+    "  $field.name = \\{\\{$field.name}}\n" +
+    "  $field.messages = \\{\\{$field.messages | json}}\n" +
+    "  $formalizer.form[$field.name].$error = \\{\\{ $formalizer.form[$field.name].$error | json }}\n" +
+    "  $configuration = \\{\\{$configuration | json}}\n" +
+    "  datepickers: \\{\\{datepickers}}\n" +
+    "</pre>\n" +
     "-->\n" +
     "\n" +
     "<ul class=\"form-error-list help-block\">\n" +
-    "\n" +
-    "  <li ng-show=\"$formalizer.$attemps > 0 && %scope-form-name%['{{element.attrs.name}}'].$error.required\">{{messages.required || 'Field is required'}}</li>\n" +
-    "  <li ng-show=\"%scope-form-name%['{{element.attrs.name}}'].$error.min\">{{messages.min || 'Field minimum is \\{\\{element.attrs[\\'min\\']\\}\\}'}}</li>\n" +
-    "  <li ng-show=\"%scope-form-name%['{{element.attrs.name}}'].$error.max\">{{messages.max || 'Field maximum is \\{\\{element.attrs[\\'max\\']\\}\\}'}}</li>\n" +
-    "  <li ng-show=\"%scope-form-name%['{{element.attrs.name}}'].$error.minlength\">{{messages.minlength || 'Field is required to be at least \\{\\{element.attrs[\\'ng-minlength\\']\\}\\} characters'}}</li>\n" +
-    "  <li ng-show=\"%scope-form-name%['{{element.attrs.name}}'].$error.maxlength\">{{messages.maxlength || 'Field cannot be longer than \\{\\{element.attrs[\\'ng-maxlength\\']\\}\\} characters'}}</li>\n" +
-    "  <li ng-show=\"%scope-form-name%['{{element.attrs.name}}'].$error.number\">{{messages.number || 'Field is an invalid number'}}</li>\n" +
-    "  <li ng-show=\"%scope-form-name%['{{element.attrs.name}}'].$error.email\">{{messages.email || 'Field is an invalid email'}}</li>\n" +
-    "  <li ng-show=\"%scope-form-name%['{{element.attrs.name}}'].$error.url\">{{messages.url || 'Field is an invalid URL'}}</li>\n" +
-    "  <li ng-show=\"%scope-form-name%['{{element.attrs.name}}'].$error.blacklist\">{{messages.blacklist || 'Field value is blacklisted'}}</li>\n" +
-    "  <li ng-show=\"%scope-form-name%['{{element.attrs.name}}'].$error['equal-to']\">{{messages['equal-to'] || 'Field must be equal to: X'}}</li>\n" +
-    "  <li ng-show=\"%scope-form-name%['{{element.attrs.name}}'].$error['only-alpha']\">{{messages['only-alpha'] || 'Field must contains only letters'}}</li>\n" +
-    "  <li ng-show=\"%scope-form-name%['{{element.attrs.name}}'].$error['only-iso']\">{{messages['only-iso'] || 'Valid characters are: A-Z, a-z, 0-9'}}</li>\n" +
-    "  <li ng-show=\"%scope-form-name%['{{element.attrs.name}}'].$error['one-upper']\">{{messages['one-upper'] || 'At least one uppercase'}}</li>\n" +
-    "  <li ng-show=\"%scope-form-name%['{{element.attrs.name}}'].$error['one-lower']\">{{messages['one-lower'] || 'At least one lowercase'}}</li>\n" +
-    "  <li ng-show=\"%scope-form-name%['{{element.attrs.name}}'].$error['one-number']\">{{messages['one-number'] || 'At least one number'}}</li>\n" +
-    "  <li ng-show=\"%scope-form-name%['{{element.attrs.name}}'].$error['one-alpha']\">{{messages['one-alpha'] || 'At least one letter'}}</li>\n" +
-    "  <li ng-show=\"%scope-form-name%['{{element.attrs.name}}'].$error['server-validation']\">{{messages['server-validation'] || 'Server validation fails'}}</li>\n" +
-    "  <li ng-show=\"%scope-form-name%['{{element.attrs.name}}'].$error['length']\">{{messages['length'] || 'Field length must be exactly \\{\\{element.attrs[\\'ng-length\\']\\}\\}'}}</li>\n" +
-    "  <li ng-show=\"%scope-form-name%['{{element.attrs.name}}'].$error['decimals']\">{{messages['decimals'] || 'Maximum decimals exceeded:  \\{\\{element.attrs[\\'ng-decimals\\']\\}\\}'}}</li>\n" +
-    "  <li ng-show=\"%scope-form-name%['{{element.attrs.name}}'].$error['no-decimals']\">{{messages['no-decimals'] || 'Cannot contain decimals \\{\\{element.attrs[\\'ng-no-decimals\\']\\}\\}'}}</li>\n" +
+    "  <li ng-show=\"$formalizer.formalizer.attempts > 0 && $formalizer.form[$field.name].$error.required\">\\{\\{$field.messages.required || 'Field is required'}}</li>\n" +
+    "  <li ng-show=\"$formalizer.form[$field.name].$error.min\">\\{\\{$field.messages.min || 'Field minimum is '+ $configuration.element.attrs['min'] }}</li>\n" +
+    "  <li ng-show=\"$formalizer.form[$field.name].$error.max\">\\{\\{$field.messages.max || 'Field maximum is '+ $configuration.element.attrs['max']}}</li>\n" +
+    "  <li ng-show=\"$formalizer.form[$field.name].$error.minlength\">\\{\\{$field.messages.minlength || 'Field is required to be at least '+ $configuration.element.attrs['ng-minlength'] + ' characters'}}</li>\n" +
+    "  <li ng-show=\"$formalizer.form[$field.name].$error.maxlength\">\\{\\{$field.messages.maxlength || 'Field cannot be longer than ' + $configuration.element.attrs['ng-maxlength'] + ' characters'}}</li>\n" +
+    "  <li ng-show=\"$formalizer.form[$field.name].$error.number\">\\{\\{$field.messages.number || 'Field is an invalid number'}}</li>\n" +
+    "  <li ng-show=\"$formalizer.form[$field.name].$error.email\">\\{\\{$field.messages.email || 'Field is an invalid email'}}</li>\n" +
+    "  <li ng-show=\"$formalizer.form[$field.name].$error.url\">\\{\\{$field.messages.url || 'Field is an invalid URL'}}</li>\n" +
+    "  <li ng-show=\"$formalizer.form[$field.name].$error.blacklist\">\\{\\{$field.messages.blacklist || 'Field value is blacklisted'}}</li>\n" +
+    "  <li ng-show=\"$formalizer.form[$field.name].$error['equal-to']\">\\{\\{$field.messages['equal-to'] || 'Field must be equal to: X'}}</li>\n" +
+    "  <li ng-show=\"$formalizer.form[$field.name].$error['only-alpha']\">\\{\\{$field.messages['only-alpha'] || 'Field must contains only letters'}}</li>\n" +
+    "  <li ng-show=\"$formalizer.form[$field.name].$error['only-iso']\">\\{\\{$field.messages['only-iso'] || 'Valid characters are: A-Z, a-z, 0-9'}}</li>\n" +
+    "  <li ng-show=\"$formalizer.form[$field.name].$error['one-upper']\">\\{\\{$field.messages['one-upper'] || 'At least one uppercase'}}</li>\n" +
+    "  <li ng-show=\"$formalizer.form[$field.name].$error['one-lower']\">\\{\\{$field.messages['one-lower'] || 'At least one lowercase'}}</li>\n" +
+    "  <li ng-show=\"$formalizer.form[$field.name].$error['one-number']\">\\{\\{$field.messages['one-number'] || 'At least one number'}}</li>\n" +
+    "  <li ng-show=\"$formalizer.form[$field.name].$error['one-alpha']\">\\{\\{$field.messages['one-alpha'] || 'At least one letter'}}</li>\n" +
+    "  <li ng-show=\"$formalizer.form[$field.name].$error['server-validation']\">\\{\\{$field.messages['server-validation'] || 'Server validation fails'}}</li>\n" +
+    "  <li ng-show=\"$formalizer.form[$field.name].$error['length']\">\\{\\{$field.messages['length'] || 'Field length must be exactly ' + $configuration.element.attrs['ng-length'] }}</li>\n" +
+    "  <li ng-show=\"$formalizer.form[$field.name].$error['decimals']\">\\{\\{$field.messages['decimals'] || 'Maximum decimals exceeded: '+ $configuration.element.attrs['ng-decimals'] }}</li>\n" +
+    "  <li ng-show=\"$formalizer.form[$field.name].$error['no-decimals']\">\\{\\{$field.messages['no-decimals'] || 'Cannot contain decimals ' + $configuration.element.attrs['ng-no-decimals'] }}</li>\n" +
     "</ul>\n" +
     "");
 }]);
@@ -231,7 +237,7 @@ angular.module("templates/formalizer-radio-list.tpl.html", []).run(["$templateCa
     "<div {{container.attrs_text}}>\n" +
     "  <label class=\"{{label.class}}\" ng-compile=\"\" ng-bind-html=\"$field.label\"></label>\n" +
     "  <div class=\"{{element.container.class}}\">\n" +
-    "    <div class=\"{{element.wrap.class}}\" ng-repeat=\"radio_data in $field.formalizer.source\">\n" +
+    "    <div class=\"{{element.wrap.class}}\" ng-repeat=\"radio_data in $configuration.source\">\n" +
     "      <label for=\"{{element.attrs.id}}-\\{\\{$index\\}\\}\">\n" +
     "        <input name=\"{{element.attrs.name}}\" id=\"{{element.attrs.id}}-\\{\\{$index\\}\\}\" value=\"\\{\\{radio_data{{source_model}}\\}\\}\" %element-attributes%>\n" +
     "        \\{\\{radio_data['{{source_display}}']\\}\\}\n" +
@@ -249,7 +255,9 @@ angular.module("templates/formalizer-radio-list.tpl.html", []).run(["$templateCa
 
 angular.module("templates/formalizer-raw.tpl.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("templates/formalizer-raw.tpl.html",
-    "<div {{container.attrs_text}} ng-formalizer-attach=\"\">\n" +
+    "<div {{container.attrs_text}}>\n" +
+    "  <div ng-bind-html-and-compile=\"$field.template\">\n" +
+    "  </div>\n" +
     "</div>\n" +
     "");
 }]);
@@ -381,7 +389,7 @@ angular.module("templates/formalizer-ui-select.tpl.html", []).run(["$templateCac
     "      <!-- theme=\"bootstrap\" -->\n" +
     "      <ui-select %element-attributes%>\n" +
     "        <ui-select-match placeholder=\"{{placeholder || \"\"}}\">\\{\\{$select.selected{{source_display? \".\" + source_display : source_display}}\\}\\}</ui-select-match>\n" +
-    "        <ui-select-choices repeat=\"data{{source_model ? \".\" + source_model: source_model}} as data in $field.formalizer.source | filter: $select.search\">\n" +
+    "        <ui-select-choices repeat=\"data{{source_model ? \".\" + source_model: source_model}} as data in $configuration.source | filter: $select.search\">\n" +
     "          <span ng-bind-html=\"data{{source_display? \".\" + source_display : source_display}} | highlight: $select.search\"></span>\n" +
     "        </ui-select-choices>\n" +
     "      </ui-select>\n" +
@@ -411,1206 +419,830 @@ angular.module("templates/formalizer.fields.tpl.html", []).run(["$templateCache"
     "");
 }]);
 
-var Formalizer;
+angular
+.module('formalizer', [
+  'ui.bootstrap',
+  'checklist-model',
+  'formalizer-tpls',
+  'textAngular',
+  'angularSpectrumColorpicker',
+  'ui.select',
+  'ngSanitize'
+  ])
+.config(['$sceProvider', function($sceProvider) {
+  $sceProvider.enabled(false);
+}])
+.provider('formalizerParsers', function formalizerParsers() {
+  var parsers = {};
 
-(function () {
-    "use strict";
+  this.set = function (type, parser_fn) {
+    parsers[type] = parser_fn;
+  };
 
-    var templates = {};
+  this.$get = function () {
+    return parsers;
+  };
+})
+.provider('formalizerTemplates', function formalizerParsers() {
+  var templates = {
+    'errors': 'templates/formalizer-error-list.tpl.html',
+    'text': 'templates/formalizer-input.tpl.html'
+  };
 
-    function safe_array_remove(arr, item) {
-        var cut = arr.indexOf(item);
-        if (cut !== -1) {
-            return arr.splice(cut, 1);
-        }
+  this.set = function (type, tpl) {
+    templates[type] = tpl;
+  };
 
-        return false;
+  this.$get = function () {
+    return templates;
+  };
+})
+.directive('ngFormalizer', function ($http, $templateCache, $interpolate) {
+  function safe_array_remove(arr, item) {
+      var cut = arr.indexOf(item);
+      if (cut !== -1) {
+          return arr.splice(cut, 1);
+      }
+
+      return false;
+  }
+
+  function join_class(target) {
+      target['class'] = target['class'].filter(function (cls) {
+          return cls && cls.length ? cls : false;
+      }).join(' ');
+  }
+
+  function join_ngclass(target) {
+    if (target['ng-class']) {
+      if (target['ng-class'].length) {
+        target['ng-class'] = '{' + target['ng-class'].join(',') + '};';
+      } else {
+        delete target['ng-class'];
+      }
+
     }
+  }
 
-    function join_class(target) {
-        target["class"] = target["class"].filter(function (cls) {
-            return cls && cls.length ? cls : false;
-        }).join(" ");
-    }
-    function join_ngclass(target) {
-      if (target["ng-class"]) {
-        if (target["ng-class"].length) {
-          target["ng-class"] = "{" + target["ng-class"].join(",") + "};";
-        } else {
-          delete target["ng-class"];
-        }
+  function join_attrs(attrs) {
+    var txt = [],
+      j;
 
+    // escape double quotes!
+    for (j in attrs) {
+      if ('string' === typeof attrs[j]) {
+        txt.push(j + '="' + (attrs[j].replace(/\"/g, '&quot;')) + '"');
+      } else {
+        txt.push(j + '="' + attrs[j] + '"');
       }
     }
+    return txt.join(' ');
+  }
 
-    function join_attrs(attrs) {
-      var txt = [],
-        j;
+  return {
+    restrict: 'A',
+    scope: false,
+    priority: 500,
+    require: ['?form', 'ngFormalizer'],
 
-      // escape double quotes!
-      for (j in attrs) {
-        if ("string" === typeof attrs[j]) {
-          txt.push(j + "=\"" + (attrs[j].replace(/\"/g, "&quot;")) + "\"");
-        } else {
-          txt.push(j + "=\"" + attrs[j] + "\"");
-        }
+    link: function ($scope, $elm, $attrs, $ctrls) {
+      //console.log("$attrs", $attrs);
+      var $ngForm = $ctrls[0];
+      var $ngFormalizer = $ctrls[1];
+
+      if (!$attrs.name) {
+        throw new Error('formalizer require a form name');
       }
-      return txt.join(" ");
-    }
 
+      if ($attrs.class.indexOf('form-horizontal') !== -1) {
+        $ngFormalizer.layout = 'horizontal';
+      } else if ($attrs.class.indexOf('form-inline') !== -1) {
+        $ngFormalizer.layout = 'inline';
+      } else {
+        $ngFormalizer.layout = 'vertical';
+      }
 
-    Formalizer = function ($scope, $parse, $interpolate, $log) {
-        this.fields = [];
-        this.groups = {};
+      $ngFormalizer.name = $attrs.name;
+      $ngFormalizer.form = $ngForm;
+      $ngFormalizer.baseModel = $attrs.ngBaseModel || null;
+    },
+    controller: function ($scope, formalizerParsers, formalizerTemplates) {
+      return {
+        layout: null,
+        name: null,
+        form: null,
+        baseModel: null,
+        attempts: 0,
 
-        this.$scope = $scope;
-        this.$parse = $parse;
-        this.$interpolate = $interpolate;
-        this.$log = $log;
-    };
+        configure: function configure(cfg, $scope) {
+          //console.log('configure', arguments);
+          var key;
+          var constraints = cfg.constraints || {};
+          var actions = cfg.actions || {};
+          var attrs = cfg.attrs || {};
+          var cattrs = cfg.cattrs || {};
 
-    Formalizer.prototype.onSubmit = null;
-    Formalizer.prototype.name = null;
-    Formalizer.prototype.type = null;
-    Formalizer.prototype.fields = null;
-    Formalizer.prototype.groups = null;
-
-    Formalizer.prototype.attempts = 0;
-
-    Formalizer.prototype.horizontal = false;
-    Formalizer.prototype.vertical = false;
-    Formalizer.prototype.inline = false;
-
-
-    Formalizer.prototype.$scope = null;
-    Formalizer.prototype.$parse = null;
-    Formalizer.prototype.$log = null;
-    Formalizer.prototype.$interpolate = null;
-
-    // match between templates and field.type
-    Formalizer.types = {
-        "columns": "columns"
-    };
-    Formalizer.templates = [];
-    Formalizer.parsers = {};
-
-    Formalizer.loadTemplates = function ($q, $http, $templateCache, FormalizerConfig) {
-        return $q.all(this.templates.concat([
-            "error-list",
-            "input",
-            "hidden",
-            "textarea",
-            "checkbox",
-            "select",
-            "submit",
-            "typeahead",
-            "checkbox-list",
-            "columns",
-        ]).map(function (tpl) {
-            // debug
-            //var html = $templateCache.get("templates/formalizer-" + tpl + ".tpl.html");
-            //if (html) {
-            //    templates[tpl] = html
-            //    return null;
-            //}
-
-            return $http
-                .get("templates/formalizer-" + tpl + ".tpl.html", {cache: $templateCache})
-                .success(function (html) {
-                    templates[tpl] = html;
-                });
-        }));
-    };
-
-    Formalizer.prototype.getTemplate = function (type) {
-        var template = templates[Formalizer.types[type]] || null;
-
-        if (!template) {
-            throw new Error("template not found for: " + type);
-        }
-
-        return template;
-    };
-
-    Formalizer.prototype.submit = function () {
-        var on_submit = this.$parse(this.onSubmit)(this.$scope.$parent),
-            form = this.$scope[this.name];
-
-        if (!on_submit) {
-            throw new Error("options.onSubmit is required");
-        }
-
-        ++this.attempts;
-
-        if (form.$valid) {
-            // pristile
-            var i,
-                j,
-                el,
-                data = {},
-                files = null,
-                field_data;
-
-            for (i in form) {
-                if (i[0] === "$") {
-                    continue;
-                }
-
-                field_data = this.fields.filter(function (v) { return v.formalizer.element.attrs.name === i; });
-
-                if (form[i].$dirty) {
-                    data[i] = form[i].$modelValue;
-                } else if (field_data && field_data.length && field_data[0].type === "file") { // check if it's a file
-                    el = field_data[0].domElement[0];
-
-                    files = files || [];
-
-                    //files[i] = [];
-
-                    for (j = 0; j < el.files.length; ++j) {
-                        //files[i].push(el.files[j]);
-                        files.push(el.files[j]);
-                    }
-                }
-            }
-
-            return on_submit(data, files, this.$scope.$eval(this.model), form);
-        }
-
-        this.$log.info("form is $invalid, no submit");
-    };
-
-    Formalizer.prototype.callParser = function (event, $scope, field, args) {
-        var type = field.type,
-            ret;
-
-        if ("function" === typeof Formalizer.parsers[type] && event === "post") {
-            ret = Formalizer.parsers[type]($scope, field, this);
-        } else if (Formalizer.parsers[type] && "function" === typeof Formalizer.parsers[type][event]) {
-            ret = Formalizer.parsers[type][event]($scope, field, this, args);
-        }
-
-        return ret;
-    };
-
-    Formalizer.prototype.createFieldMeta = function (cfg, field_in_scope, field_id, $scope) {
-        var key;
-
-        var constraints = cfg.constraints || {};
-        var actions = cfg.actions || {};
-        var attrs = cfg.attrs || {};
-        var cattrs = cfg.cattrs || {};
-
-        var field = {
+          var field = {
             visible: true,
             visible_children: true,
-            type: cfg.type || "text",
-            scope_name: field_in_scope,
+            type: cfg.type || 'text',
             container: {
-                "class": ["form-group", "formalizer-element"], //, "col-xs-12 col-sm-12 col-md-12"],
-                "ng-class": null,
-                "ng-show" : "$field.formalizer.visible"
+              'class': ['form-group', 'formalizer-element'], //, "col-xs-12 col-sm-12 col-md-12"],
+              'ng-class': null
             },
             label: {
-                "class": ["control-label"].concat((cfg.labelClass || "").split(" ")),
-                size: parseInt(cfg.label_size, 10) || 2
+              'class': ['control-label'].concat((cfg.labelClass || '').split(' ')),
+              size: parseInt(cfg.label_size, 10) || 2
             },
             element: {
-                size: parseInt(cfg.element_size, 10),
-                container: {
-                    "class": []
-                },
-                wrap: {
-                    "class": []
-                },
-                attrs: {
-                    name: cfg.name,
-                    id: this.name + "-" + cfg.name,
-                    type: cfg.type || "text",
-                    "ng-formalizer-attach": ""
-                },
-
-                // <span class="input-group-addon">XXX</span>
-                // <span class="input-group-btn"><button></button></span>
-                right: "",
-                left: ""
+              size: parseInt(cfg.element_size, 10),
+              container: {
+                'class': []
+              },
+              wrap: {
+                'class': []
+              },
+              attrs: {
+                name: cfg.name,
+                id: this.name + '-' + cfg.name,
+                type: cfg.type || 'text'
+              },
+              right: '',
+              left: ''
             },
-            messages: cfg.messages || {},
             source: null,
             source_display: cfg.source_display || null,
             source_model: cfg.source_model || null,
             source_filter: cfg.source_filter || null,
-            options: angular.extend(cfg.options || {}, {
-                scope_name: field_in_scope
-            })
-        };
-        //cfg.formalzier = field;
+            options: angular.copy(cfg.options || {})
+          };
 
-        field.container.class.push("formalizer-" + field.type);
-        field.container["ng-class"] = [
-          "\"has-error\" : (" + this.name + "[\"" + field.element.attrs.name + "\"].$invalid == true)",
-        ];
+          var name = field.element.attrs.name;
+
+          field.container.class.push('formalizer-' + field.type);
+          field.container['ng-class'] = [
+            '"has-error" : (' + this.name + '[\'' + name + '\'].$invalid == true)'
+          ];
+
+          if (cfg.default !== undefined) {
+              field.element.attrs['ng-default'] = '$field.default';
+          }
+
+          // watch source for changes
+          if (typeof cfg.source === 'string') {
+              field.source = $scope.$eval(cfg.source);
+              $scope.$watch(cfg.source, function (a) {
+                  field.source = a;
+              });
+          } else if (cfg.source !== undefined) {
+              field.source = cfg.source;
+              $scope.$watch('$field.source', function (a) {
+                  field.source = a;
+              });
+          }
 
 
+          field.element.attrs['ng-model'] = cfg.model || this.baseModel + '.' + name;
+          field.element.attrs['class'] = ['form-control'].concat((cfg['class'] || '').split(' '));
+          field.element.attrs['ng-class'] = [
+              '"has-error": $formalizer.attempts > 0 && ' + this.name + '.' + name + '.$invalid'
+          ];
 
-        if (cfg.default !== undefined) {
-            field.element.attrs["ng-default"] = "$field.default";
-        }
-
-        var name = field.element.attrs.name;
-
-        // watch source for changes
-        if (typeof cfg.source === "string") {
-            field.source = $scope.$eval(cfg.source);
-            $scope.$watch(cfg.source, function (a) {
-                field.source = a;
-            });
-        } else if (cfg.source !== undefined) {
-            field.source = cfg.source;
-            $scope.$watch("$field.source", function (a) {
-                field.source = a;
-            });
-        }
-
-        field.element.attrs["ng-model"] = cfg.model || this.model + "." + name;
-        field.element.attrs["class"] = ["form-control"].concat((cfg["class"] || "").split(" "));
-        field.element.attrs["ng-class"] = [
-            "\"has-error\": $formalizer.attempts > 0 && " + this.name + "." + field.element.attrs.name + ".$invalid"
-        ];
-        field.element.attrs["ng-placeholder"] = cfg.placeholder || "";
-
-        // constraints
-        var kattr;
-        for (key in constraints) {
+          // constraints
+          var kattr;
+          for (key in constraints) {
             // watchable attrs
-            if (["required", "disabled"].indexOf(key) !== -1) {
-              kattr = "ng-" + key;
+            if (['required', 'disabled'].indexOf(key) !== -1) {
+              kattr = 'ng-' + key;
               field.element.attrs[kattr] = constraints[key];
-              field.container["ng-class"].push(
-                JSON.stringify(kattr) + ":" + constraints[key]
+              field.container['ng-class'].push(
+                JSON.stringify(kattr) + ':' + constraints[key]
               );
             // attrs withtout 'ng-'
-            } else if (["min", "max", "max-date", "min-date"].indexOf(key) !== -1) {
-                field.element.attrs[key] = constraints[key];
-                field.container.class.push(key);
+            } else if (['min', 'max', 'max-date', 'min-date'].indexOf(key) !== -1) {
+              field.element.attrs[key] = constraints[key];
+              field.container.class.push(key);
             } else {
-                kattr = "ng-" + key;
-                field.element.attrs[kattr] = constraints[key];
-                field.container.class.push(kattr);
+              kattr = 'ng-' + key;
+              field.element.attrs[kattr] = constraints[key];
+              field.container.class.push(kattr);
             }
-        }
+          }
 
-        for (key in actions) {
-            kattr = "ng-" + key;
+          for (key in actions) {
+            kattr = 'ng-' + key;
             field.element.attrs[kattr] = actions[key];
-        }
+          }
 
-        // overwrite everything use it with caution!
-        for (key in attrs) {
+          // overwrite everything use it with caution!
+          for (key in attrs) {
             field.element.attrs[key] = attrs[key];
-        }
+          }
 
-        for (key in cattrs) {
+          for (key in cattrs) {
             field.container[key] = cattrs[key];
-            if (key == "ng-hide") {
-              field.container["ng-hide-emit"] = cattrs[key];
+            if (key === 'ng-hide') {
+              field.container['ng-hide-emit'] = cattrs[key];
             }
-        }
+          }
 
-        switch (this.type) {
-        case "horizontal":
+          switch (this.layout) {
+          case 'horizontal':
             var l = field.label.size,
-                r = field.element.size || (12 - field.label.size);
+              r = field.element.size || (12 - field.label.size);
 
-            if (cfg.type === "checkbox") {
-                field.element.container["class"].push("col-sm-offset-" + l);
-                field.label["class"].push("col-sm-12");
-                safe_array_remove(field.label["class"], "control-label");
+            if (cfg.type === 'checkbox') {
+              field.element.container['class'].push('col-sm-offset-' + l);
+              field.label['class'].push('col-sm-12');
+              safe_array_remove(field.label['class'], 'control-label');
             } else {
-                field.label["class"].push("col-sm-" + l);
+              field.label['class'].push('col-sm-' + l);
             }
 
-            field.element.container["class"].push("col-sm-" + r); // 1 padding ?
+            field.element.container['class'].push('col-sm-' + r); // 1 padding ?
             break;
-        case "vertical":
-            break;
-        case "inline":
-            break;
-        }
+          case 'vertical':
+          case 'inline':
+          }
 
-        return field;
-    };
+          return field;
+        },
 
-    Formalizer.prototype.createField = function (field_data, $scope, field_id) {
-        $scope.$field = field_data;
+        interpolate: function interpolate(configuration, template, err_tpl, $scope) {
+          if (formalizerParsers[configuration.type]) {
+            formalizerParsers[configuration.type]($scope, configuration);
+          }
 
-        var j,
-            template,
-            field;
+          if (!configuration.element.attrs.name && configuration.type !== 'raw') {
+            console.error(configuration);
+            throw new Error('invalid field without name');
+          }
 
-        if (!field_data.name && field_data.type !== "raw") {
-            this.$log.error(field_data);
-            throw new Error("invalid field without name");
-        }
+          // join classes
+          join_class(configuration.element.wrap);
+          join_class(configuration.container);
+          join_class(configuration.element.container);
+          join_class(configuration.element.attrs);
+          join_class(configuration.label);
 
-        var field_in_scope = "$field.formalizer";
+          join_ngclass(configuration.container);
+          join_ngclass(configuration.element.attrs);
+          // TODO update using this method
+          // field.element.attrs_text = join_attrs(field.element.attrs);
+          configuration.container.attrs_text = join_attrs(configuration.container);
 
-        // specific config per field
-        this.callParser("pre", $scope, field_data);
-
-        // common metadata
-        field = this.createFieldMeta(field_data, field_in_scope, field_id, $scope);
-
-        // specific config per field
-        this.callParser("post", $scope, field);
-
-
-        Object.defineProperty(field_data, "formalizer", {
-            value: field,
-            writable : true,
-            enumerable : false,
-            configurable : false
-        });
-
-        if (field_data.group) {
-            this.groups[field_data.group] = this.groups[field_data.group] || [];
-            this.groups[field_data.group].push(field_data);
-        }
-
-        // join classes
-        join_class(field.element.wrap);
-        join_class(field.container);
-        join_class(field.element.container);
-        join_class(field.element.attrs);
-        join_class(field.label);
-
-        join_ngclass(field.container);
-        join_ngclass(field.element.attrs);
-        // TODO update using this method
-        // field.element.attrs_text = join_attrs(field.element.attrs);
-        field.container.attrs_text = join_attrs(field.container);
-
-        template = this.getTemplate(field.type);
-
-        //double interpolation!
-        var errs = "";
-
-        // interpolate only if needed!
-        if (template.indexOf("%element-error-list%") !== -1) {
-            errs = this.$interpolate(
-                    this.$interpolate(templates["error-list"])(field)
-                )(field);
-        }
-
-        var html = template
-                    .replace("%element-attributes%", join_attrs(field.element.attrs))
-                    .replace("%element-error-list%", errs)
-                    .replace(/%scope-form-name%/g, this.name);
-        // always escape!
-        html = this.$interpolate(html)(field)
-
+          //double interpolation!
+          var html = template
+            .replace('%element-attributes%', join_attrs(configuration.element.attrs))
+            .replace('%element-error-list%', err_tpl)
+            .replace(/%scope-form-name%/g, this.name);
+          // always escape!
+          html = $interpolate(html)(configuration)
             // TODO this seem to be a bug in $interpolate
-            .replace(/\\\{/g, "{").replace(/\\\}/g, "}");
+            .replace(/\\\{/g, '{').replace(/\\\}/g, '}');
 
-        var alt_html = this.callParser("html", $scope, field_data, html);
+          //var alt_html = this.callParser("html", $scope, configuration, html);
 
-        if (alt_html) {
-            html = alt_html;
-        }
+          return html;
+        },
 
-        return html;
+        submit: function submit() {
+          var on_submit = this.$parse(this.onSubmit)(this.$scope.$parent),
+            form = this.$scope.$eval(this.name);
 
-    };
+          if (!on_submit) {
+            throw new Error('options.onSubmit is required');
+          }
 
-    Formalizer.prototype.createColumns = function (data, $scope) {
-        // sanitize check
-        var i;
+          ++this.attempts;
 
-        for (i = 0; i < data.length; ++i) {
-            if (!data[i].cols) {
-                this.$log.error(data[i]);
-                throw new Error("cols is not defined");
-            }
-        }
+          if (form.$valid) {
+            // pristile
+            var i,
+              j,
+              el,
+              data = {},
+              files = null,
+              field_data;
 
-        // template
-        $scope.columns = data;
-        return this.getTemplate("columns");
-    };
+            for (i in form) {
+              if (i[0] === '$') {
+                continue;
+              }
 
-    Formalizer.prototype.attach = function ($scope, $elm, field, $compile) {
-        field.formalizer.domElement = $elm;
-        this.callParser("attached", $scope, field, $compile);
-    };
+              field_data = this.fields.filter(function (v) {
+                return v.formalizer.element.attrs.name === i;
+              });
 
+              if (form[i].$dirty) {
+                data[i] = form[i].$modelValue;
+              } else if (field_data && field_data.length && field_data[0].type === 'file') { // check if it's a file
+                el = field_data[0].domElement[0];
 
-    Formalizer.prototype.setModel = function (field_name, value, force) {
-        var model = this.$scope.$eval(this.model);
+                files = files || [];
 
-        // not defined or forced
-        if (!model[field_name] || force) {
-            model[field_name] = value;
-        }
+                //files[i] = [];
 
-        if (Array.isArray(model[field_name]) && force) {
-            if (model[field_name].indexOf(value) === -1) {
-                model[field_name].push(value);
-            }
-        }
-    };
-
-    Formalizer.toFormData = function (data, data_key, files) {
-        var formData = new FormData();
-
-        var tfiles = 0,
-            j;
-
-        formData.append(data_key, JSON.stringify(data));
-
-        for (j = 0; j < files.length; j++) {
-            formData.append("file" + (++tfiles), files[j]);
-        }
-
-        return formData;
-    };
-
-    Formalizer.prototype.showGroups = function (groups) {
-        var self = this;
-        groups.split(",").forEach(function (key) {
-            if (self.groups[key]) {
-                var i;
-                for (i = 0; i < self.groups[key].length; ++i) {
-                    self.groups[key][i].formalizer.visible = true;
+                for (j = 0; j < el.files.length; ++j) {
+                  //files[i].push(el.files[j]);
+                  files.push(el.files[j]);
                 }
+              }
             }
-        });
-    };
 
-    Formalizer.prototype.hideGroups = function (groups) {
-        var self = this;
-        groups.split(",").forEach(function (key) {
-            if (self.groups[key]) {
-                var i;
-                for (i = 0; i < self.groups[key].length; ++i) {
-                    self.groups[key][i].formalizer.visible = false;
-                }
-            }
-        });
-    };
-}());
+            return on_submit(data, files, this.$scope.$eval(this.model), form);
+          }
+            this.$log.info('form is $invalid, no submit');
+        },
+        toFormData: function toFormData(data, data_key, files) {
+          var formData = new FormData();
 
-(function () {
-    "use strict";
+          var tfiles = 0,
+              j;
 
-    Formalizer.templates.push("raw");
+          formData.append(data_key, JSON.stringify(data));
 
-    Formalizer.types["raw"] = "raw";
+          for (j = 0; j < files.length; j++) {
+              formData.append('file' + (++tfiles), files[j]);
+          }
 
-    Formalizer.parsers["raw"] = {
-        attached: function($scope, $field, $formalizer, $compile) {
-            var $elm = $field.formalizer.domElement;
-            $scope.$watch("$field.template", function(a, b) {
-                $elm.html(a);
-                console.log("$field.template", $field);
-                if ($field.options && $field.options.compile) {
-                  $compile($elm.contents())($scope);
-                }
-            });
+          return formData;
+        },
+        getFieldHTML: function(field, configuration) {
+          //console.log("getFieldHTML", field);
+          if (!formalizerTemplates[field.type]) {
+            throw new Error('invalid field type');
+          }
+
+          var self = this;
+
+          return $http
+          .get(formalizerTemplates.errors, {
+            cache: $templateCache
+          })
+          .then(function(html_err) {
+            return $http
+              .get(formalizerTemplates[field.type], {
+                cache: $templateCache
+              })
+              .then(function (html) {
+                html = html.data;
+                return self.interpolate(configuration, html, html_err.data, $scope);
+              });
+          });
+
         }
-    };
+      };
+    },
+  };
+});
 
-}());
-
-(function () {
-    "use strict";
-
-    function safe_array_remove(arr, item) {
-        var cut = arr.indexOf(item);
-        if (cut !== -1) {
-            return arr.splice(cut, 1);
-        }
-
-        return false;
+angular.module('formalizer')
+.config(function(formalizerParsersProvider, formalizerTemplatesProvider) {
+  function safe_array_remove(arr, item) {
+    var cut = arr.indexOf(item);
+    if (cut !== -1) {
+      return arr.splice(cut, 1);
     }
+    return false;
+  }
 
-    Formalizer.templates.push("submit");
+  formalizerTemplatesProvider.set('hidden', 'templates/formalizer-hidden.tpl.html');
+  formalizerTemplatesProvider.set('textarea', 'templates/formalizer-textarea.tpl.html');
 
-    Formalizer.types.submit = "submit";
+  //
+  // submit
+  //
 
-    Formalizer.parsers.submit = function ($scope, field, cfg) {
-        delete field.element.attrs["ng-model"];
-        delete field.element.attrs["ng-class"];
-        delete field.element.attrs["ng-placeholder"];
-        safe_array_remove(field.element.attrs["class"], "form-control");
-        field.element.attrs["class"].push("btn");
-    };
-}());
+  formalizerTemplatesProvider.set('submit', 'templates/formalizer-submit.tpl.html');
 
+  formalizerParsersProvider.set('submit', function ($scope, cfg) {
+    delete cfg.element.attrs['ng-model'];
+    delete cfg.element.attrs['ng-class'];
+    delete cfg.element.attrs['ng-placeholder'];
+    safe_array_remove(cfg.element.attrs['class'], 'form-control');
+    cfg.element.attrs['class'].push('btn');
+  });
 
-(function () {
-    "use strict";
+  //
+  // input based
+  //
 
-    Formalizer.templates.push("select");
+  formalizerTemplatesProvider.set('text', 'templates/formalizer-input.tpl.html');
+  formalizerTemplatesProvider.set('password', 'templates/formalizer-input.tpl.html');
+  formalizerTemplatesProvider.set('number', 'templates/formalizer-input.tpl.html');
+  formalizerTemplatesProvider.set('email', 'templates/formalizer-input.tpl.html');
+  formalizerTemplatesProvider.set('tel', 'templates/formalizer-input.tpl.html');
+  formalizerTemplatesProvider.set('url', 'templates/formalizer-input.tpl.html');
+  formalizerTemplatesProvider.set('file', 'templates/formalizer-input.tpl.html');
+  formalizerTemplatesProvider.set('lcheckbox', 'templates/formalizer-input.tpl.html');
+  formalizerTemplatesProvider.set('colorpicker', 'templates/formalizer-input.tpl.html');
 
-    Formalizer.types.select = "select";
+  // do not need anything more :)
+  formalizerParsersProvider.set('lcheckbox', function ($scope, cfg) {
+    cfg.element.attrs.type = 'checkbox';
 
-    Formalizer.parsers.select = function ($scope, field, cfg) {
-        field.defaultOption = cfg.empty_msg ? "<option value=\"\">" + cfg.empty_msg + "</option>" : "";
+    cfg.element.container['class'].push('input');
+    safe_array_remove(cfg.element.attrs['class'], 'form-control');
+  });
 
-        field.source_display = field.source_display || "label";
+  formalizerParsersProvider.set('colorpicker', function ($scope, cfg) {
+    cfg.element.wrap['class'].push('row');
+    cfg.element.left = '<div class="col-sm-6">';
+    cfg.element.right = '</div>' +
+        '<div class="col-sm-6">' +
+        '<spectrum-colorpicker ng-model="' + cfg.element.attrs['ng-model'] + '"></spectrum-colorpicker>' +
+        '</div>';
+  });
 
-        var mdl = field.source_model ? "." + field.source_model : "";
+  //
+  // datepicker
+  //
 
-        field.element.attrs["ng-options"] = "c" + mdl + " as c." + field.source_display + " for c in $field.formalizer.source";
+  //from http://angular-ui.github.io/bootstrap
+  var datepicker_attrs = [
+    'datepicker-mode',
+    'min-date',
+    'max-date',
+    'date-disabled',
+    'show-weeks',
+    'starting-day',
+    'init-date',
+    'min-mode',
+    'max-mode',
+    'format-day',
+    'format-month',
+    'format-year',
+    'format-day-header',
+    'format-day-title',
+    'format-month-title',
+    'year-range',
+    // popup,
+    //,'datepicker-popup',
+    'show-button-bar',
+    'current-text',
+    'clear-text',
+    'close-text',
+    'close-on-date-selection',
+    'datepicker-append-to-body',
+    'datepicker-options'
+  ];
 
-        if (field.source_filter) {
-          field.element.attrs["ng-options"] += " | " + field.source_filter + ":c";
-        }
+  formalizerTemplatesProvider.set('datepicker', 'templates/formalizer-input.tpl.html');
 
-        if (field.options.multiple) {
-            field.element.attrs.multiple = "multiple";
-        }
-    };
-}());
+  formalizerParsersProvider.set('datepicker', function ($scope, cfg) {
+    var name = cfg.element.attrs.name,
+      openEvent = name + 'Open',
+      closeEvent = name + 'Close',
+      isOpenVar = cfg.options['datepicker-options'] || name + 'Options';
 
-(function () {
-    "use strict";
+    angular.forEach(datepicker_attrs, function (value) {
+      if (cfg.options[value]) {
+        cfg.element.attrs[value] = cfg.options[value];
+      }
+    });
 
-    Formalizer.templates.push("textarea");
+    // calendar button setup
+    cfg.element.wrap['class'].push('input-group');
+    cfg.element.right = '<span class="input-group-btn"><button ng-click="datepickers.' + openEvent + '($event)" class="btn btn-default" type="button"><i class="glyphicon glyphicon-calendar"></i></button>';
 
-    Formalizer.types.textarea = "textarea";
+    // forced attrs
+    cfg.element.attrs['is-open'] = 'datepickers.' + isOpenVar;
+    cfg.element.attrs['datepicker-popup'] = cfg.options['datepicker-popup'] || '';
+    cfg.element.attrs['ng-focus'] = 'datepickers.' + openEvent + '()';
 
-    Formalizer.parsers.textarea = function ($scope, field, cfg) {
-    };
-}());
+    cfg.element.attrs['ng-datepicker-fix'] = '';
 
+    var $scope_data = $scope.$eval('datepickers = datepickers || {}');
 
-(function () {
-    "use strict";
+    $scope_data[isOpenVar] = false;
 
-    function safe_array_remove(arr, item) {
-        var cut = arr.indexOf(item);
-        if (cut !== -1) {
-            return arr.splice(cut, 1);
-        }
-
-        return false;
-    }
-
-    Formalizer.templates.push("checkbox");
-
-    Formalizer.types.checkbox = "checkbox";
-
-    Formalizer.parsers.checkbox = function ($scope, field, cfg) {
-        field.container["class"].push("checkbox");
-        safe_array_remove(field.element.attrs["class"], "form-control");
-    };
-}());
-
-(function () {
-    "use strict";
-
-    function safe_array_remove(arr, item) {
-        var cut = arr.indexOf(item);
-        if (cut !== -1) {
-            return arr.splice(cut, 1);
-        }
-
-        return false;
-    }
-
-    Formalizer.templates.push("radio-list");
-
-    Formalizer.types["radio-list"] = "radio-list";
-
-    Formalizer.parsers["radio-list"] = function ($scope, field) {
-        field.element.attrs.type = "radio";
-        field.element.container["class"].push("radio");
-        safe_array_remove(field.element.attrs["class"], "form-control");
-
-        field.source_model = (field.source_model ? "." + field.source_model : "");
-    };
-
-}());
-
-(function () {
-    "use strict";
-
-    var typeahead_attrs = [
-        //"typeahead",
-        //"typeahead-on-select",
-        "typeahead-append-to-body",
-        "typeahead-editable",
-        "typeahead-input-formatter",
-        "typeahead-loading",
-        "typeahead-min-length",
-        "typeahead-template-url",
-        "typeahead-wait-ms"
-    ];
-
-    function safe_array_remove(arr, item) {
-        var cut = arr.indexOf(item);
-        if (cut !== -1) {
-            return arr.splice(cut, 1);
-        }
-
-        return false;
-    }
-
-    Formalizer.templates.push("typeahead");
-
-    Formalizer.types.typeahead = "typeahead";
-    Formalizer.types["typeahead-multi"] = "typeahead";
-
-    Formalizer.parsers.typeahead = function ($scope, field) {
-        field.element.attrs.type = "text";
-        if (field.source_display) {
-            field.element.attrs.typeahead = "p as p." + field.source_display + " for p in $field.formalizer.source | filter:{" + field.source_display + ":$viewValue}";
-        } else {
-            field.element.attrs.typeahead = "p for p in $field.formalizer.source";
-        }
-
-        angular.forEach(typeahead_attrs, function (value) {
-            if (field.options[value]) {
-                field.element.attrs[value] = field.options[value];
-            }
-        });
+    $scope_data[closeEvent] = function ($event) {
+      $scope_data[isOpenVar] = false;
     };
 
-    Formalizer.parsers["typeahead-multi"] = function ($scope, field) {
-        var name = field.element.attrs.name,
-            ta_model = field.element.attrs["ng-model"],
-            ta_model_selected = field.element.attrs["ng-model"] + "_sel";
-
-        field.element.attrs["ong-model"] = field.element.attrs["ng-model"];
-        field.element.attrs["ng-model"] = ta_model_selected;
-
-        var target = $scope.$eval(ta_model);
-        if (target === undefined) {
-            $scope.$eval(ta_model + " = []");
-        }
-
-        $scope["taSelected"] = field.options.taSelected || function () {
-            return $scope.$eval(ta_model);
-        };
-
-        $scope["taAppend"] = function ($item, $model, $label) {
-            if (field.options.taAppend) {
-                field.options.taAppend($item, $scope.$eval(ta_model), $label);
-            } else {
-                var target = $scope.$eval(ta_model);
-
-                if (target.indexOf($item) === -1) {
-                    target.push($item);
-                }
-            }
-
-            $scope.$eval(ta_model_selected + " = ''");
-        };
-
-
-        $scope["taRemove"] = field.options.taRemove || function ($item) {
-            var target = $scope.$eval(ta_model);
-
-            safe_array_remove(target, $item);
-        };
-
-        field.element.attrs["typeahead-on-select"] = "taAppend($item, $model, $label)";
-
-        Formalizer.parsers.typeahead($scope, field);
-    };
-
-}());
-
-(function () {
-    "use strict";
-
-    //from http://angular-ui.github.io/bootstrap
-    var datepicker_attrs = [
-        "datepicker-mode",
-        "min-date",
-        "max-date",
-        "date-disabled",
-        "show-weeks",
-        "starting-day",
-        "init-date",
-        "min-mode",
-        "max-mode",
-        "format-day",
-        "format-month",
-        "format-year",
-        "format-day-header",
-        "format-day-title",
-        "format-month-title",
-        "year-range",
-        // popup,
-        //,"datepicker-popup",
-        "show-button-bar",
-        "current-text",
-        "clear-text",
-        "close-text",
-        "close-on-date-selection",
-        "datepicker-append-to-body",
-        "datepicker-options"
-    ];
-
-    //Formalizer.templates.push("input");
-
-    Formalizer.types.datepicker = "input";
-
-    Formalizer.parsers.datepicker = function ($scope, field) {
-        var name = field.element.attrs.name,
-            openEvent = name + "Open",
-            closeEvent = name + "Close",
-            isOpenVar = field.options["datepicker-options"] || name + "Options";
-
-        angular.forEach(datepicker_attrs, function (value) {
-            if (field.options[value]) {
-                field.element.attrs[value] = field.options[value];
-            }
-        });
-
-        // calendar button setup
-        field.element.wrap["class"].push("input-group");
-        field.element.right = "<span class=\"input-group-btn\"><button ng-click=\"" + openEvent + "($event)\" class=\"btn btn-default\" type=\"button\"><i class=\"glyphicon glyphicon-calendar\"></i></button>";
-
-        // forced attrs
-        field.element.attrs["is-open"] = isOpenVar;
-        field.element.attrs["datepicker-popup"] = field.options["datepicker-popup"] || "";
-        field.element.attrs["ng-focus"] = openEvent + "()";
-
-        field.element.attrs["ng-datepicker-fix"] = "";
-
-        $scope[isOpenVar] = false;
-
-        $scope[closeEvent] = function ($event) {
-            $scope[isOpenVar] = false;
-        };
-
-        $scope[openEvent] = function ($event) {
-            //only prevent if sent
-            if ($event) {
-                $event.preventDefault();
-                $event.stopPropagation();
-            }
-
-            $scope[isOpenVar] = true;
-
-            if ($event) {
-                setTimeout(function () {
-                    angular.element("#" + field.element.attrs.id).focus();
-                }, 0);
-            }
-
-            // @TODO we should close other instances here
-            // so we need an array of instances too
-            //if ($scope.endDateOpened) {
-            //    $scope.closeEndDate();
-            //}
-        };
-    };
-
-}());
-
-
-(function () {
-    "use strict";
-
-    function safe_array_remove(arr, item) {
-      var cut = arr.indexOf(item);
-      if (cut !== -1) {
-        return arr.splice(cut, 1);
+    $scope_data[openEvent] = function ($event) {
+      //only prevent if sent
+      if ($event) {
+        $event.preventDefault();
+        $event.stopPropagation();
       }
 
-      return false;
-    }
+      $scope_data[isOpenVar] = true;
 
-    Formalizer.templates.push("input");
-    Formalizer.templates.push("hidden");
+      if ($event) {
+        setTimeout(function () {
+          angular.element('#' + cfg.element.attrs.id).focus();
+        }, 0);
+      }
 
-    Formalizer.types.text = "input";
-    Formalizer.types.password = "input";
-    Formalizer.types.number = "input";
-    Formalizer.types.email = "input";
-    Formalizer.types.tel = "input";
-    Formalizer.types.url = "input";
-    Formalizer.types.file = "input";
-    Formalizer.types.lcheckbox = "input";
-    Formalizer.types.colorpicker = "input";
-    Formalizer.types.hidden = "hidden";
-
-    // do not need anything more :)
-    Formalizer.parsers.lcheckbox = function ($scope, field, cfg) {
-      field.element.attrs.type = "checkbox";
-
-      field.element.container["class"].push("checkbox");
-      safe_array_remove(field.element.attrs["class"], "form-control");
+      // TODO we should close other instances here
+      // so we need an array of instances too
     };
-    Formalizer.parsers.colorpicker = function ($scope, field, cfg) {
-      field.element.wrap["class"].push("row");
-      field.element.left = "<div class=\"col-sm-6\">";
-      field.element.right = "</div>" +
-          "<div class=\"col-sm-6\">" +
-          "<spectrum-colorpicker ng-model=\"" + field.element.attrs["ng-model"] + "\"></spectrum-colorpicker>" +
-          "</div>";
+  });
+
+  //
+  // select
+  //
+
+  formalizerTemplatesProvider.set('select', 'templates/formalizer-select.tpl.html');
+
+  formalizerParsersProvider.set('select', function ($scope, cfg) {
+    // TODO cfg.defaultOption = cfg.empty_msg ? "<option value=\"\">" + cfg.empty_msg + "</option>" : '';
+
+    cfg.source_display = cfg.source_display || 'label';
+
+    var mdl = cfg.source_model ? '.' + cfg.source_model :'';
+
+    cfg.element.attrs['ng-options'] = 'c' + mdl + ' as c.' + cfg.source_display + ' for c in $configuration.source';
+
+    if (cfg.source_filter) {
+      cfg.element.attrs['ng-options'] += ' | ' + cfg.source_filter + ':c';
     }
-}());
 
-(function () {
-    "use strict";
-
-    function safe_array_remove(arr, item) {
-        var cut = arr.indexOf(item);
-        if (cut !== -1) {
-            return arr.splice(cut, 1);
-        }
-
-        return false;
+    if (cfg.options.multiple) {
+      cfg.element.attrs.multiple = 'multiple';
     }
+  });
 
-    Formalizer.templates.push("checkbox-list");
+  //
+  // ui-select
+  //
 
-    Formalizer.types["checkbox-list"] = "checkbox-list";
+  formalizerTemplatesProvider.set('ui-select', 'templates/formalizer-ui-select.tpl.html');
 
-    Formalizer.parsers["checkbox-list"] = function ($scope, field) {
-        var model = field.element.attrs["checklist-model"] = field.element.attrs["ng-model"];
+  formalizerParsersProvider.set('ui-select', function ($scope, cfg) {
+    cfg.source_display = cfg.source_display || 'label';
+    cfg.element.attrs['ng-class'] = [];
+    safe_array_remove(cfg.element.attrs['class'], 'form-control');
+  });
 
-        delete field.element.attrs["ng-model"];
+  //
+  // richtext
+  //
 
-        field.options.chkall_model = field.scope_name + ".options.chkall_value";
+  formalizerTemplatesProvider.set('richtext', 'templates/formalizer-richtext.tpl.html');
 
-        field.source_display = field.source_display || "label";
+  formalizerParsersProvider.set('richtext', function ($scope, cfg) {
+    safe_array_remove(cfg.element.attrs['class'], 'form-control');
+  });
 
+  //
+  // checkbox-list
+  //
 
-        // TODO fix bug select all, deselect one, check all again (do nothing)
-        field.options.check_all = function () {
-            var chkall = $scope.$eval(field.options.chkall_model),
-                mdl = $scope.$eval(model);
+  formalizerTemplatesProvider.set('checkbox-list', 'templates/formalizer-checkbox-list.tpl.html');
 
-            if (mdl === undefined) {
-                $scope.$eval(model + " = []");
-                mdl = $scope.$eval(model);
-            }
+  formalizerParsersProvider.set('checkbox-list', function ($scope, cfg) {
+    var model = cfg.element.attrs['checklist-model'] = cfg.element.attrs['ng-model'];
+    delete cfg.element.attrs['ng-model'];
 
-            mdl.splice(0, mdl.length);
-            if (chkall) {
-                var src = $scope.$eval("$field.formalizer.source");
-                src.forEach(function (el, k) {
-                    mdl.push(
-                        $scope.$eval("$field.formalizer.source[" + k + "]" + (field.source_model ? "." + field.source_model : ""))
-                    );
+    cfg.source_display = cfg.source_display || 'label';
 
-                });
-            }
-        };
+    // TODO fix bug select all, deselect one, check all again (do nothing)
+    cfg.options.chkall_model = '$configuration.chkall_value';
+    cfg.$check_all = function () {
+      var chkall = $scope.$eval(cfg.options.chkall_model),
+          mdl = $scope.$eval(model);
 
-        //delete field.element.attrs["id"];
-        //delete field.element.attrs["name"];
+      if (mdl === undefined) {
+          $scope.$eval(model + ' = []');
+          mdl = $scope.$eval(model);
+      }
 
-        field.element.attrs["checklist-value"] = "checkbox_data" + (field.source_model ? "." + field.source_model : "");
-
-        field.element.attrs.type = "checkbox";
-        field.element.container["class"].push("checkbox");
-        //checkbox-inline
-
-        safe_array_remove(field.element.attrs["class"], "form-control");
-
+      mdl.splice(0, mdl.length);
+      if (chkall) {
+          var src = $scope.$eval('$configuration.source');
+          src.forEach(function (el, k) {
+              mdl.push(
+                  $scope.$eval('$configuration.source[' + k + ']' + (cfg.source_model ? '.' + cfg.source_model : ''))
+              );
+          });
+      }
     };
-}());
 
-(function () {
-    "use strict";
+    cfg.element.attrs['checklist-value'] = 'checkbox_data' + (cfg.source_model ? '.' + cfg.source_model : '');
 
-    function safe_array_remove(arr, item) {
-        var cut = arr.indexOf(item);
-        if (cut !== -1) {
-            return arr.splice(cut, 1);
-        }
+    cfg.element.attrs.type = 'checkbox';
+    cfg.element.container['class'].push('checkbox');
 
-        return false;
+    safe_array_remove(cfg.element.attrs['class'], 'form-control');
+  });
+
+  //
+  // checkbox
+  //
+
+  formalizerTemplatesProvider.set('checkbox', 'templates/formalizer-checkbox.tpl.html');
+
+  formalizerParsersProvider.set('checkbox', function ($scope, cfg) {
+    cfg.container['class'].push('checkbox');
+    safe_array_remove(cfg.element.attrs['class'], 'form-control');
+  });
+
+  //
+  // radio-list
+  //
+
+  formalizerTemplatesProvider.set('radio-list', 'templates/formalizer-radio-list.tpl.html');
+
+  formalizerParsersProvider.set('radio-list', function ($scope, cfg) {
+    cfg.element.attrs.type = 'radio';
+    cfg.element.container['class'].push('radio');
+    safe_array_remove(cfg.element.attrs['class'], 'form-control');
+
+    cfg.source_model = (cfg.source_model ? '.' + cfg.source_model : '');
+  });
+
+  //
+  // raw
+  //
+
+  formalizerTemplatesProvider.set('raw', 'templates/formalizer-raw.tpl.html');
+  /* TODO
+  formalizerParsersProvider.set("raw", function ($scope, cfg, $element, $compile) {
+    $scope.$watch("$field.template", function(a, b) {
+      $element.html(a);
+      if (cfg.options && cfg.options.compile) {
+        $compile($element.contents())($scope);
+      }
+    });
+  });
+  */
+
+  //
+  // typeahead
+  //
+
+  var typeahead_attrs = [
+      //"typeahead",
+      //"typeahead-on-select",
+      'typeahead-append-to-body',
+      'typeahead-editable',
+      'typeahead-input-formatter',
+      'typeahead-loading',
+      'typeahead-min-length',
+      'typeahead-template-url',
+      'typeahead-wait-ms'
+  ];
+
+  formalizerTemplatesProvider.set('typeahead', 'templates/formalizer-typeahead.tpl.html');
+  formalizerTemplatesProvider.set('typeahead-multi', 'templates/formalizer-typeahead.tpl.html');
+
+  function typeahead($scope, cfg) {
+    cfg.element.attrs.type = 'text';
+    if (cfg.source_display) {
+      cfg.element.attrs.typeahead = 'p as p.' + cfg.source_display + ' for p in $configuration.source | filter:{' + cfg.source_display + ':$viewValue}';
+    } else {
+      cfg.element.attrs.typeahead = 'p for p in $configuration.source';
     }
 
-    Formalizer.templates.push("checkbox-matrix");
+    angular.forEach(typeahead_attrs, function (value) {
+      if (cfg.options[value]) {
+        cfg.element.attrs[value] = cfg.options[value];
+      }
+    });
+  }
 
-    Formalizer.types["checkbox-matrix"] = "checkbox-matrix";
+  formalizerParsersProvider.set('typeahead', typeahead);
 
-    Formalizer.parsers["checkbox-matrix"] = function ($scope, field, cfg) {
-        // this class should be used, but destroy the table style
-        // field.container["class"].push("checkbox");
+  // TODO FIXME after select, clear the input
+  formalizerParsersProvider.set('typeahead-multi', function ($scope, cfg) {
+    typeahead($scope, cfg);
 
-        safe_array_remove(field.element.attrs["class"], "form-control");
+    var ta_model = cfg.element.attrs['ng-model'],
+      ta_model_selected = 'current_typeahead'; //cfg.element.attrs['ng-model'] + '_sel';
 
-        // swap places
-        field.options.model = field.element.attrs["ng-model"];
-        delete field.element.attrs["ng-model"];
+    cfg.element.attrs['ong-model'] = cfg.element.attrs['ng-model'];
+    cfg.element.attrs['ng-model'] = ta_model_selected;
+    $scope.$eval(ta_model_selected + ' = "a"');
 
-        field.options.name = field.element.attrs["name"];
-        delete field.element.attrs["name"];
-
-        field.options.id = field.element.attrs["id"];
-        delete field.element.attrs["id"];
-
-        field.element.attrs["type"] = "checkbox";
-
-        if (!field.source_model) {
-          // model will be the index of the arrays
-          $scope.$watch("field.source_display", function (a, b) {
-            field.source_model = [[],[]];
-
-            var mdl = field.options.model;
-
-            field.source_display[0].forEach(function() {
-                var idx = field.source_model[0].length;
-                field.source_model[0].push(idx);
-                // initialize the array, otherwise an object will be created and it's messy
-                $scope.$eval(
-                  mdl + "[" + idx + "] = " +
-                  mdl + "[" + idx + "] || [];"
-                );
-            });
-
-            field.source_display[1].forEach(function() {
-                field.source_model[1].push(field.source_model[1].length);
-            });
-
-          }, true);
-
-        }
-    };
-}());
-
-(function () {
-    "use strict";
-
-    function safe_array_remove(arr, item) {
-        var cut = arr.indexOf(item);
-        if (cut !== -1) {
-            return arr.splice(cut, 1);
-        }
-
-        return false;
+    var target = $scope.$eval(ta_model);
+    if (target === undefined) {
+      $scope.$eval(ta_model + ' = []');
     }
 
-    Formalizer.templates.push("slider");
-
-    Formalizer.types["slider"] = "slider";
-
-    Formalizer.parsers["slider"] = function ($scope, field) {
-        safe_array_remove(field.element.attrs["class"], "form-control");
-
-        // slider.js:L26-L57 version 0.5 review when update!
-        ["min", "max", "step","precision","orientation","range","selection",
-        "tooltip","tooltipSeparator","tooltipSplit","handle","reversed",
-        "enabled","naturalArrowKeys","sliderId", "updateEvent"].forEach(function(i) {
-            if (field.options[i] !== undefined) {
-                field.element.attrs[i] = field.options[i];
-            }
-        });
+    $scope.taSelected = cfg.options.taSelected || function () {
+      $scope.$eval(ta_model_selected + ' = ""');
+      return $scope.$eval(ta_model);
     };
-}());
 
+    $scope.taAppend = function ($item, $model, $label) {
+      if (cfg.options.taAppend) {
+        cfg.options.taAppend($item, $scope.$eval(ta_model), $label);
+      } else {
+        var target = $scope.$eval(ta_model);
 
-(function () {
-    "use strict";
-
-    function safe_array_remove(arr, item) {
-        var cut = arr.indexOf(item);
-        if (cut !== -1) {
-            return arr.splice(cut, 1);
+        if (target.indexOf($item) === -1) {
+          target.push($item);
         }
+      }
 
-        return false;
-    }
-
-    Formalizer.templates.push("richtext");
-
-    Formalizer.types.richtext = "richtext";
-
-    Formalizer.parsers.richtext = function ($scope, field) {
-        safe_array_remove(field.element.attrs["class"], "form-control");
+      $scope.$eval(ta_model_selected + ' = ""');
     };
-}());
-(function () {
-    "use strict";
 
-    function safe_array_remove(arr, item) {
-        var cut = arr.indexOf(item);
-        if (cut !== -1) {
-            return arr.splice(cut, 1);
-        }
 
-        return false;
-    }
+    $scope.taRemove = cfg.options.taRemove || function ($item) {
+      var target = $scope.$eval(ta_model);
 
-    Formalizer.templates.push("ui-select");
-
-    Formalizer.types["ui-select"] = "ui-select";
-
-    Formalizer.parsers["ui-select"] = function ($scope, field, cfg) {
-        field.source_display = field.source_display || "label";
-
-        field.element.attrs["ng-class"] = [];
-
-        safe_array_remove(field.element.attrs["class"], "form-control");
-
-        /*
-        var mdl = field.source_model ? "." + field.source_model : "";
-
-        field.element.attrs["ng-options"] = "c" + mdl + " as c." + field.source_display + " for c in $field.formalizer.source";
-
-        if (field.source_filter) {
-          field.element.attrs["ng-options"] += " | " + field.source_filter + ":c";
-        }
-
-        if (field.options.multiple) {
-            field.element.attrs.multiple = "multiple";
-        }
-        */
+      safe_array_remove(target, $item);
     };
-}());
 
-"use strict";
-(function () {
+    cfg.element.attrs['typeahead-on-select'] = 'taAppend($item, $model, $label)';
+  });
 
-    angular
+  //
+  //
+  //
+});
 
-    .module("formalizer", ["ui.bootstrap", "checklist-model", "ui.bootstrap-slider", "formalizer-tpls", "textAngular", "angularSpectrumColorpicker", "ui.select"])
-
-    .config(["$sceProvider", function($sceProvider) {
-      $sceProvider.enabled(false);
-    }])
-
-    .value("FormalizerConfig", {})
-
-    .directive("ngFormalizer", [
-        "$parse", "$interpolate", "$http", "$templateCache", "$q", "$log", "FormalizerConfig",
-        function ($parse, $interpolate, $http, $templateCache, $q, $log, FormalizerConfig) {
-            var $ready = Formalizer.loadTemplates($q, $http, $templateCache, FormalizerConfig),
-                v = angular.version;
-
-            return {
-                restrict: "A",
-                replace: true,
-                scope: true,
-                templateUrl: "templates/formalizer-form-" + v.major + "." + Math.min(4, v.minor) + ".tpl.html",
-                priority: 500,
-
-                controller: function ($scope) {
-                    var $formalizer = new Formalizer($scope, $parse, $interpolate, $log);
-
-                    if (angular.version.minor > 2) {
-                        // this is dangerous!
-                        var self = this;
-                        Object.keys(Formalizer.prototype).forEach(function (key) {
-                            self[key] = $formalizer[key];
-                        });
-                    }
-
-                    $scope.$formalizer = $formalizer;
-                    return $scope.$formalizer;
-                },
-                compile: function () {
-                    return {
-                        pre: function ($scope, $element, $attrs) {
-                            var container = jQuery($element).find(".fieldset-contents"),
-                                //container = $element.find(".fieldset-contents"),
-                                config = $scope.$eval($attrs.ngFormalizer),
-                                $formalizer = $scope.$formalizer;
-
-                            if (!config) {
-                                throw new Error("formalizer configuration must be sent");
-                            }
-
-                            // do not allow directly insert the object, lead to some problems with watchers
-                            if ($attrs.ngFormalizer.indexOf("{") !== -1) {
-                                throw new Error("ng-formalizer must be a string");
-                            }
-
-                            if (!config.name) {
-                                throw new Error("formalizer require form name");
-                            }
-
-                            // start watching
-
-                            $ready.then(function () {
-                                $log.info("formalizer is ready");
-
-                                var config_watcher;
-
-                                 $scope.$watch($attrs.ngFormalizer, function config_watcher (config) {
-                                    ["name", "type", "model", "legend", "onSubmit"].forEach(function (key) {
-                                        $formalizer[key] = config[key];
-                                    });
-
-                                    $formalizer.horizontal = $formalizer.vertical = $formalizer.inline = false;
-                                    $formalizer[$formalizer.type] = true;
-
-                                }, true);
-                            });
-
-                            ["name", "type", /*"model",*/ "legend", "onSubmit"].forEach(function (key) {
-                                $formalizer[key] = config[key];
-                            });
-
-                            $formalizer.horizontal = $formalizer.vertical = $formalizer.inline = false;
-                            $formalizer[$formalizer.type] = true;
-
-
-                            if ("string" === typeof config.fields) {
-                                $scope.$watch(config.fields, function fields_watcher (fields) {
-                                    $formalizer.fields = fields;
-                                }, true);
-                            } else {
-                                $formalizer.fields = config.fields;
-                            }
-                        },
-                        post: function ($scope, $element, $attrs) {
-                        }
-                    };
-                }
-            };
-        }
-    ]);
-
-})();
-
+//
+// fix https://github.com/angular-ui/bootstrap/issues/1891
+// TZ issues
+// foreign language direct input
+//
 angular.module("formalizer")
-.directive("ngFormalizerField", ["$timeout", "$compile", function ($timeout, $compile) {
+.constant("datepickerPopupFix", {
+    /**
+     * Input format in moment.js format!
+     */
+    datepickerPopup: "YYYY-MM-DD",
+    /**
+     * timezone in string format:
+     * "+0000" GMT+0
+     * "+0100" GMT+1
+     * "-0100" GMT-1
+     * etc...
+     */
+    datepickerTZ: undefined
+})
+.directive("ngDatepickerFix", ["datepickerPopupFix", function (datepickerPopupFix) {
     return {
-        scope: true,
-        link: function ($scope, $elm, $attrs) {
-            var $ngFormalizer = $scope.$formalizer; // nasty hack but works!
+        require: "?ngModel",
+        priority: 100,
+        link: function ($scope, $elm, $attrs, $ngModel) {
 
-            var field_data = $scope.$eval($attrs.ngFormalizerField),
-                html;
+            $ngModel.$parsers.unshift(function ngDatepickerFix(value) {
+                var mjs;
 
-            if (Array.isArray(field_data)) {
-                // column configuration?
-                html = $ngFormalizer.createColumns(field_data, $scope);
-            } else {
-                // field configuration?
-                html = $ngFormalizer.createField(field_data, $scope, $scope.$index);
-            }
+                if ("string" === typeof value) {
+                    // manually introduce the date
+                    mjs = moment(value, datepickerPopupFix.datepickerPopup);
+                } else {
+                    // click on the datepicker
+                    mjs = moment(value);
+                }
 
-            var el = angular.element(html);
-            $elm.append(el);
+                if (!mjs.isValid()) {
+                    return value;
+                }
 
-            $timeout(function () {
-                $compile(el)($scope);
+                if (datepickerPopupFix.datepickerTZ !== undefined) {
+                    // fix TZ
+                    return new Date(mjs.toDate().toDateString() + " 00:00 GMT" + datepickerPopupFix.datepickerTZ);
+                }
 
-                $scope.$digest();
+                return mjs.toDate();
+
             });
+
         }
     };
 }]);
-angular.module("formalizer")
-.directive("ngFormalizerAttach", function ($compile) {
-    return {
-        link: function ($scope, $elm, $attrs, $ngFormalizer) {
-            $scope.$formalizer.attach($scope, $elm, $scope.$eval("$field"), $compile);
-        }
-    };
-});
+angular.module('formalizer')
+.directive('ngFormalizerField', ['$timeout', '$compile', function ($timeout, $compile) {
+  return {
+    scope: true,
+    require: '^ngFormalizer',
+    link: function ($scope, $elm, $attrs, $ngFormalizer) {
+      //console.log("$ngFormalizer", $ngFormalizer);
+      $scope.$formalizer = $ngFormalizer;
+
+      //delay execution
+      $timeout(function() {
+
+        var data = $scope.$eval($attrs.ngFormalizerField);
+        var configuration = $ngFormalizer.configure(data, $scope);
+        $scope.$field = data;
+        $scope.$configuration = configuration;
+
+        $ngFormalizer.getFieldHTML(data, configuration, $scope)
+        .then(function(html) {
+          //console.log('html', html);
+          // append html and compile in next tick
+          var el = angular.element(html);
+          $elm.append(el);
+
+          $timeout(function () {
+            $compile(el)($scope);
+
+            $scope.$digest();
+          });
+        });
+      });
+    }
+  };
+}]);
 
 angular.module("formalizer")
 .directive("ngBlacklist", function () {
@@ -1712,59 +1344,6 @@ angular.module("formalizer")
     });
 }());
 
-//
-// fix https://github.com/angular-ui/bootstrap/issues/1891
-// TZ issues
-// foreign language direct input
-//
-angular.module("formalizer")
-.constant("datepickerPopupFix", {
-    /**
-     * Input format in moment.js format!
-     */
-    datepickerPopup: "YYYY-MM-DD",
-    /**
-     * timezone in string format:
-     * "+0000" GMT+0
-     * "+0100" GMT+1
-     * "-0100" GMT-1
-     * etc...
-     */
-    datepickerTZ: undefined
-})
-.directive("ngDatepickerFix", ["datepickerPopupFix", function (datepickerPopupFix) {
-    return {
-        require: "?ngModel",
-        priority: 100,
-        link: function ($scope, $elm, $attrs, $ngModel) {
-
-            $ngModel.$parsers.unshift(function ngDatepickerFix(value) {
-                var mjs;
-
-                if ("string" === typeof value) {
-                    // manually introduce the date
-                    mjs = moment(value, datepickerPopupFix.datepickerPopup);
-                } else {
-                    // click on the datepicker
-                    mjs = moment(value);
-                }
-
-                if (!mjs.isValid()) {
-                    return value;
-                }
-
-                if (datepickerPopupFix.datepickerTZ !== undefined) {
-                    // fix TZ
-                    return new Date(mjs.toDate().toDateString() + " 00:00 GMT" + datepickerPopupFix.datepickerTZ);
-                }
-
-                return mjs.toDate();
-
-            });
-
-        }
-    };
-}]);
 /**
  * ng-populate="object"
  * ng-populate="{value: ['target', 'value']}"
@@ -1877,48 +1456,6 @@ angular.module("formalizer")
         }
     };
 }]);
-angular.module("formalizer")
-.directive("ngHideGroups", function () {
-    return {
-        require: "ngModel",
-        link: function ($scope, $elm, $attrs, $ngModel) {
-            var groups = $scope.$eval($attrs.ngHideGroups),
-                values = Object.keys(groups);
-
-            $scope.$watch($attrs.ngModel, function(a, b) {
-                // fix: first show, then hide bacause if model is set a == b
-                if (values.indexOf("" + b) >= 0) {
-                    $scope.$formalizer.showGroups(groups[b]);
-                }
-
-                if (values.indexOf("" + a) >= 0) {
-                    $scope.$formalizer.hideGroups(groups[a]);
-                }
-            });
-        }
-    };
-});
-angular.module("formalizer")
-.directive("ngHideChildren", function () {
-    return {
-        require: "ngModel",
-        link: function ($scope, $elm, $attrs, $ngModel) {
-            var check = $scope.$eval($attrs.ngHideChildren),
-                values = [],
-                i;
-
-            for (i in check) {
-                if (check[i]) {
-                    values.push(i);
-                }
-            }
-
-            $scope.$watch($attrs.ngModel, function(a, b) {
-                $scope.$field.formalizer.visible_children = values.indexOf("" + a) === -1;
-            });
-        }
-    };
-});
 /*
  * listen angular changes in boolean attrs
  */
@@ -1949,15 +1486,29 @@ angular.forEach('Selected,Checked,Disabled,Readonly,Required,Open'.split(','), f
 
 
 
-angular.module("formalizer")
-.directive("ngCompile", ["$compile", "$timeout", function ($compile, $timeout) {
+angular.module('formalizer')
+.directive('ngBindHtmlAndCompile', ['$compile', '$parse', '$sce', '$timeout', function ($compile, $parse, $sce, $timeout) {
   return {
-    link: function ($scope, $elm, $attrs, $ngModel) {
-      $attrs.$observe('ngBindHtml', function ( myTemplate ) {
-        $timeout(function() {
-          $compile($elm.contents())($scope);
-        });
+    restrict: 'A',
+    compile: function ngBindHtmlCompile(tElement, tAttrs) {
+      var ngBindHtmlGetter = $parse(tAttrs.ngBindHtmlAndCompile);
+      var ngBindHtmlWatch = $parse(tAttrs.ngBindHtmlAndCompile, function getStringValue(value) {
+        return (value || '').toString();
       });
+      $compile.$$addBindingClass(tElement);
+
+      return function ngBindHtmlLink(scope, element, attr) {
+        $compile.$$addBindingInfo(element, attr.ngBindHtmlAndCompile);
+
+        scope.$watch(ngBindHtmlWatch, function ngBindHtmlWatchAction() {
+          // we re-evaluate the expr because we want a TrustedValueHolderType
+          // for $sce, not a string
+          element.html($sce.getTrustedHtml(ngBindHtmlGetter(scope)) || '');
+          $timeout(function() {
+            $compile(element.contents())(scope);
+          });
+        });
+      };
     }
   };
 }]);

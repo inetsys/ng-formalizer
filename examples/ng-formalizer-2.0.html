@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html ng-app="app" >
+
+  <head>
+
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.0/css/select2.css" rel="stylesheet">
+
+    <link rel="stylesheet" href="bootstrap/dist/css/bootstrap.css">
+    <link rel="stylesheet" href="textAngular/dist/textAngular.css">
+    <link rel="stylesheet" href="angular-ui-select/dist/select.css">
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+<!--
+-->
+    <script src="jquery/dist/jquery.js"></script>
+    <script src="angular-1.4/angular.js"></script>
+    <script src="angular-sanitize/angular-sanitize.min.js"></script>
+
+    <script src="angular-bootstrap/ui-bootstrap-tpls.js"></script>
+    <script src="checklist-model/checklist-model.js"></script>
+
+    <script src="rangy/rangy-core.js"></script>
+    <script src="rangy/rangy-classapplier.js"></script>
+    <script src="rangy/rangy-highlighter.js"></script>
+    <script src="rangy/rangy-selectionsaverestore.js"></script>
+    <script src="rangy/rangy-serializer.js"></script>
+    <script src="rangy/rangy-textrange.js"></script>
+
+
+    <script src="textAngular/dist/textAngular.min.js"></script>
+    <script src="textAngular/dist/textAngular-sanitize.min.js"></script>
+    <script src="moment/moment.js"></script>
+    <script src="angular-spectrum-colorpicker/dist/angular-spectrum-colorpicker.min.js"></script>
+    <script src="angular-ui-select/dist/select.js"></script>
+
+    <script src="dist/ng-formalizer-tpls.js"></script>
+
+    <!-- disable this scripts to disable espanish locale number -->
+    <script src="angular-i18n-1.4/angular-locale_es.js"></script>
+
+    <style>
+    .ng-invalid-required {
+        border-color: #FF0000 !important;
+        box-shadow: 1px 1px 2px #FF0000;
+    }
+    /* remove errors flash */
+    form.ng-pristine .form-error-list {
+        display: none;
+    }
+    form.ng-dirty .form-error-list {
+        display: block;
+    }
+    </style>
+  </head>
+
+<body ng-controller="ctrl">
+<h1>ng-formalizer 2.0</h1>
+
+
+<form name="horizontal" ng-formalizer="" ng-base-model="entity" class="form-horizontal container">
+  <legend>Horizontal</legend>
+  <div ng-repeat="field in fields track by $index">
+    <div ng-formalizer-field="field"></div>
+  </div>
+</form>
+<div class="clearfix"></div>
+<hr />
+<!--
+<form name="inline" ng-formalizer="" ng-base-model="entity" class="form-inline">
+  <div class="pull-left" ng-repeat="field in fields track by $index">
+    <div class="pull-left" ng-formalizer-field="field"></div>
+  </div>
+</form>
+<div class="clearfix"></div>
+<hr />
+<form name="vertical" ng-formalizer="" ng-base-model="entity" class="form-vertical container">
+  <legend>Vertical</legend>
+  <div ng-repeat="field in fields track by $index">
+    <div ng-formalizer-field="field"></div>
+  </div>
+</form>
+<div class="clearfix"></div>
+<hr />
+-->
+
+
+<pre>
+
+Model: {{ entity | json }}
+Configuration {{form_cfg | json}}
+</pre>
+
+</body>
+
+</html>
+<script>
+angular
+.module("app", ["formalizer"])
+.config(["datepickerConfig", "datepickerPopupConfig", "datepickerPopupFix", function (datepickerConfig, datepickerPopupConfig, datepickerPopupFix) {
+    datepickerPopupConfig.currentText = "Hoy";
+    datepickerPopupConfig.clearText = "Borrar";
+    datepickerPopupConfig.closeText = "Cerrar";
+    datepickerPopupConfig.toggleWeeksText = "Semanas";
+    datepickerConfig.showWeeks = false;
+    datepickerPopupConfig.datepickerPopup = "dd/MM/yyyy";
+
+    // spanish GMT+0
+    datepickerPopupFix.datepickerPopup = "DD/MM/YYYY";
+    datepickerPopupFix.datepickerTZ = "+0000";
+}])
+.controller("ctrl", ["$scope", "$timeout", function ($scope, $timeout) {
+  $scope.entity = {
+    text: "a",
+    locale_number: 5000000.99
+  };
+  $scope.select_values = [
+    {"id": 1, "label": "Select 01"},
+    {"id": 2, "label": "Select 02"},
+    {"id": 3, "label": "Select 03"},
+    {"id": 4, "label": "Select 04"}
+  ];
+
+  $scope.check_source = [
+    {"id": 1, "label": "check@1"},
+    {"id": 2, "label": "check@2"},
+    {"id": 3, "label": "check@3"},
+  ];
+
+  $scope.typeahead_items = [
+      {id: 1, name: "abc"},
+      {id: 2, name: "bcd"},
+      {id: 3, name: "def"},
+      {id: 4, name: "efg"},
+      {id: 5, name: "zzz"},
+  ];
+
+  $scope.disabled_weekend = function (date, mode) {
+      return (mode === "day" && (date.getDay() === 0 || date.getDay() === 6));
+  };
+
+  $scope.fields = [{
+    "label": "text",
+    "type": "text",
+    "name": "text",
+    "help": "minlength = 3",
+    "constraints" : {
+      "minlength" : 3
+    }
+  }, {
+    "label": "Password",
+    "type": "password",
+    "name": "password",
+    "help": "help"
+  }, {
+    "label": "lcheckbox",
+    "type": "lcheckbox",
+    "name": "lcheckbox",
+    "help": "help"
+  },{
+    "label": "hidden",
+    "type": "hidden",
+    "name": "hidden",
+    "help": "help"
+  },{
+    "label": "textarea",
+    "type": "textarea",
+    "name": "textarea",
+    "help": "help"
+  },
+   /*TODO FIXME
+   {
+
+      "label": "colorpicker",
+      "type": "colorpicker",
+      "name": "colorpicker",
+  },*/ {
+    "label": "select + source",
+    "type": "select",
+    "name": "select",
+    "help": "help",
+    "source": $scope.select_values,
+    "source_model": "id",
+    "source_display": "label",
+    "empty_msg": "Choose something!"
+  }, {
+    "label": "select + string",
+    "type": "select",
+    "name": "select",
+    "help": "help",
+    "source": "select_values",
+    "source_model": "id",
+    "source_display": "label",
+    "empty_msg": "Choose something!"
+  }, {
+    "label": "ui-select",
+    "type": "ui-select",
+    "name": "select",
+    "help": "help",
+    "source": "select_values",
+    "source_model": "id",
+    "source_display": "label"
+  }, {
+    "label": "Datepicker",
+    "type": "datepicker",
+    "name": "date",
+    "help": "help"
+  },{
+    "label": "datepicker no weekend",
+    "type": "datepicker",
+    "name": "datepicker2",
+    "attrs": {
+      "date-disabled": "disabled_weekend(date, mode)"
+    }
+  },{
+    "label": "T&C",
+    "type": "checkbox",
+    "name": "tyc",
+    "help": "help",
+    "right": true
+  },{
+    "label": "lccale number",
+    "type": "number",
+    "name": "locale_number",
+    "actions": {
+      "use-locale":""
+    }
+  },{
+    "label": "radio-list",
+    "type": "radio-list",
+    "name": "radio",
+    "help": "help",
+    "source": "check_source",
+    "source_display": "label",
+    "source_model": null // null means the object otherwise a key(string)
+  }, {
+    "label": "Checkbox list",
+    "type": "checkbox-list",
+    "name": "cb_list",
+    "placeholder": "",
+    "source": "check_source",
+    "source_display": "label",
+    "source_model": "id", // null means the object otherwise a key(string)
+    /* TODO FIXME "options": {
+        "select_all": true
+    }*/
+  }, {
+    "label": "richtext",
+    "type": "richtext",
+    "name": "richtext"
+  }, {
+    "label": "typeahead-multi (abc,bcd,zzz)",
+    "type": "typeahead-multi",
+    "name": "typeahead_multi",
+    "source": "typeahead_items",
+    "source_display": "name"
+  }, {
+    "label": "Submit now!",
+    "type": "submit",
+    "name": "submit",
+    "class": "btn-primary"
+  }, {
+    "type": "raw",
+    "template": '<div ta-readonly="disabled" ng-model="html" ta-bind="text"></div>',
+    "options" : {
+      "compile": true
+    }
+  }];
+
+  $scope.html = "<p><img class=\"ta-insert-video\" src=\"https://img.youtube.com/vi/Yl7Dlo9MNuo/hqdefault.jpg\" ta-insert-video=\"https://www.youtube.com/embed/Yl7Dlo9MNuo\" allowfullscreen=\"true\" frameborder=\"0\" contenteditable=\"false\"/><br/></p>";
+
+}]);
+
+</script>

@@ -1,7 +1,7 @@
 <div {{container.attrs_text}}>
   <label class="{{label.class}}" ng-compile="" ng-bind-html="$field.label"></label>
   <div class="{{element.container.class}}">
-    <div class="{{element.wrap.class}}" ng-repeat="radio_data in $field.formalizer.source">
+    <div class="{{element.wrap.class}}" ng-repeat="radio_data in $configuration.source">
       <label for="{{element.attrs.id}}-\{\{$index\}\}">
         <input name="{{element.attrs.name}}" id="{{element.attrs.id}}-\{\{$index\}\}" value="\{\{radio_data{{source_model}}\}\}" %element-attributes%>
         \{\{radio_data['{{source_display}}']\}\}

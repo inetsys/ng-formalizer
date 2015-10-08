@@ -1,42 +1,12 @@
 # ng-formalizer [![Build Status](https://secure.travis-ci.org/inetsys/ng-formalizer.png?branch=master)](http://travis-ci.org/inetsys/ng-formalizer)
 
-
-## notice
-
-Rather stable. Report any bug and remember to provide a test case.
-
-
-## dependencies (bower)
-
-* angular >1.4.4 (1.4.3/2/1 are not compatible due to some braking changes...)
-* angular 1.3.x
-* angular 1.2.x
-* jquery 2.1.x
-* angular-bootstrap *
-* checklist-model 0.1.3
-* bootstrap *
-* moment ~2.8.1
-* angular-bootstrap-slider ~0.0.5
-* textAngular ~1.2.2 & font-awesome 4.2.0
-
-
-
+Complete suite of form controls.
 
 ## install
 
 ```bash
-# npm install #this is required only if you need to PR or run tests
-bower install
+bower install ng-formalizer --save
 ```
-
-
-## run examples
-
-```bash
-node examples/server.js
-firefox http://localhost:6001
-```
-
 
 ## usage
 
@@ -45,81 +15,45 @@ firefox http://localhost:6001
   var app = angular.module("app", ["formalizer"]);
 ````
 
+## run examples
+
+```bash
+node examples/server.js
+firefox http://localhost:6001
+```
 
 ### markup (html)
 
+#### Horizontal
+
 ```html
-<div ng-formalizer="config"></div>
+<form name="horizontal" ng-formalizer="" ng-base-model="entity" class="form-horizontal container">
+  <legend>Horizontal</legend>
+  <div ng-repeat="field in fields track by $index">
+    <div ng-formalizer-field="field"></div>
+  </div>
+</form>
 ```
 
+#### Vertical
+
+```html
+<form name="horizontal" ng-formalizer="" ng-base-model="entity" class="form-vertical container">
+  <legend>Vertical</legend>
+  <div ng-repeat="field in fields track by $index">
+    <div ng-formalizer-field="field"></div>
+  </div>
+</form>
+```
 
 ### configuration (controller)
 
 ```js
-    // handle submit
-    $scope.onSubmit = function(dirty_data, files, full_data, form_ctrl) {
-        console.log("dirty_data", dirty_data);
-        console.log("files", files);
-        console.log("full_data", full_data);
-        console.log("form_ctrl", form_ctrl);
-    };
-
-    $scope.entity = {};
-
-    $scope.config = {
-        "legend": "The form legend, leave it blank to disable",
-        "type": "horizontal", // vertical or inline, should work (untested)
-        "name": "form",
-        "onSubmit": "onSubmit", // function(dirty_data_only, model, scope_form)
-        "model": "entity", // must be a string, not the real variable!
-        "fields": "form_fields", // String (watch) | Array
-    };
-
-    $scope.form_fields = [
-        // Fields properties see below for examples & info
-    ];
+  $scope.entity = {}; // ng-base-model
+  $scope.fields = [
+    // Fields properties see below for examples & info
+  ];
 ```
-
-##### `legend`: String
-
-Form legend text.
-
-##### `type`: String [horizontal, vertical, inline]
-
-How to display the form in the screen. ATM only horizontal is fully supported and tested.
-
-##### `name`: String [**mandatory**]
-
-Form name attribute.
-
-##### `model`: String [**mandatory**]
-
-Key in the scope that will hold all form information (ng-model)
-
-##### `onSubmit`: String|Function [**mandatory**]
-
-* `dirty_data` Object
-
-  Data that has from the original model.
-
-* `files` null|Array<File>
-
-  List of files.
-
-* `full_data` Object
-
-  All data in the scope.
-
-* `form_ctrl`
-
-  AngularJS Form controller
-
-
-##### `fields`: String|Array
-
-Fields list. See below for more information.
-
-- - -
 
 ### Fields properties
 
@@ -131,7 +65,6 @@ Create an input with some constraints and error messages translated.
     "label": "User",
     "type": "text",
     "name": "user",
-    "placeholder": "Text",
     "groups": "my-group",
     "actions": {
     },
@@ -147,7 +80,6 @@ Create an input with some constraints and error messages translated.
 }
 ```
 
-
 ##### `label`: String
 
 Label text. *Can be real-time modified*.
@@ -156,7 +88,7 @@ Label text. *Can be real-time modified*.
 
 Help text. *Can be real-time modified*. You could be used to give extra feedback to user.
 
-##### `type`: String [**mandatory**]
+##### `type`: String [**required**]
 * text
 * richtext
 
@@ -169,6 +101,10 @@ Help text. *Can be real-time modified*. You could be used to give extra feedback
 * url
 * textarea
 * select
+* ui-select
+
+  Select2 and Selectize using [ui-select](https://github.com/angular-ui/ui-select)
+
 * datepicker
 
   using [ui-bootstrap-datepicker](http://angular-ui.github.io/bootstrap/#/datepicker)
@@ -201,11 +137,12 @@ Help text. *Can be real-time modified*. You could be used to give extra feedback
 * raw
 
   Raw HTML that will be included into the form. [example](#field-type-raw-example)
+
 * colorpiker
 
   using [angular-spectrum-colorpicker](https://github.com/Jimdo/angular-spectrum-colorpicker)
 
-##### `name`: String [**mandatory**]
+##### `name`: String [**required**]
 
 Same as HTML
 
@@ -220,15 +157,9 @@ Label width in columns.
 Element width in columns.
 
 
-##### `placeholder`: String
-
-No applicable to select, typeahead, typeahead-multi, checkbox*, radio*
-
-
 ##### `default`: String [**optional**]
 
-If model is `undefined` set this value. No more scope checks.
-
+If model is `undefined` set this value.
 
 ##### `source`, `source_display` & `source_model` & `source_filter`
 
@@ -291,7 +222,7 @@ Model
 
 ```json
 {
-    matrix2: {
+    "matrix2": {
         "A": {"F": true, "G": false, "H": true},
         "B": {"F": false, "G": true, "H": false},
         "C": {"F": true, "G": false, "H": true}
@@ -323,7 +254,8 @@ Configuration
 <a name="field-type-raw-example"></a>
 ##### `template`: String (raw only)
 
-HTML to be displayed directly in the form. Be aware that the HTML is not `$compile` on purpose.
+HTML to be displayed directly in the form.
+Be aware that the HTML will be compiled after injected.
 
 ```json
 {
@@ -436,29 +368,7 @@ var formalizer_cfg = {
 * `datepicker-append-to-body`
 * `datepicker-option`
 
-
-`slider` attrs [angular-bootstrap-slider](https://github.com/seiyria/angular-bootstrap-slider)
-
-* `min`
-* `max`
-* `step`
-* `precision`
-* `orientation`
-* `range`
-* `selection`
-* `tooltip`
-* `tooltipSeparator`
-* `tooltipSplit`
-* `handle`
-* `reversed`
-* `enabled`
-* `naturalArrowKeys`
-* `sliderId`
-* `updateEvent`
-
 `raw` options
-
-* `compile` $compile the content, each time template is modified
 
 - - -
 
@@ -693,54 +603,6 @@ By default `request-key` is `value` and `request-response` is `success`
 * readonly (ngReadonly)
 * open (ngOpen)
 
-
-#### hide-children
-
-Hide all children fields
-
-```json
-{
-    "label": "Lista",
-    "name": "lista",
-    "type": "select",
-    "source": [
-        { "id": 1, "label": "hide children" },
-        { "id": 2, "label": "show" },
-        { "id": 3, "label": "show, not need false in hide-children" }
-    ],
-    "source_display": "label",
-    "source_model": "id",
-    "actions": {
-        "hide-children": "{1: true, 2: false}"
-    },
-    fields: [{},{},{}]
-}
-```
-
-
-#### hide-group
-
-Hide target group(s) (show previous target).
-
-Use the same syntax as ng-class, keys are the values, values are the target group (coma separated)
-
-```json
-{
-    "label": "Lista",
-    "name": "lista",
-    "type": "select",
-    "source": [
-        { "id": 1, "label": "HIDE grp001 & grp002 is visible" },
-        { "id": 2, "label": "HIDE grp002 & grp001 is visible" }
-    ],
-    "source_display": "label",
-    "source_model": "id",
-    "actions": {
-        "hide-group": "{1: 'grp001', 2: 'grp002'}"
-    }
-}
-```
-
 #### on-selected
 #### on-checked
 #### on-disabled
@@ -784,9 +646,9 @@ Example:
 
 ### attrs
 
-`attrs` object contains what you expect, extra attributes that will be added to the element.
+`attrs` object contains what you expect, extra attributes that will be added to the element (for example: ng-placeholder)
 
-The atts are applied last, so you can override default behaviors.
+The attrs are applied last, so you can override default behaviors.
 
 
 For example, this won't disable the form.
@@ -889,70 +751,6 @@ decimal separator depending on current ngLocale ($locale).
     "use-locale": ""
   }
 }
-```
-
-- - -
-
-## Extending templates
-
-Here I expose some rules you need to know to write your own.
-
-This is an advanced tutorial. Take a look to [$interpolate](https://docs.angularjs.org/api/ng/service/$interpolate) and [$compile](https://docs.angularjs.org/api/ng/service/$compile) their knowledge will help you to understand formalizer passes and how to escape things.
-
-#### formalizer.error-list.html
-
-This file will be `$interpolate` twice (before injected in field template), and one more time after it. Three times total.
-
-Take a look to this example:
-
-`<li ng-show="%scope-form-name%['{{element.attrs.name}}'].$error.min">{{messages.min || 'Field minimum is \{\{element.attrs[\'ng-min\']\}\}'}}</li>`
-
-After the first `$interpolate`
-
-`<li ng-show="%scope-form-name%['input_name'].$error.min">Field minimum is {{element.attrs['ng-min']}}</li>`
-
-After the second `$interpolate`
-
-`<li ng-show="%scope-form-name%['input_name'].$error.min">Field minimum is 5</li>`
-
-Then the file is injected into the the form field template and will be `$interpolate` one more time.
-
-
-## Form field templates
-
-Templates has another two phase process.
-
-First replaces some internal values:
-* `%element-attributes%` element attributes as html-string example: `ng-model="xxxx" ng-class="xxx"`
-* `%element-error-list%` contents of `formalizer.error-list.html` after the process explained above.
-* `%scope-form-name%` name of the form in scope
-
-As you may notice `%scope-form-name%` appears in *formalizer.error-list.html* It's replaced now.
-
-After this replacement, `$interpolate`. Remember to escape `{{` and `}}` if you want them to be in the final html.
-
-When all fields are generated, we attach them to the fieldset and `$compile`.
-
-
-
-## Extending ng-formalizer (beyond templates)
-
-Formalizer class can be extended to support new types or overwrite current ones.
-
-Let's take a look to a simple case
-
-formalizer.textarea.js
-```js
-    // add to templates, so it will fetch templates/formalizer-textarea.tpl.hmtml
-    Formalizer.templates.push("textarea");
-
-    // add a new field.type = template to use
-    Formalizer.types.textarea = "textarea";
-
-    // do your staff here.
-    // take a look to: "lib/formalizer.**.js" for more code examples.
-    Formalizer.parsers.textarea = function ($scope, field, cfg) {
-    };
 ```
 
 - - -

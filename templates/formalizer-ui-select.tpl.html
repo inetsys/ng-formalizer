@@ -5,7 +5,7 @@
       <!-- theme="bootstrap" -->
       <ui-select %element-attributes%>
         <ui-select-match placeholder="{{placeholder || ""}}">\{\{$select.selected{{source_display? "." + source_display : source_display}}\}\}</ui-select-match>
-        <ui-select-choices repeat="data{{source_model ? "." + source_model: source_model}} as data in $field.formalizer.source | filter: $select.search">
+        <ui-select-choices repeat="data{{source_model ? "." + source_model: source_model}} as data in $configuration.source | filter: $select.search">
           <span ng-bind-html="data{{source_display? "." + source_display : source_display}} | highlight: $select.search"></span>
         </ui-select-choices>
       </ui-select>

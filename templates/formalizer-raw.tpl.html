@@ -1,2 +1,4 @@
-<div {{container.attrs_text}} ng-formalizer-attach="">
+<div {{container.attrs_text}}>
+  <div ng-bind-html-and-compile="$field.template">
+  </div>
 </div>

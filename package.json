@@ -79,7 +79,7 @@
       "it",
       "expect"
     ],
-    "quotmark": "double",
+    "quotmark": "single",
     "smarttabs": false,
     "strict": false,
     "trailing": true,
