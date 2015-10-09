@@ -1,65 +1,59 @@
-describe("specs-formalizer-empty.js", function () {
-    console.log("--> ", this.description);
+describe('specs-formalizer-empty.js', function () {
+  console.log('--> ', this.description);
 
-    var $compile;
-    var $rootScope;
+  var $compile;
+  var $rootScope;
+  var $timeout;
 
-    // Load the myApp module, which contains the directive
-    beforeEach(module("formalizer-tpls"));
-    beforeEach(module("formalizer"));
+  // Load the myApp module, which contains the directive
+  beforeEach(module('formalizer-tpls'));
+  beforeEach(module('formalizer'));
 
-    // Store references to $rootScope and $compile
-    // so they are available to all tests in this describe block
-    beforeEach(inject(function(FormalizerConfig, _$compile_, _$rootScope_) {
-        // The injector unwraps the underscores (_) from around the parameter names when matching
-        $compile = _$compile_;
-        $rootScope = _$rootScope_;
-    }));
+  // Store references to $rootScope and $compile
+  // so they are available to all tests in this describe block
+  beforeEach(inject(function(_$compile_, _$rootScope_, _$timeout_) {
+    // The injector unwraps the underscores (_) from around the parameter names when matching
+    $compile = _$compile_;
+    $rootScope = _$rootScope_;
+    $timeout = _$timeout_;
+  }));
 
-    // a single test
-    it("Create an empty formalizer", function () {
-        var submited = false;
-        $rootScope.onSubmit = function(clean) {
-            expect(clean).toEqual({});
+  // a single test
+  it('Create an empty formalizer', function () {
+    var submited = false;
+    $rootScope.onSubmit = function(clean) {
+      submited = true;
+    };
 
-            submited = true;
-        };
+    $rootScope.entity = {};
 
-        $rootScope.entity = {};
+    $rootScope.fields = [{
+      'label': 'Submit now!',
+      'type': 'submit',
+      'name': 'submit',
+      'class': 'btn-primary'
+    }];
 
-        $rootScope.form_fields = [{
-            "label": "Submit now!",
-            "type": "submit",
-            "name": "submit",
-            "class": "btn-primary"
-        }];
+    var element = $compile(
+      '<form name="form" ng-formalizer="" ng-base-model="entity" class="form-horizontal container" ng-submit="onSubmit()">' +
+      '{{$formalizer | json}}' +
+      '  <div ng-repeat="field in fields track by $index">' +
+      '    <div ng-formalizer-field="field"></div>' +
+      '  </div>' +
+      '</form>'
+    )($rootScope);
 
-        $rootScope.config = {
-            "legend": "Legend",
-            "type": "horizontal",
-            "name": "form",
-            "onSubmit": "onSubmit",
-            "model": "entity",
-            "fields": "form_fields",
-        };
+    $rootScope.$digest();
+    $timeout.flush();
 
-        var element = $compile(
-            "<div ng-formalizer=\"config\">" +
-            "</div>"
-        )($rootScope);
+    expect(submited).toEqual(false);
 
-        $rootScope.$digest();
+    var submit = element.find('#form-submit');
+    expect(submit.hasClass('btn-primary')).toEqual(true);
+    expect(submit.attr('disabled')).toBeFalsy();
 
-        expect(submited).toEqual(false);
+    element.submit();
 
-
-        var submit = element.find("#form-submit");
-        expect(submit.hasClass("btn-primary")).toEqual(true);
-        expect(submit.attr("disabled")).toBeFalsy();
-
-
-        element.submit();
-
-        expect(submited).toEqual(true);
-    });
+     expect(submited).toEqual(true);
+  });
 });

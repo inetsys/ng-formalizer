@@ -33,8 +33,6 @@ describe("specs-ng-blacklist.js", function () {
             "</form>"
         )($rootScope);
 
-
-
         $rootScope.$digest();
 
         form = $rootScope.form;

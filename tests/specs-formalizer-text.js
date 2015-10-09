@@ -13,14 +13,13 @@ describe("specs-formalizer-text.js", function () {
 
     // Store references to $scope and $compile
     // so they are available to all tests in this describe block
-    beforeEach(inject(function(FormalizerConfig, _$compile_, _$rootScope_, $timeout) {
+    beforeEach(inject(function(_$compile_, _$rootScope_, $timeout) {
         // The injector unwraps the underscores (_) from around the parameter names when matching
         $compile = _$compile_;
         $scope = _$rootScope_;
 
         $scope.onSubmit = function(clean) {
-            expect(clean).toEqual({text: "abc"});
-
+            //expect(clean).toEqual({text: "abc"});
             submited = true;
         };
 
@@ -28,7 +27,7 @@ describe("specs-formalizer-text.js", function () {
             text: null
         };
 
-        $scope.form_fields = [{
+        $scope.fields = [{
             "label": "text label",
             "type": "text",
             "name": "text",
@@ -43,25 +42,19 @@ describe("specs-formalizer-text.js", function () {
             "class": "btn-primary"
         }];
 
-        $scope.config = {
-            "legend": "Legend",
-            "type": "horizontal",
-            "name": "form",
-            "onSubmit": "onSubmit",
-            "model": "entity",
-            "fields": "form_fields",
-        };
-
         element = $compile(
-            "<div ng-formalizer=\"config\">" +
-            "</div>"
+          '<form name="form" ng-formalizer="" ng-base-model="entity" class="form-horizontal container" ng-submit="onSubmit()">' +
+          '  <div ng-repeat="field in fields track by $index">' +
+          '    <div ng-formalizer-field="field"></div>' +
+          '  </div>' +
+          '</form>'
         )($scope);
 
         $scope.$digest();
 
         $timeout.flush();
 
-        form = $scope.$$childTail.form;
+        form = $scope.form;
     }));
 
     // a single test

@@ -7,14 +7,6 @@
 
 
 module.exports = function (config) {
-  var version = "1.2";
-
-  process.argv.forEach(function(arg) {
-      if (arg.indexOf("--angular=") === 0) {
-        version = arg.substring(10);
-      }
-  });
-
   config.set({
     basePath: '',
 
@@ -23,48 +15,37 @@ module.exports = function (config) {
 
     // list of files / patterns to load in the browser
     files: [
-      // libraries
       "bower_components/jquery/dist/jquery.js",
-
-      "bower_components/angular-" + version +"/angular.js",
-      "bower_components/angular-mocks-" + version +"/angular-mocks.js",
-
+      "bower_components/angular-1.4/angular.js",
+      "bower_components/angular-sanitize/angular-sanitize.min.js",
       "bower_components/angular-bootstrap/ui-bootstrap-tpls.js",
       "bower_components/checklist-model/checklist-model.js",
-
-      //slider
-      "bower_components/angular-bootstrap-slider/slider.js",
-      "bower_components/seiyria-bootstrap-slider/js/bootstrap-slider.js",
-
-      // textAngular
-      "bower_components/rangy/rangy-core.min.js",
-      "bower_components/rangy/rangy-cssclassapplier.min.js",
-      "bower_components/rangy/rangy-selectionsaverestore.min.js",
-      "bower_components/rangy/rangy-serializer.min.js",
+      "bower_components/rangy/rangy-core.js",
+      "bower_components/rangy/rangy-classapplier.js",
+      "bower_components/rangy/rangy-highlighter.js",
+      "bower_components/rangy/rangy-selectionsaverestore.js",
+      "bower_components/rangy/rangy-serializer.js",
+      "bower_components/rangy/rangy-textrange.js",
       "bower_components/textAngular/dist/textAngular.min.js",
       "bower_components/textAngular/dist/textAngular-sanitize.min.js",
-
-      "bower_components/angular-i18n-1.3/angular-locale_es.js",
-
-
       "bower_components/moment/moment.js",
-
-      // color picker
       "bower_components/angular-spectrum-colorpicker/dist/angular-spectrum-colorpicker.min.js",
+      "bower_components/angular-ui-select/dist/select.js",
+      "bower_components/angular-i18n-1.4/angular-locale_es.js",
 
-      // our app
+
+      "bower_components/angular-mocks-1.4/angular-mocks.js",
+      // formalizer
       "lib/ng-formalizer.js",
       "lib/ng-formalizer-parsers.js",
+      "lib/ng-datepicker-fix.js",
       "lib/ng-formalizer-field.js",
       "lib/ng-blacklist.js",
       "lib/ng-equalto.js",
       "lib/ng-regex-validations.js",
-      "lib/ng-datepicker-fix.js",
       "lib/ng-populate.js",
       "lib/ng-server-validation.js",
       "lib/ng-default.js",
-      "lib/ng-hide-groups.js",
-      "lib/ng-hide-children.js",
       "lib/ng-on-bool-attr-change.js",
       "lib/ng-compile.js",
       "lib/ng-length.js",
@@ -78,8 +59,19 @@ module.exports = function (config) {
       "lib/ng-hide-ex.js",
 
       // tests
-      'tests/*.js',
-      //'tests/specs-formalizer-dynamic-source.js',
+      'tests/specs-formalizer-dynamic-source.js',
+      'tests/specs-formalizer-empty.js',
+      'tests/specs-formalizer-full.js',
+      'tests/specs-formalizer-number.js',
+      'tests/specs-formalizer-select.js',
+      'tests/specs-formalizer-text.js',
+      'tests/specs-ng-blacklist.js',
+      'tests/specs-ng-datepicker-fix.js',
+      'tests/specs-ng-decimal.js',
+      'tests/specs-ng-default.js',
+      'tests/specs-ng-equal-to.js',
+      'tests/specs-ng-no-decimals.js',
+      'tests/specs-ng-use-locale.js',
 
       // templates
       'templates/*.tpl.html'

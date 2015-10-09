@@ -13,7 +13,7 @@ describe("specs-ng-datepicker-fix.js", function () {
 
     // Store references to $scope and $compile
     // so they are available to all tests in this describe block
-    beforeEach(inject(function(FormalizerConfig, _$compile_, _$rootScope_, $timeout, datepickerPopupConfig, datepickerPopupFix) {
+    beforeEach(inject(function(_$compile_, _$rootScope_, $timeout, datepickerPopupConfig, datepickerPopupFix) {
         // The injector unwraps the underscores (_) from around the parameter names when matching
         $compile = _$compile_;
         $scope = _$rootScope_;
@@ -36,7 +36,7 @@ describe("specs-ng-datepicker-fix.js", function () {
             text: null
         };
 
-        $scope.form_fields = [{
+        $scope.fields = [{
             "label": "datepicker",
             "type": "datepicker",
             "name": "datepicker",
@@ -48,25 +48,19 @@ describe("specs-ng-datepicker-fix.js", function () {
             "class": "btn-primary"
         }];
 
-        $scope.config = {
-            "legend": "Legend",
-            "type": "horizontal",
-            "name": "form",
-            "onSubmit": "onSubmit",
-            "model": "entity",
-            "fields": "form_fields",
-        };
-
         element = $compile(
-            "<div ng-formalizer=\"config\">" +
-            "</div>"
+          '<form name="form" ng-formalizer="" ng-base-model="entity" class="form-horizontal container">' +
+          '  <div ng-repeat="field in fields track by $index">' +
+          '    <div ng-formalizer-field="field"></div>' +
+          '  </div>' +
+          '</form>'
         )($scope);
 
         $scope.$digest();
 
         $timeout.flush();
 
-        form = $scope.$$childTail.form;
+        form = $scope.form;
     }));
 
     it("test input@datepicker no tz", function () {
