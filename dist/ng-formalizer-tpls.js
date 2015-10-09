@@ -457,7 +457,7 @@ angular
     return templates;
   };
 })
-.directive('ngFormalizer', function ($http, $templateCache, $interpolate) {
+.directive('ngFormalizer', function ($http, $templateCache, $interpolate, $log) {
   function safe_array_remove(arr, item) {
       var cut = arr.indexOf(item);
       if (cut !== -1) {
@@ -509,6 +509,8 @@ angular
       //console.log("$attrs", $attrs);
       var $ngForm = $ctrls[0];
       var $ngFormalizer = $ctrls[1];
+
+      // TODO maybe: $scope.$formalizer = $ngFormalizer;
 
       if (!$attrs.name) {
         throw new Error('formalizer require a form name');
@@ -701,58 +703,7 @@ angular
             // TODO this seem to be a bug in $interpolate
             .replace(/\\\{/g, '{').replace(/\\\}/g, '}');
 
-          //var alt_html = this.callParser("html", $scope, configuration, html);
-
           return html;
-        },
-
-        submit: function submit() {
-          var on_submit = this.$parse(this.onSubmit)(this.$scope.$parent),
-            form = this.$scope.$eval(this.name);
-
-          if (!on_submit) {
-            throw new Error('options.onSubmit is required');
-          }
-
-          ++this.attempts;
-
-          if (form.$valid) {
-            // pristile
-            var i,
-              j,
-              el,
-              data = {},
-              files = null,
-              field_data;
-
-            for (i in form) {
-              if (i[0] === '$') {
-                continue;
-              }
-
-              field_data = this.fields.filter(function (v) {
-                return v.formalizer.element.attrs.name === i;
-              });
-
-              if (form[i].$dirty) {
-                data[i] = form[i].$modelValue;
-              } else if (field_data && field_data.length && field_data[0].type === 'file') { // check if it's a file
-                el = field_data[0].domElement[0];
-
-                files = files || [];
-
-                //files[i] = [];
-
-                for (j = 0; j < el.files.length; ++j) {
-                  //files[i].push(el.files[j]);
-                  files.push(el.files[j]);
-                }
-              }
-            }
-
-            return on_submit(data, files, this.$scope.$eval(this.model), form);
-          }
-            this.$log.info('form is $invalid, no submit');
         },
         toFormData: function toFormData(data, data_key, files) {
           var formData = new FormData();
