@@ -1,4 +1,4 @@
-angular.module('formalizer-tpls', ['templates/formalizer-checkbox-list.tpl.html', 'templates/formalizer-checkbox-matrix.tpl.html', 'templates/formalizer-checkbox.tpl.html', 'templates/formalizer-columns.tpl.html', 'templates/formalizer-error-list.tpl.html', 'templates/formalizer-form-1.2.tpl.html', 'templates/formalizer-form-1.3.tpl.html', 'templates/formalizer-form-1.4.tpl.html', 'templates/formalizer-hidden.tpl.html', 'templates/formalizer-input.tpl.html', 'templates/formalizer-radio-list.tpl.html', 'templates/formalizer-raw.tpl.html', 'templates/formalizer-richtext.tpl.html', 'templates/formalizer-select.tpl.html', 'templates/formalizer-slider.tpl.html', 'templates/formalizer-submit.tpl.html', 'templates/formalizer-textarea.tpl.html', 'templates/formalizer-typeahead.tpl.html', 'templates/formalizer-ui-select.tpl.html', 'templates/formalizer.fields.tpl.html']);
+angular.module('formalizer-tpls', ['templates/formalizer-checkbox-list.tpl.html', 'templates/formalizer-checkbox-matrix.tpl.html', 'templates/formalizer-checkbox.tpl.html', 'templates/formalizer-columns.tpl.html', 'templates/formalizer-error-list.tpl.html', 'templates/formalizer-form-1.2.tpl.html', 'templates/formalizer-form-1.3.tpl.html', 'templates/formalizer-form-1.4.tpl.html', 'templates/formalizer-hidden.tpl.html', 'templates/formalizer-input.tpl.html', 'templates/formalizer-lcheckbox.tpl.html', 'templates/formalizer-radio-list.tpl.html', 'templates/formalizer-raw.tpl.html', 'templates/formalizer-richtext.tpl.html', 'templates/formalizer-select.tpl.html', 'templates/formalizer-slider.tpl.html', 'templates/formalizer-submit.tpl.html', 'templates/formalizer-textarea.tpl.html', 'templates/formalizer-typeahead.tpl.html', 'templates/formalizer-ui-select.tpl.html', 'templates/formalizer.fields.tpl.html']);
 
 angular.module("templates/formalizer-checkbox-list.tpl.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("templates/formalizer-checkbox-list.tpl.html",
@@ -110,7 +110,7 @@ angular.module("templates/formalizer-error-list.tpl.html", []).run(["$templateCa
     "-->\n" +
     "\n" +
     "<ul class=\"form-error-list help-block\">\n" +
-    "  <li ng-show=\"$formalizer.formalizer.attempts > 0 && $formalizer.form[$field.name].$error.required\">\\{\\{$field.messages.required || 'Field is required'}}</li>\n" +
+    "  <li ng-show=\"$formalizer.form[$field.name].$dirty && $formalizer.form[$field.name].$error.required\">\\{\\{$field.messages.required || 'Field is required'}}</li>\n" +
     "  <li ng-show=\"$formalizer.form[$field.name].$error.min\">\\{\\{$field.messages.min || 'Field minimum is '+ $configuration.element.attrs['min'] }}</li>\n" +
     "  <li ng-show=\"$formalizer.form[$field.name].$error.max\">\\{\\{$field.messages.max || 'Field maximum is '+ $configuration.element.attrs['max']}}</li>\n" +
     "  <li ng-show=\"$formalizer.form[$field.name].$error.minlength\">\\{\\{$field.messages.minlength || 'Field is required to be at least '+ $configuration.element.attrs['ng-minlength'] + ' characters'}}</li>\n" +
@@ -130,6 +130,8 @@ angular.module("templates/formalizer-error-list.tpl.html", []).run(["$templateCa
     "  <li ng-show=\"$formalizer.form[$field.name].$error['length']\">\\{\\{$field.messages['length'] || 'Field length must be exactly ' + $configuration.element.attrs['ng-length'] }}</li>\n" +
     "  <li ng-show=\"$formalizer.form[$field.name].$error['decimals']\">\\{\\{$field.messages['decimals'] || 'Maximum decimals exceeded: '+ $configuration.element.attrs['ng-decimals'] }}</li>\n" +
     "  <li ng-show=\"$formalizer.form[$field.name].$error['no-decimals']\">\\{\\{$field.messages['no-decimals'] || 'Cannot contain decimals ' + $configuration.element.attrs['ng-no-decimals'] }}</li>\n" +
+    "  <li ng-show=\"$formalizer.form[$field.name].$error['pattern']\">\\{\\{$field.messages['pattern'] || 'Invalid pattern match'}}</li>\n" +
+    "  <li ng-show=\"$formalizer.form[$field.name].$error['date']\">\\{\\{$field.messages['date'] || 'Invalid date'}}</li>\n" +
     "</ul>\n" +
     "");
 }]);
@@ -227,6 +229,22 @@ angular.module("templates/formalizer-input.tpl.html", []).run(["$templateCache",
     "\n" +
     "    %element-error-list%\n" +
     "\n" +
+    "  </div>\n" +
+    "</div>\n" +
+    "");
+}]);
+
+angular.module("templates/formalizer-lcheckbox.tpl.html", []).run(["$templateCache", function($templateCache) {
+  $templateCache.put("templates/formalizer-lcheckbox.tpl.html",
+    "<div {{container.attrs_text}}>\n" +
+    "  <label for=\"{{element.attrs.id}}\" class=\"{{label.class}}\" ng-compile=\"\" ng-bind-html=\"$field.label\"></label>\n" +
+    "  <div class=\"{{element.container.class}}\">\n" +
+    "    <div class=\"{{element.wrap.class}}\">\n" +
+    "        <input %element-attributes% />\n" +
+    "        <span class=\"help-block\" ng-compile=\"\" ng-bind-html=\"$field.help\"></span>\n" +
+    "    </div>\n" +
+    "\n" +
+    "    %element-error-list%\n" +
     "  </div>\n" +
     "</div>\n" +
     "");

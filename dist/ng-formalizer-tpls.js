@@ -1,4 +1,4 @@
-angular.module('formalizer-tpls', ['templates/formalizer-checkbox-list.tpl.html', 'templates/formalizer-checkbox-matrix.tpl.html', 'templates/formalizer-checkbox.tpl.html', 'templates/formalizer-columns.tpl.html', 'templates/formalizer-error-list.tpl.html', 'templates/formalizer-form-1.2.tpl.html', 'templates/formalizer-form-1.3.tpl.html', 'templates/formalizer-form-1.4.tpl.html', 'templates/formalizer-hidden.tpl.html', 'templates/formalizer-input.tpl.html', 'templates/formalizer-radio-list.tpl.html', 'templates/formalizer-raw.tpl.html', 'templates/formalizer-richtext.tpl.html', 'templates/formalizer-select.tpl.html', 'templates/formalizer-slider.tpl.html', 'templates/formalizer-submit.tpl.html', 'templates/formalizer-textarea.tpl.html', 'templates/formalizer-typeahead.tpl.html', 'templates/formalizer-ui-select.tpl.html', 'templates/formalizer.fields.tpl.html']);
+angular.module('formalizer-tpls', ['templates/formalizer-checkbox-list.tpl.html', 'templates/formalizer-checkbox-matrix.tpl.html', 'templates/formalizer-checkbox.tpl.html', 'templates/formalizer-columns.tpl.html', 'templates/formalizer-error-list.tpl.html', 'templates/formalizer-form-1.2.tpl.html', 'templates/formalizer-form-1.3.tpl.html', 'templates/formalizer-form-1.4.tpl.html', 'templates/formalizer-hidden.tpl.html', 'templates/formalizer-input.tpl.html', 'templates/formalizer-lcheckbox.tpl.html', 'templates/formalizer-radio-list.tpl.html', 'templates/formalizer-raw.tpl.html', 'templates/formalizer-richtext.tpl.html', 'templates/formalizer-select.tpl.html', 'templates/formalizer-slider.tpl.html', 'templates/formalizer-submit.tpl.html', 'templates/formalizer-textarea.tpl.html', 'templates/formalizer-typeahead.tpl.html', 'templates/formalizer-ui-select.tpl.html', 'templates/formalizer.fields.tpl.html']);
 
 angular.module("templates/formalizer-checkbox-list.tpl.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("templates/formalizer-checkbox-list.tpl.html",
@@ -110,7 +110,7 @@ angular.module("templates/formalizer-error-list.tpl.html", []).run(["$templateCa
     "-->\n" +
     "\n" +
     "<ul class=\"form-error-list help-block\">\n" +
-    "  <li ng-show=\"$formalizer.formalizer.attempts > 0 && $formalizer.form[$field.name].$error.required\">\\{\\{$field.messages.required || 'Field is required'}}</li>\n" +
+    "  <li ng-show=\"$formalizer.form[$field.name].$dirty && $formalizer.form[$field.name].$error.required\">\\{\\{$field.messages.required || 'Field is required'}}</li>\n" +
     "  <li ng-show=\"$formalizer.form[$field.name].$error.min\">\\{\\{$field.messages.min || 'Field minimum is '+ $configuration.element.attrs['min'] }}</li>\n" +
     "  <li ng-show=\"$formalizer.form[$field.name].$error.max\">\\{\\{$field.messages.max || 'Field maximum is '+ $configuration.element.attrs['max']}}</li>\n" +
     "  <li ng-show=\"$formalizer.form[$field.name].$error.minlength\">\\{\\{$field.messages.minlength || 'Field is required to be at least '+ $configuration.element.attrs['ng-minlength'] + ' characters'}}</li>\n" +
@@ -130,6 +130,8 @@ angular.module("templates/formalizer-error-list.tpl.html", []).run(["$templateCa
     "  <li ng-show=\"$formalizer.form[$field.name].$error['length']\">\\{\\{$field.messages['length'] || 'Field length must be exactly ' + $configuration.element.attrs['ng-length'] }}</li>\n" +
     "  <li ng-show=\"$formalizer.form[$field.name].$error['decimals']\">\\{\\{$field.messages['decimals'] || 'Maximum decimals exceeded: '+ $configuration.element.attrs['ng-decimals'] }}</li>\n" +
     "  <li ng-show=\"$formalizer.form[$field.name].$error['no-decimals']\">\\{\\{$field.messages['no-decimals'] || 'Cannot contain decimals ' + $configuration.element.attrs['ng-no-decimals'] }}</li>\n" +
+    "  <li ng-show=\"$formalizer.form[$field.name].$error['pattern']\">\\{\\{$field.messages['pattern'] || 'Invalid pattern match'}}</li>\n" +
+    "  <li ng-show=\"$formalizer.form[$field.name].$error['date']\">\\{\\{$field.messages['date'] || 'Invalid date'}}</li>\n" +
     "</ul>\n" +
     "");
 }]);
@@ -227,6 +229,22 @@ angular.module("templates/formalizer-input.tpl.html", []).run(["$templateCache",
     "\n" +
     "    %element-error-list%\n" +
     "\n" +
+    "  </div>\n" +
+    "</div>\n" +
+    "");
+}]);
+
+angular.module("templates/formalizer-lcheckbox.tpl.html", []).run(["$templateCache", function($templateCache) {
+  $templateCache.put("templates/formalizer-lcheckbox.tpl.html",
+    "<div {{container.attrs_text}}>\n" +
+    "  <label for=\"{{element.attrs.id}}\" class=\"{{label.class}}\" ng-compile=\"\" ng-bind-html=\"$field.label\"></label>\n" +
+    "  <div class=\"{{element.container.class}}\">\n" +
+    "    <div class=\"{{element.wrap.class}}\">\n" +
+    "        <input %element-attributes% />\n" +
+    "        <span class=\"help-block\" ng-compile=\"\" ng-bind-html=\"$field.help\"></span>\n" +
+    "    </div>\n" +
+    "\n" +
+    "    %element-error-list%\n" +
     "  </div>\n" +
     "</div>\n" +
     "");
@@ -605,7 +623,7 @@ angular
 
 
           field.element.attrs['ng-model'] = cfg.model || this.baseModel + '.' + name;
-          field.element.attrs['class'] = ['form-control'].concat((cfg['class'] || '').split(' '));
+          field.element.attrs['class'] = ['form-control', 'formalizer-element-' + cfg.type].concat((cfg['class'] || '').split(' '));
           field.element.attrs['ng-class'] = [
               '"has-error": $formalizer.attempts > 0 && ' + this.name + '.' + name + '.$invalid'
           ];
@@ -719,7 +737,7 @@ angular
 
           return formData;
         },
-        getFieldHTML: function(field, configuration) {
+        getFieldHTML: function(field, configuration, $scope) {
           //console.log("getFieldHTML", field);
           if (!formalizerTemplates[field.type]) {
             throw new Error('invalid field type');
@@ -786,23 +804,34 @@ angular.module('formalizer')
   formalizerTemplatesProvider.set('tel', 'templates/formalizer-input.tpl.html');
   formalizerTemplatesProvider.set('url', 'templates/formalizer-input.tpl.html');
   formalizerTemplatesProvider.set('file', 'templates/formalizer-input.tpl.html');
-  formalizerTemplatesProvider.set('lcheckbox', 'templates/formalizer-input.tpl.html');
   formalizerTemplatesProvider.set('colorpicker', 'templates/formalizer-input.tpl.html');
 
   // do not need anything more :)
+  formalizerTemplatesProvider.set('lcheckbox', 'templates/formalizer-lcheckbox.tpl.html');
   formalizerParsersProvider.set('lcheckbox', function ($scope, cfg) {
     cfg.element.attrs.type = 'checkbox';
 
     cfg.element.container['class'].push('input');
     safe_array_remove(cfg.element.attrs['class'], 'form-control');
+    cfg.element.attrs['class'].push('pull-left');
   });
 
   formalizerParsersProvider.set('colorpicker', function ($scope, cfg) {
     cfg.element.wrap['class'].push('row');
     cfg.element.left = '<div class="col-sm-6">';
+    // TODO how to send attrs to colorpicker?
+
+    var attrs_text = [];
+    if (cfg.element.attrs['ng-disabled']) {
+      attrs_text.push('disabled="' + cfg.element.attrs['ng-disabled'] + '"');
+    }
+
+    attrs_text.push('format="\'hex\'"');
+    attrs_text.push('ng-model="' + cfg.element.attrs['ng-model'] + '"');
+
     cfg.element.right = '</div>' +
         '<div class="col-sm-6">' +
-        '<spectrum-colorpicker ng-model="' + cfg.element.attrs['ng-model'] + '"></spectrum-colorpicker>' +
+        '<spectrum-colorpicker ' + attrs_text.join(' ') +'></spectrum-colorpicker>' +
         '</div>';
   });
 
@@ -1066,7 +1095,7 @@ angular.module('formalizer')
 
     cfg.element.attrs['ong-model'] = cfg.element.attrs['ng-model'];
     cfg.element.attrs['ng-model'] = ta_model_selected;
-    $scope.$eval(ta_model_selected + ' = "a"');
+    $scope[ta_model_selected] = '';
 
     var target = $scope.$eval(ta_model);
     if (target === undefined) {
@@ -1074,22 +1103,19 @@ angular.module('formalizer')
     }
 
     $scope.taSelected = cfg.options.taSelected || function () {
-      $scope.$eval(ta_model_selected + ' = ""');
+      $scope[ta_model_selected] = '';
       return $scope.$eval(ta_model);
     };
 
     $scope.taAppend = function ($item, $model, $label) {
       if (cfg.options.taAppend) {
-        cfg.options.taAppend($item, $scope.$eval(ta_model), $label);
+        cfg.options.taAppend($item, $model, $label);
       } else {
-        var target = $scope.$eval(ta_model);
-
-        if (target.indexOf($item) === -1) {
-          target.push($item);
+        if ($model.indexOf($item) === -1) {
+          $model.push($item);
         }
       }
-
-      $scope.$eval(ta_model_selected + ' = ""');
+      $scope[ta_model_selected] = '';
     };
 
 
@@ -1099,7 +1125,7 @@ angular.module('formalizer')
       safe_array_remove(target, $item);
     };
 
-    cfg.element.attrs['typeahead-on-select'] = 'taAppend($item, $model, $label)';
+    cfg.element.attrs['typeahead-on-select'] = 'taAppend($item, ' + ta_model +', $label)';
   });
 
   //
