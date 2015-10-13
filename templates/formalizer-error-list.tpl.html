@@ -10,7 +10,7 @@
 -->
 
 <ul class="form-error-list help-block">
-  <li ng-show="$formalizer.formalizer.attempts > 0 && $formalizer.form[$field.name].$error.required">\{\{$field.messages.required || 'Field is required'}}</li>
+  <li ng-show="$formalizer.form[$field.name].$dirty && $formalizer.form[$field.name].$error.required">\{\{$field.messages.required || 'Field is required'}}</li>
   <li ng-show="$formalizer.form[$field.name].$error.min">\{\{$field.messages.min || 'Field minimum is '+ $configuration.element.attrs['min'] }}</li>
   <li ng-show="$formalizer.form[$field.name].$error.max">\{\{$field.messages.max || 'Field maximum is '+ $configuration.element.attrs['max']}}</li>
   <li ng-show="$formalizer.form[$field.name].$error.minlength">\{\{$field.messages.minlength || 'Field is required to be at least '+ $configuration.element.attrs['ng-minlength'] + ' characters'}}</li>
@@ -30,4 +30,6 @@
   <li ng-show="$formalizer.form[$field.name].$error['length']">\{\{$field.messages['length'] || 'Field length must be exactly ' + $configuration.element.attrs['ng-length'] }}</li>
   <li ng-show="$formalizer.form[$field.name].$error['decimals']">\{\{$field.messages['decimals'] || 'Maximum decimals exceeded: '+ $configuration.element.attrs['ng-decimals'] }}</li>
   <li ng-show="$formalizer.form[$field.name].$error['no-decimals']">\{\{$field.messages['no-decimals'] || 'Cannot contain decimals ' + $configuration.element.attrs['ng-no-decimals'] }}</li>
+  <li ng-show="$formalizer.form[$field.name].$error['pattern']">\{\{$field.messages['pattern'] || 'Invalid pattern match'}}</li>
+  <li ng-show="$formalizer.form[$field.name].$error['date']">\{\{$field.messages['date'] || 'Invalid date'}}</li>
 </ul>

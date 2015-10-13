@@ -1,0 +1,11 @@
+<div {{container.attrs_text}}>
+  <label for="{{element.attrs.id}}" class="{{label.class}}" ng-compile="" ng-bind-html="$field.label"></label>
+  <div class="{{element.container.class}}">
+    <div class="{{element.wrap.class}}">
+        <input %element-attributes% />
+        <span class="help-block" ng-compile="" ng-bind-html="$field.help"></span>
+    </div>
+
+    %element-error-list%
+  </div>
+</div>

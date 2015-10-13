@@ -116,7 +116,7 @@ Help text. *Can be real-time modified*. You could be used to give extra feedback
 
 * lcheckbox
 
-  left labeled checkbox.
+  left labeled checkbox with help inline.
 
 * checkbox-matrix
 

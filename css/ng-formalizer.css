@@ -13,3 +13,6 @@ form.ng-dirty .form-error-list {
 .select2-container {
   min-width: 100%;
 }
+.formalizer-element-lcheckbox {
+  margin-right: 8px !important;
+}
