@@ -217,19 +217,21 @@ angular.module("templates/formalizer-hidden.tpl.html", []).run(["$templateCache"
 angular.module("templates/formalizer-input.tpl.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("templates/formalizer-input.tpl.html",
     "<div {{container.attrs_text}}>\n" +
-    "  <label for=\"{{element.attrs.id}}\" class=\"{{label.class}}\" ng-compile=\"\" ng-bind-html=\"$field.label\"></label>\n" +
-    "  <div class=\"{{element.container.class}}\">\n" +
-    "    <div class=\"{{element.wrap.class}}\">\n" +
-    "        {{element.left}}\n" +
-    "        <input %element-attributes% />\n" +
-    "        {{element.right}}\n" +
+    "  <div>\n" +
+    "    <label for=\"{{element.attrs.id}}\" class=\"{{label.class}}\" ng-compile=\"\" ng-bind-html=\"$field.label\"></label>\n" +
+    "    <div class=\"{{element.container.class}}\">\n" +
+    "      <div class=\"{{element.wrap.class}}\">\n" +
+    "          {{element.left}}\n" +
+    "          <input %element-attributes% />\n" +
+    "          {{element.right}}\n" +
+    "      </div>\n" +
     "    </div>\n" +
-    "\n" +
     "    <div class=\"help-block\" ng-compile=\"\" ng-bind-html=\"$field.help\"></div>\n" +
-    "\n" +
-    "    %element-error-list%\n" +
-    "\n" +
+    "    <div>\n" +
+    "      %element-error-list%\n" +
+    "    </div>\n" +
     "  </div>\n" +
+    "  <div class=\"clearfix\"></div>\n" +
     "</div>\n" +
     "");
 }]);
@@ -246,6 +248,7 @@ angular.module("templates/formalizer-lcheckbox.tpl.html", []).run(["$templateCac
     "\n" +
     "    %element-error-list%\n" +
     "  </div>\n" +
+    "  <div class=\"clearfix\"></div>\n" +
     "</div>\n" +
     "");
 }]);

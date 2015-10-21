@@ -217,19 +217,21 @@ angular.module("templates/formalizer-hidden.tpl.html", []).run(["$templateCache"
 angular.module("templates/formalizer-input.tpl.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("templates/formalizer-input.tpl.html",
     "<div {{container.attrs_text}}>\n" +
-    "  <label for=\"{{element.attrs.id}}\" class=\"{{label.class}}\" ng-compile=\"\" ng-bind-html=\"$field.label\"></label>\n" +
-    "  <div class=\"{{element.container.class}}\">\n" +
-    "    <div class=\"{{element.wrap.class}}\">\n" +
-    "        {{element.left}}\n" +
-    "        <input %element-attributes% />\n" +
-    "        {{element.right}}\n" +
+    "  <div>\n" +
+    "    <label for=\"{{element.attrs.id}}\" class=\"{{label.class}}\" ng-compile=\"\" ng-bind-html=\"$field.label\"></label>\n" +
+    "    <div class=\"{{element.container.class}}\">\n" +
+    "      <div class=\"{{element.wrap.class}}\">\n" +
+    "          {{element.left}}\n" +
+    "          <input %element-attributes% />\n" +
+    "          {{element.right}}\n" +
+    "      </div>\n" +
     "    </div>\n" +
-    "\n" +
     "    <div class=\"help-block\" ng-compile=\"\" ng-bind-html=\"$field.help\"></div>\n" +
-    "\n" +
-    "    %element-error-list%\n" +
-    "\n" +
+    "    <div>\n" +
+    "      %element-error-list%\n" +
+    "    </div>\n" +
     "  </div>\n" +
+    "  <div class=\"clearfix\"></div>\n" +
     "</div>\n" +
     "");
 }]);
@@ -246,6 +248,7 @@ angular.module("templates/formalizer-lcheckbox.tpl.html", []).run(["$templateCac
     "\n" +
     "    %element-error-list%\n" +
     "  </div>\n" +
+    "  <div class=\"clearfix\"></div>\n" +
     "</div>\n" +
     "");
 }]);
@@ -682,7 +685,10 @@ angular
             field.element.container['class'].push('col-sm-' + r); // 1 padding ?
             break;
           case 'vertical':
+            break;
           case 'inline':
+            field.element.container['class'].push('input-group');
+            break;
           }
 
           return field;
@@ -1188,6 +1194,27 @@ angular.module("formalizer")
 }]);
 angular.module('formalizer')
 .directive('ngFormalizerField', ['$timeout', '$compile', function ($timeout, $compile) {
+  function formalizerit($scope, $elm, $attrs, $ngFormalizer, data) {
+    var configuration = $ngFormalizer.configure(data, $scope);
+    $scope.$field = data;
+    $scope.$configuration = configuration;
+
+    $attrs.$set('id', configuration.element.attrs.id + '-container');
+
+    $ngFormalizer.getFieldHTML(data, configuration, $scope)
+    .then(function(html) {
+      //console.log('html', html);
+      // append html and compile in next tick
+      var el = angular.element(html);
+      $elm.append(el);
+
+      $timeout(function () {
+        $compile(el)($scope);
+
+        $scope.$digest();
+      });
+    });
+  }
   return {
     scope: true,
     require: '^ngFormalizer',
@@ -1199,23 +1226,17 @@ angular.module('formalizer')
       $timeout(function() {
 
         var data = $scope.$eval($attrs.ngFormalizerField);
-        var configuration = $ngFormalizer.configure(data, $scope);
-        $scope.$field = data;
-        $scope.$configuration = configuration;
-
-        $ngFormalizer.getFieldHTML(data, configuration, $scope)
-        .then(function(html) {
-          //console.log('html', html);
-          // append html and compile in next tick
-          var el = angular.element(html);
-          $elm.append(el);
-
-          $timeout(function () {
-            $compile(el)($scope);
-
-            $scope.$digest();
+        if (!data) {
+          var unwatch = $scope.$watch($attrs.ngFormalizerField, function(a, b) {
+            if (a !== b) { // skip init
+              formalizerit($scope, $elm, $attrs, $ngFormalizer, a);
+              unwatch();
+            }
           });
-        });
+        } else {
+          formalizerit($scope, $elm, $attrs, $ngFormalizer, data);
+        }
+
       });
     }
   };

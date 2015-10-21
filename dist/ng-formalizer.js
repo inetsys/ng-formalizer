@@ -243,7 +243,10 @@ angular
             field.element.container['class'].push('col-sm-' + r); // 1 padding ?
             break;
           case 'vertical':
+            break;
           case 'inline':
+            field.element.container['class'].push('input-group');
+            break;
           }
 
           return field;
@@ -749,6 +752,27 @@ angular.module("formalizer")
 }]);
 angular.module('formalizer')
 .directive('ngFormalizerField', ['$timeout', '$compile', function ($timeout, $compile) {
+  function formalizerit($scope, $elm, $attrs, $ngFormalizer, data) {
+    var configuration = $ngFormalizer.configure(data, $scope);
+    $scope.$field = data;
+    $scope.$configuration = configuration;
+
+    $attrs.$set('id', configuration.element.attrs.id + '-container');
+
+    $ngFormalizer.getFieldHTML(data, configuration, $scope)
+    .then(function(html) {
+      //console.log('html', html);
+      // append html and compile in next tick
+      var el = angular.element(html);
+      $elm.append(el);
+
+      $timeout(function () {
+        $compile(el)($scope);
+
+        $scope.$digest();
+      });
+    });
+  }
   return {
     scope: true,
     require: '^ngFormalizer',
@@ -760,23 +784,17 @@ angular.module('formalizer')
       $timeout(function() {
 
         var data = $scope.$eval($attrs.ngFormalizerField);
-        var configuration = $ngFormalizer.configure(data, $scope);
-        $scope.$field = data;
-        $scope.$configuration = configuration;
-
-        $ngFormalizer.getFieldHTML(data, configuration, $scope)
-        .then(function(html) {
-          //console.log('html', html);
-          // append html and compile in next tick
-          var el = angular.element(html);
-          $elm.append(el);
-
-          $timeout(function () {
-            $compile(el)($scope);
-
-            $scope.$digest();
+        if (!data) {
+          var unwatch = $scope.$watch($attrs.ngFormalizerField, function(a, b) {
+            if (a !== b) { // skip init
+              formalizerit($scope, $elm, $attrs, $ngFormalizer, a);
+              unwatch();
+            }
           });
-        });
+        } else {
+          formalizerit($scope, $elm, $attrs, $ngFormalizer, data);
+        }
+
       });
     }
   };
