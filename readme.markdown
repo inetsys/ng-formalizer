@@ -11,23 +11,18 @@ bower install ng-formalizer --save
 ## usage
 
 ````js
-  // Add to your app dependencies
+  // Assign the module formalizer as a dependency to your module.
   var app = angular.module("app", ["formalizer"]);
 ````
 
-## run examples
-
-```bash
-node examples/server.js
-firefox http://localhost:6001
-```
-
 ### markup (html)
 
-#### Horizontal
+ng-formalizer support 3 layouts, based on the class used in the form.
+
+#### Horizontal Form
 
 ```html
-<form name="horizontal" ng-formalizer="" ng-base-model="entity" class="form-horizontal container">
+<form name="horizontal" ng-formalizer="" ng-base-model="entity" class="form-horizontal">
   <legend>Horizontal</legend>
   <div ng-repeat="field in fields track by $index">
     <div ng-formalizer-field="field"></div>
@@ -35,10 +30,21 @@ firefox http://localhost:6001
 </form>
 ```
 
-#### Vertical
+#### Vertical Form
 
 ```html
-<form name="horizontal" ng-formalizer="" ng-base-model="entity" class="form-vertical container">
+<form name="horizontal" ng-formalizer="" ng-base-model="entity" class="form-vertical">
+  <legend>Vertical</legend>
+  <div ng-repeat="field in fields track by $index">
+    <div ng-formalizer-field="field"></div>
+  </div>
+</form>
+```
+
+#### Inline Form
+
+```html
+<form name="inline" ng-formalizer="" ng-base-model="entity" class="form-inline">
   <legend>Vertical</legend>
   <div ng-repeat="field in fields track by $index">
     <div ng-formalizer-field="field"></div>
@@ -49,11 +55,22 @@ firefox http://localhost:6001
 ### configuration (controller)
 
 ```js
-  $scope.entity = {}; // ng-base-model
+  $scope.entity = {}; // @ng-base-model
   $scope.fields = [
     // Fields properties see below for examples & info
   ];
 ```
+
+### NgFormalizerField Notes
+
+NgFormalizerField set id attribute to `form[name]` + `field[name]` + `-container`, so if you specify an id attributte this will be overriden.
+
+The value passed need to be an angular expression.
+If it's `null/undefined`, it will wait until has some value, after that a modification in the metadata won't recreate the field.
+Most of the field metadata is binded directly to the input expression
+like label, but chaging the type won't do anything.
+
+`ng-model` of each field will be `form[ng-base-model]` + "." + `form[name]`.
 
 ### Fields properties
 
@@ -66,10 +83,8 @@ Create an input with some constraints and error messages translated.
     "type": "text",
     "name": "user",
     "groups": "my-group",
-    "actions": {
-    },
-    "attrs": {
-    },
+    "actions": {},
+    "attrs": {},
     "constraints": {
         "required": true,
         "minlength": 5
@@ -160,6 +175,7 @@ Element width in columns.
 ##### `default`: String [**optional**]
 
 If model is `undefined` set this value.
+
 
 ##### `source`, `source_display` & `source_model` & `source_filter`
 
@@ -791,3 +807,10 @@ node_modules/karma/bin/karma start karma.js --browsers Firefox
 
 util websites
 * http://bootsnipp.com/forms?version=3
+
+## run examples
+
+```bash
+node examples/server.js
+firefox http://localhost:6001
+```

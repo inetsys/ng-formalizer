@@ -57,9 +57,25 @@
 <body ng-controller="ctrl">
 <h1>ng-formalizer 2.0</h1>
 
+<form name="inline" ng-formalizer="" ng-base-model="entity" class="form-inline container">
+  <legend>Inline</legend>
+  <span ng-repeat="field in fields track by $index">
+    <span ng-formalizer-field="field"></span>
+  </span>
+</form>
+<div class="clearfix"></div>
+<hr />
 
 <form name="horizontal" ng-formalizer="" ng-base-model="entity" class="form-horizontal container">
   <legend>Horizontal</legend>
+  <div ng-repeat="field in fields track by $index">
+    <div ng-formalizer-field="field"></div>
+  </div>
+</form>
+<div class="clearfix"></div>
+<hr />
+<form name="vertical" ng-formalizer="" ng-base-model="entity" class="form-vertical container">
+  <legend>Vertical</legend>
   <div ng-repeat="field in fields track by $index">
     <div ng-formalizer-field="field"></div>
   </div>
@@ -143,7 +159,6 @@ angular
     "label": "text",
     "type": "text",
     "name": "text",
-    "help": "minlength = 3",
     "constraints" : {
       "minlength" : 3
     }
@@ -151,34 +166,14 @@ angular
     "label": "Password",
     "type": "password",
     "name": "password",
-    "help": "help"
   }, {
     "label": "lcheckbox",
     "type": "lcheckbox",
     "name": "lcheckbox",
-    "help": "help"
-  },{
-    "label": "hidden",
-    "type": "hidden",
-    "name": "hidden",
-    "help": "help"
-  },{
-    "label": "textarea",
-    "type": "textarea",
-    "name": "textarea",
-    "help": "help"
-  },
-   /*TODO FIXME
-   {
-
-      "label": "colorpicker",
-      "type": "colorpicker",
-      "name": "colorpicker",
-  },*/ {
+  }, {
     "label": "select + source",
     "type": "select",
     "name": "select",
-    "help": "help",
     "source": $scope.select_values,
     "source_model": "id",
     "source_display": "label",
@@ -187,24 +182,14 @@ angular
     "label": "select + string",
     "type": "select",
     "name": "select",
-    "help": "help",
     "source": "select_values",
     "source_model": "id",
     "source_display": "label",
     "empty_msg": "Choose something!"
   }, {
-    "label": "ui-select",
-    "type": "ui-select",
-    "name": "select",
-    "help": "help",
-    "source": "select_values",
-    "source_model": "id",
-    "source_display": "label"
-  }, {
     "label": "Datepicker",
     "type": "datepicker",
     "name": "date",
-    "help": "help"
   },{
     "label": "datepicker no weekend",
     "type": "datepicker",
@@ -216,55 +201,12 @@ angular
     "label": "T&C",
     "type": "checkbox",
     "name": "tyc",
-    "help": "help",
     "right": true
-  },{
-    "label": "locale number",
-    "type": "number",
-    "name": "locale_number",
-    "actions": {
-      "use-locale":""
-    }
-  },{
-    "label": "radio-list",
-    "type": "radio-list",
-    "name": "radio",
-    "help": "help",
-    "source": "check_source",
-    "source_display": "label",
-    "source_model": null // null means the object otherwise a key(string)
-  }, {
-    "label": "Checkbox list",
-    "type": "checkbox-list",
-    "name": "cb_list",
-    "placeholder": "",
-    "source": "check_source",
-    "source_display": "label",
-    "source_model": "id", // null means the object otherwise a key(string)
-    /* TODO FIXME "options": {
-        "select_all": true
-    }*/
-  }, {
-    "label": "richtext",
-    "type": "richtext",
-    "name": "richtext"
-  }, {
-    "label": "typeahead-multi (abc,bcd,zzz)",
-    "type": "typeahead-multi",
-    "name": "typeahead_multi",
-    "source": "typeahead_items",
-    "source_display": "name"
   }, {
     "label": "Submit now!",
     "type": "submit",
     "name": "submit",
     "class": "btn-primary"
-  }, {
-    "type": "raw",
-    "template": '<div ta-readonly="disabled" ng-model="html" ta-bind="text"></div>',
-    "options" : {
-      "compile": true
-    }
   }];
 
   $scope.html = "<p><img class=\"ta-insert-video\" src=\"https://img.youtube.com/vi/Yl7Dlo9MNuo/hqdefault.jpg\" ta-insert-video=\"https://www.youtube.com/embed/Yl7Dlo9MNuo\" allowfullscreen=\"true\" frameborder=\"0\" contenteditable=\"false\"/><br/></p>";

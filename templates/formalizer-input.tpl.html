@@ -1,15 +1,17 @@
 <div {{container.attrs_text}}>
-  <label for="{{element.attrs.id}}" class="{{label.class}}" ng-compile="" ng-bind-html="$field.label"></label>
-  <div class="{{element.container.class}}">
-    <div class="{{element.wrap.class}}">
-        {{element.left}}
-        <input %element-attributes% />
-        {{element.right}}
+  <div>
+    <label for="{{element.attrs.id}}" class="{{label.class}}" ng-compile="" ng-bind-html="$field.label"></label>
+    <div class="{{element.container.class}}">
+      <div class="{{element.wrap.class}}">
+          {{element.left}}
+          <input %element-attributes% />
+          {{element.right}}
+      </div>
     </div>
-
     <div class="help-block" ng-compile="" ng-bind-html="$field.help"></div>
-
-    %element-error-list%
-
+    <div>
+      %element-error-list%
+    </div>
   </div>
+  <div class="clearfix"></div>
 </div>
