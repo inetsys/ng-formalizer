@@ -7,7 +7,7 @@ angular.module("templates/formalizer-checkbox-list.tpl.html", []).run(["$templat
     "  <div class=\"{{element.container.class}}\">\n" +
     "    <div ng-show=\"$field.options.select_all\">\n" +
     "      <label for=\"{{element.attrs.id}}-select-all\">\n" +
-    "        <input name=\"{{element.attrs.name}}-select-all\" id=\"{{element.attrs.id}}-select-all\" value=\"true\" ng-checked=\"{{element.attrs['checklist-model']}}.length == $field['$$'].source.length\" type=\"checkbox\" ng-model=\"{{options.chkall_model}}\" ng-change=\"$configuration.$check_all($event)\" />\n" +
+    "        <input name=\"{{element.attrs.name}}-select-all\" id=\"{{element.attrs.id}}-select-all\" value=\"true\" ng-checked=\"{{element.attrs['checklist-model']}}.length == $field['$$'].source.length\" type=\"checkbox\" ng-model=\"{{options.chkall_model}}\" ng-change=\"$configuration.$check_all($event)\">\n" +
     "        Select All\n" +
     "      </label>\n" +
     "    </div>\n" +
@@ -19,7 +19,7 @@ angular.module("templates/formalizer-checkbox-list.tpl.html", []).run(["$templat
     "      </label>\n" +
     "    </div>\n" +
     "\n" +
-    "    <div class=\"help-block\" ng-compile=\"\" ng-bind-html=\"$field.help\"></div>\n" +
+    "    <div class=\"help-block\" ng-compile=\"\" ng-bind-html=\"$field.help\" ng-if=\"$field.help\"></div>\n" +
     "\n" +
     "  </div>\n" +
     "</div>\n" +
@@ -51,7 +51,7 @@ angular.module("templates/formalizer-checkbox-matrix.tpl.html", []).run(["$templ
     "        <input name=\"{{options.name}}-\\{\\{first_level\\}\\}-\\{\\{$index\\}\\}\"\n" +
     "        id=\"{{options.id}}-\\{\\{first_level\\}\\}-\\{\\{$index\\}\\}\"\n" +
     "        ng-model=\"{{options.model}}[$field.formalizer.source_model[0][xidx]][$field.formalizer.source_model[1][yidx]]\"\n" +
-    "        %element-attributes% />\n" +
+    "        %element-attributes%>\n" +
     "      </td>\n" +
     "    </tr>\n" +
     "  </tbody>\n" +
@@ -63,7 +63,7 @@ angular.module("templates/formalizer-checkbox-matrix.tpl.html", []).run(["$templ
     "\\{\\{$field.model | json\\}\\}\n" +
     "</pre>\n" +
     "-->\n" +
-    "    <div class=\"help-block\" ng-compile=\"\" ng-bind-html=\"$field.help\"></div>\n" +
+    "    <div class=\"help-block\" ng-compile=\"\" ng-bind-html=\"$field.help\" ng-if=\"$field.help\"></div>\n" +
     "\n" +
     "  </div>\n" +
     "</div>\n" +
@@ -75,10 +75,10 @@ angular.module("templates/formalizer-checkbox.tpl.html", []).run(["$templateCach
     "<div {{container.attrs_text}}>\n" +
     "  <div class=\"{{element.container.class}}\">\n" +
     "    <label for=\"{{element.attrs.id}}\" class=\"{{label.class}}\">\n" +
-    "      <input %element-attributes% /><span ng-compile=\"\" ng-bind-html=\"$field.label\"></span>\n" +
+    "      <input %element-attributes%><span ng-compile=\"\" ng-bind-html=\"$field.label\"></span>\n" +
     "    </label>\n" +
     "\n" +
-    "    <div class=\"help-block\" ng-compile=\"\" ng-bind-html=\"$field.help\"></div>\n" +
+    "    <div class=\"help-block\" ng-compile=\"\" ng-bind-html=\"$field.help\" ng-if=\"$field.help\"></div>\n" +
     "\n" +
     "    %element-error-list%\n" +
     "  </div>\n" +
@@ -108,8 +108,7 @@ angular.module("templates/formalizer-error-list.tpl.html", []).run(["$templateCa
     "  datepickers: \\{\\{datepickers}}\n" +
     "</pre>\n" +
     "-->\n" +
-    "\n" +
-    "<ul class=\"form-error-list help-block\">\n" +
+    "<ul class=\"form-error-list\" ng-if=\"!$formalizer.form[$field.name].$valid\">\n" +
     "  <li ng-show=\"$formalizer.form[$field.name].$dirty && $formalizer.form[$field.name].$error.required\">\\{\\{$field.messages.required || 'Field is required'}}</li>\n" +
     "  <li ng-show=\"$formalizer.form[$field.name].$error.min\">\\{\\{$field.messages.min || 'Field minimum is '+ $configuration.element.attrs['min'] }}</li>\n" +
     "  <li ng-show=\"$formalizer.form[$field.name].$error.max\">\\{\\{$field.messages.max || 'Field maximum is '+ $configuration.element.attrs['max']}}</li>\n" +
@@ -210,7 +209,7 @@ angular.module("templates/formalizer-form-1.4.tpl.html", []).run(["$templateCach
 
 angular.module("templates/formalizer-hidden.tpl.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("templates/formalizer-hidden.tpl.html",
-    "<input %element-attributes% />\n" +
+    "<input %element-attributes%>\n" +
     "");
 }]);
 
@@ -222,11 +221,11 @@ angular.module("templates/formalizer-input.tpl.html", []).run(["$templateCache",
     "    <div class=\"{{element.container.class}}\">\n" +
     "      <div class=\"{{element.wrap.class}}\">\n" +
     "          {{element.left}}\n" +
-    "          <input %element-attributes% />\n" +
+    "          <input %element-attributes%>\n" +
     "          {{element.right}}\n" +
     "      </div>\n" +
     "    </div>\n" +
-    "    <div class=\"help-block\" ng-compile=\"\" ng-bind-html=\"$field.help\"></div>\n" +
+    "    <div class=\"help-block\" ng-compile=\"\" ng-bind-html=\"$field.help\" ng-if=\"$field.help\"></div>\n" +
     "    <div>\n" +
     "      %element-error-list%\n" +
     "    </div>\n" +
@@ -242,7 +241,7 @@ angular.module("templates/formalizer-lcheckbox.tpl.html", []).run(["$templateCac
     "  <label for=\"{{element.attrs.id}}\" class=\"{{label.class}}\" ng-compile=\"\" ng-bind-html=\"$field.label\"></label>\n" +
     "  <div class=\"{{element.container.class}}\">\n" +
     "    <div class=\"{{element.wrap.class}}\">\n" +
-    "        <input %element-attributes% />\n" +
+    "        <input %element-attributes%>\n" +
     "        <span class=\"help-block\" ng-compile=\"\" ng-bind-html=\"$field.help\"></span>\n" +
     "    </div>\n" +
     "\n" +
@@ -265,7 +264,7 @@ angular.module("templates/formalizer-radio-list.tpl.html", []).run(["$templateCa
     "      </label>\n" +
     "    </div>\n" +
     "\n" +
-    "    <div class=\"help-block\" ng-compile=\"\" ng-bind-html=\"$field.help\"></div>\n" +
+    "    <div class=\"help-block\" ng-compile=\"\" ng-bind-html=\"$field.help\" ng-if=\"$field.help\"></div>\n" +
     "\n" +
     "    %element-error-list%\n" +
     "\n" +
@@ -292,7 +291,7 @@ angular.module("templates/formalizer-richtext.tpl.html", []).run(["$templateCach
     "        <div text-angular %element-attributes%></div>\n" +
     "    </div>\n" +
     "\n" +
-    "    <div class=\"help-block\" ng-compile=\"\" ng-bind-html=\"$field.help\"></div>\n" +
+    "    <div class=\"help-block\" ng-compile=\"\" ng-bind-html=\"$field.help\" ng-if=\"$field.help\"></div>\n" +
     "\n" +
     "    %element-error-list%\n" +
     "\n" +
@@ -310,7 +309,7 @@ angular.module("templates/formalizer-select.tpl.html", []).run(["$templateCache"
     "      {{defaultOption}}\n" +
     "    </select>\n" +
     "\n" +
-    "    <div class=\"help-block\" ng-compile=\"\" ng-bind-html=\"$field.help\"></div>\n" +
+    "    <div class=\"help-block\" ng-compile=\"\" ng-bind-html=\"$field.help\" ng-if=\"$field.help\"></div>\n" +
     "\n" +
     "    %element-error-list%\n" +
     "  </div>\n" +
@@ -325,12 +324,12 @@ angular.module("templates/formalizer-slider.tpl.html", []).run(["$templateCache"
     "  <div class=\"{{element.container.class}}\">\n" +
     "    <p class=\"{{element.wrap.class}}\">\n" +
     "        {{element.left}}\n" +
-    "        <div slider %element-attributes% />\n" +
+    "        <div slider %element-attributes%>\n" +
     "        {{element.right}}\n" +
     "        <!-- hide an input with the value ?! -->\n" +
     "    </p>\n" +
     "\n" +
-    "    <div class=\"help-block\" ng-compile=\"\" ng-bind-html=\"$field.help\"></div>\n" +
+    "    <div class=\"help-block\" ng-compile=\"\" ng-bind-html=\"$field.help\" ng-if=\"$field.help\"></div>\n" +
     "\n" +
     "    %element-error-list%\n" +
     "\n" +
@@ -346,7 +345,7 @@ angular.module("templates/formalizer-submit.tpl.html", []).run(["$templateCache"
     "    <button %element-attributes% ng-disabled=\"%scope-form-name%.$invalid\" ng-compile=\"\" ng-bind-html=\"$field.label\"></button>\n" +
     "  </div>\n" +
     "\n" +
-    "  <div class=\"help-block\" ng-compile=\"\" ng-bind-html=\"$field.help\"></div>\n" +
+    "  <div class=\"help-block\" ng-compile=\"\" ng-bind-html=\"$field.help\" ng-if=\"$field.help\"></div>\n" +
     "\n" +
     "</div>\n" +
     "");
@@ -362,7 +361,7 @@ angular.module("templates/formalizer-textarea.tpl.html", []).run(["$templateCach
     "        </textarea>\n" +
     "    </p>\n" +
     "\n" +
-    "    <div class=\"help-block\" ng-compile=\"\" ng-bind-html=\"$field.help\"></div>\n" +
+    "    <div class=\"help-block\" ng-compile=\"\" ng-bind-html=\"$field.help\" ng-if=\"$field.help\"></div>\n" +
     "\n" +
     "    %element-error-list%\n" +
     "\n" +
@@ -388,11 +387,11 @@ angular.module("templates/formalizer-typeahead.tpl.html", []).run(["$templateCac
     "    </p>\n" +
     "    <p class=\"{{element.wrap.class}}\">\n" +
     "        {{element.left}}\n" +
-    "        <input %element-attributes% />\n" +
+    "        <input %element-attributes%>\n" +
     "        {{element.right}}\n" +
     "    </p>\n" +
     "\n" +
-    "    <div class=\"help-block\" ng-compile=\"\" ng-bind-html=\"$field.help\"></div>\n" +
+    "    <div class=\"help-block\" ng-compile=\"\" ng-bind-html=\"$field.help\" ng-if=\"$field.help\"></div>\n" +
     "\n" +
     "    %element-error-list%\n" +
     "\n" +
@@ -416,7 +415,7 @@ angular.module("templates/formalizer-ui-select.tpl.html", []).run(["$templateCac
     "      </ui-select>\n" +
     "    </div>\n" +
     "\n" +
-    "    <div class=\"help-block\" ng-compile=\"\" ng-bind-html=\"$field.help\"></div>\n" +
+    "    <div class=\"help-block\" ng-compile=\"\" ng-bind-html=\"$field.help\" ng-if=\"$field.help\"></div>\n" +
     "\n" +
     "    %element-error-list%\n" +
     "\n" +
@@ -1525,7 +1524,7 @@ angular.module("formalizer")
           // invalid length?
           $ngModel.$setValidity("length", false);
         }
-        
+
 
         return value;
       });

@@ -19,7 +19,7 @@ angular.module("templates/formalizer-checkbox-list.tpl.html", []).run(["$templat
     "      </label>\n" +
     "    </div>\n" +
     "\n" +
-    "    <div class=\"help-block\" ng-compile=\"\" ng-bind-html=\"$field.help\"></div>\n" +
+    "    <div class=\"help-block\" ng-compile=\"\" ng-bind-html=\"$field.help\" ng-if=\"$field.help\"></div>\n" +
     "\n" +
     "  </div>\n" +
     "</div>\n" +
@@ -63,7 +63,7 @@ angular.module("templates/formalizer-checkbox-matrix.tpl.html", []).run(["$templ
     "\\{\\{$field.model | json\\}\\}\n" +
     "</pre>\n" +
     "-->\n" +
-    "    <div class=\"help-block\" ng-compile=\"\" ng-bind-html=\"$field.help\"></div>\n" +
+    "    <div class=\"help-block\" ng-compile=\"\" ng-bind-html=\"$field.help\" ng-if=\"$field.help\"></div>\n" +
     "\n" +
     "  </div>\n" +
     "</div>\n" +
@@ -78,7 +78,7 @@ angular.module("templates/formalizer-checkbox.tpl.html", []).run(["$templateCach
     "      <input %element-attributes% /><span ng-compile=\"\" ng-bind-html=\"$field.label\"></span>\n" +
     "    </label>\n" +
     "\n" +
-    "    <div class=\"help-block\" ng-compile=\"\" ng-bind-html=\"$field.help\"></div>\n" +
+    "    <div class=\"help-block\" ng-compile=\"\" ng-bind-html=\"$field.help\" ng-if=\"$field.help\"></div>\n" +
     "\n" +
     "    %element-error-list%\n" +
     "  </div>\n" +
@@ -109,29 +109,29 @@ angular.module("templates/formalizer-error-list.tpl.html", []).run(["$templateCa
     "</pre>\n" +
     "-->\n" +
     "\n" +
-    "<ul class=\"form-error-list help-block\">\n" +
-    "  <li ng-show=\"$formalizer.form[$field.name].$dirty && $formalizer.form[$field.name].$error.required\">\\{\\{$field.messages.required || 'Field is required'}}</li>\n" +
-    "  <li ng-show=\"$formalizer.form[$field.name].$error.min\">\\{\\{$field.messages.min || 'Field minimum is '+ $configuration.element.attrs['min'] }}</li>\n" +
-    "  <li ng-show=\"$formalizer.form[$field.name].$error.max\">\\{\\{$field.messages.max || 'Field maximum is '+ $configuration.element.attrs['max']}}</li>\n" +
-    "  <li ng-show=\"$formalizer.form[$field.name].$error.minlength\">\\{\\{$field.messages.minlength || 'Field is required to be at least '+ $configuration.element.attrs['ng-minlength'] + ' characters'}}</li>\n" +
-    "  <li ng-show=\"$formalizer.form[$field.name].$error.maxlength\">\\{\\{$field.messages.maxlength || 'Field cannot be longer than ' + $configuration.element.attrs['ng-maxlength'] + ' characters'}}</li>\n" +
-    "  <li ng-show=\"$formalizer.form[$field.name].$error.number\">\\{\\{$field.messages.number || 'Field is an invalid number'}}</li>\n" +
-    "  <li ng-show=\"$formalizer.form[$field.name].$error.email\">\\{\\{$field.messages.email || 'Field is an invalid email'}}</li>\n" +
-    "  <li ng-show=\"$formalizer.form[$field.name].$error.url\">\\{\\{$field.messages.url || 'Field is an invalid URL'}}</li>\n" +
-    "  <li ng-show=\"$formalizer.form[$field.name].$error.blacklist\">\\{\\{$field.messages.blacklist || 'Field value is blacklisted'}}</li>\n" +
-    "  <li ng-show=\"$formalizer.form[$field.name].$error['equal-to']\">\\{\\{$field.messages['equal-to'] || 'Field must be equal to: X'}}</li>\n" +
-    "  <li ng-show=\"$formalizer.form[$field.name].$error['only-alpha']\">\\{\\{$field.messages['only-alpha'] || 'Field must contains only letters'}}</li>\n" +
-    "  <li ng-show=\"$formalizer.form[$field.name].$error['only-iso']\">\\{\\{$field.messages['only-iso'] || 'Valid characters are: A-Z, a-z, 0-9'}}</li>\n" +
-    "  <li ng-show=\"$formalizer.form[$field.name].$error['one-upper']\">\\{\\{$field.messages['one-upper'] || 'At least one uppercase'}}</li>\n" +
-    "  <li ng-show=\"$formalizer.form[$field.name].$error['one-lower']\">\\{\\{$field.messages['one-lower'] || 'At least one lowercase'}}</li>\n" +
-    "  <li ng-show=\"$formalizer.form[$field.name].$error['one-number']\">\\{\\{$field.messages['one-number'] || 'At least one number'}}</li>\n" +
-    "  <li ng-show=\"$formalizer.form[$field.name].$error['one-alpha']\">\\{\\{$field.messages['one-alpha'] || 'At least one letter'}}</li>\n" +
-    "  <li ng-show=\"$formalizer.form[$field.name].$error['server-validation']\">\\{\\{$field.messages['server-validation'] || 'Server validation fails'}}</li>\n" +
-    "  <li ng-show=\"$formalizer.form[$field.name].$error['length']\">\\{\\{$field.messages['length'] || 'Field length must be exactly ' + $configuration.element.attrs['ng-length'] }}</li>\n" +
-    "  <li ng-show=\"$formalizer.form[$field.name].$error['decimals']\">\\{\\{$field.messages['decimals'] || 'Maximum decimals exceeded: '+ $configuration.element.attrs['ng-decimals'] }}</li>\n" +
-    "  <li ng-show=\"$formalizer.form[$field.name].$error['no-decimals']\">\\{\\{$field.messages['no-decimals'] || 'Cannot contain decimals ' + $configuration.element.attrs['ng-no-decimals'] }}</li>\n" +
-    "  <li ng-show=\"$formalizer.form[$field.name].$error['pattern']\">\\{\\{$field.messages['pattern'] || 'Invalid pattern match'}}</li>\n" +
-    "  <li ng-show=\"$formalizer.form[$field.name].$error['date']\">\\{\\{$field.messages['date'] || 'Invalid date'}}</li>\n" +
+    "<ul class=\"form-error-list\" ng-if=\"$formalizer.form[$field.name].$error\">\n" +
+    "  <li ng-if=\"$formalizer.form[$field.name].$dirty && $formalizer.form[$field.name].$error.required\">\\{\\{$field.messages.required || 'Field is required'}}</li>\n" +
+    "  <li ng-if=\"$formalizer.form[$field.name].$error.min\">\\{\\{$field.messages.min || 'Field minimum is '+ $configuration.element.attrs['min'] }}</li>\n" +
+    "  <li ng-if=\"$formalizer.form[$field.name].$error.max\">\\{\\{$field.messages.max || 'Field maximum is '+ $configuration.element.attrs['max']}}</li>\n" +
+    "  <li ng-if=\"$formalizer.form[$field.name].$error.minlength\">\\{\\{$field.messages.minlength || 'Field is required to be at least '+ $configuration.element.attrs['ng-minlength'] + ' characters'}}</li>\n" +
+    "  <li ng-if=\"$formalizer.form[$field.name].$error.maxlength\">\\{\\{$field.messages.maxlength || 'Field cannot be longer than ' + $configuration.element.attrs['ng-maxlength'] + ' characters'}}</li>\n" +
+    "  <li ng-if=\"$formalizer.form[$field.name].$error.number\">\\{\\{$field.messages.number || 'Field is an invalid number'}}</li>\n" +
+    "  <li ng-if=\"$formalizer.form[$field.name].$error.email\">\\{\\{$field.messages.email || 'Field is an invalid email'}}</li>\n" +
+    "  <li ng-if=\"$formalizer.form[$field.name].$error.url\">\\{\\{$field.messages.url || 'Field is an invalid URL'}}</li>\n" +
+    "  <li ng-if=\"$formalizer.form[$field.name].$error.blacklist\">\\{\\{$field.messages.blacklist || 'Field value is blacklisted'}}</li>\n" +
+    "  <li ng-if=\"$formalizer.form[$field.name].$error['equal-to']\">\\{\\{$field.messages['equal-to'] || 'Field must be equal to: X'}}</li>\n" +
+    "  <li ng-if=\"$formalizer.form[$field.name].$error['only-alpha']\">\\{\\{$field.messages['only-alpha'] || 'Field must contains only letters'}}</li>\n" +
+    "  <li ng-if=\"$formalizer.form[$field.name].$error['only-iso']\">\\{\\{$field.messages['only-iso'] || 'Valid characters are: A-Z, a-z, 0-9'}}</li>\n" +
+    "  <li ng-if=\"$formalizer.form[$field.name].$error['one-upper']\">\\{\\{$field.messages['one-upper'] || 'At least one uppercase'}}</li>\n" +
+    "  <li ng-if=\"$formalizer.form[$field.name].$error['one-lower']\">\\{\\{$field.messages['one-lower'] || 'At least one lowercase'}}</li>\n" +
+    "  <li ng-if=\"$formalizer.form[$field.name].$error['one-number']\">\\{\\{$field.messages['one-number'] || 'At least one number'}}</li>\n" +
+    "  <li ng-if=\"$formalizer.form[$field.name].$error['one-alpha']\">\\{\\{$field.messages['one-alpha'] || 'At least one letter'}}</li>\n" +
+    "  <li ng-if=\"$formalizer.form[$field.name].$error['server-validation']\">\\{\\{$field.messages['server-validation'] || 'Server validation fails'}}</li>\n" +
+    "  <li ng-if=\"$formalizer.form[$field.name].$error['length']\">\\{\\{$field.messages['length'] || 'Field length must be exactly ' + $configuration.element.attrs['ng-length'] }}</li>\n" +
+    "  <li ng-if=\"$formalizer.form[$field.name].$error['decimals']\">\\{\\{$field.messages['decimals'] || 'Maximum decimals exceeded: '+ $configuration.element.attrs['ng-decimals'] }}</li>\n" +
+    "  <li ng-if=\"$formalizer.form[$field.name].$error['no-decimals']\">\\{\\{$field.messages['no-decimals'] || 'Cannot contain decimals ' + $configuration.element.attrs['ng-no-decimals'] }}</li>\n" +
+    "  <li ng-if=\"$formalizer.form[$field.name].$error['pattern']\">\\{\\{$field.messages['pattern'] || 'Invalid pattern match'}}</li>\n" +
+    "  <li ng-if=\"$formalizer.form[$field.name].$error['date']\">\\{\\{$field.messages['date'] || 'Invalid date'}}</li>\n" +
     "</ul>\n" +
     "");
 }]);
@@ -226,7 +226,7 @@ angular.module("templates/formalizer-input.tpl.html", []).run(["$templateCache",
     "          {{element.right}}\n" +
     "      </div>\n" +
     "    </div>\n" +
-    "    <div class=\"help-block\" ng-compile=\"\" ng-bind-html=\"$field.help\"></div>\n" +
+    "    <div class=\"help-block\" ng-compile=\"\" ng-bind-html=\"$field.help\" ng-if=\"$field.help\"></div>\n" +
     "    <div>\n" +
     "      %element-error-list%\n" +
     "    </div>\n" +
@@ -265,7 +265,7 @@ angular.module("templates/formalizer-radio-list.tpl.html", []).run(["$templateCa
     "      </label>\n" +
     "    </div>\n" +
     "\n" +
-    "    <div class=\"help-block\" ng-compile=\"\" ng-bind-html=\"$field.help\"></div>\n" +
+    "    <div class=\"help-block\" ng-compile=\"\" ng-bind-html=\"$field.help\" ng-if=\"$field.help\"></div>\n" +
     "\n" +
     "    %element-error-list%\n" +
     "\n" +
@@ -292,7 +292,7 @@ angular.module("templates/formalizer-richtext.tpl.html", []).run(["$templateCach
     "        <div text-angular %element-attributes%></div>\n" +
     "    </div>\n" +
     "\n" +
-    "    <div class=\"help-block\" ng-compile=\"\" ng-bind-html=\"$field.help\"></div>\n" +
+    "    <div class=\"help-block\" ng-compile=\"\" ng-bind-html=\"$field.help\" ng-if=\"$field.help\"></div>\n" +
     "\n" +
     "    %element-error-list%\n" +
     "\n" +
@@ -310,7 +310,7 @@ angular.module("templates/formalizer-select.tpl.html", []).run(["$templateCache"
     "      {{defaultOption}}\n" +
     "    </select>\n" +
     "\n" +
-    "    <div class=\"help-block\" ng-compile=\"\" ng-bind-html=\"$field.help\"></div>\n" +
+    "    <div class=\"help-block\" ng-compile=\"\" ng-bind-html=\"$field.help\" ng-if=\"$field.help\"></div>\n" +
     "\n" +
     "    %element-error-list%\n" +
     "  </div>\n" +
@@ -330,7 +330,7 @@ angular.module("templates/formalizer-slider.tpl.html", []).run(["$templateCache"
     "        <!-- hide an input with the value ?! -->\n" +
     "    </p>\n" +
     "\n" +
-    "    <div class=\"help-block\" ng-compile=\"\" ng-bind-html=\"$field.help\"></div>\n" +
+    "    <div class=\"help-block\" ng-compile=\"\" ng-bind-html=\"$field.help\" ng-if=\"$field.help\"></div>\n" +
     "\n" +
     "    %element-error-list%\n" +
     "\n" +
@@ -346,7 +346,7 @@ angular.module("templates/formalizer-submit.tpl.html", []).run(["$templateCache"
     "    <button %element-attributes% ng-disabled=\"%scope-form-name%.$invalid\" ng-compile=\"\" ng-bind-html=\"$field.label\"></button>\n" +
     "  </div>\n" +
     "\n" +
-    "  <div class=\"help-block\" ng-compile=\"\" ng-bind-html=\"$field.help\"></div>\n" +
+    "  <div class=\"help-block\" ng-compile=\"\" ng-bind-html=\"$field.help\" ng-if=\"$field.help\"></div>\n" +
     "\n" +
     "</div>\n" +
     "");
@@ -362,7 +362,7 @@ angular.module("templates/formalizer-textarea.tpl.html", []).run(["$templateCach
     "        </textarea>\n" +
     "    </p>\n" +
     "\n" +
-    "    <div class=\"help-block\" ng-compile=\"\" ng-bind-html=\"$field.help\"></div>\n" +
+    "    <div class=\"help-block\" ng-compile=\"\" ng-bind-html=\"$field.help\" ng-if=\"$field.help\"></div>\n" +
     "\n" +
     "    %element-error-list%\n" +
     "\n" +
@@ -392,7 +392,7 @@ angular.module("templates/formalizer-typeahead.tpl.html", []).run(["$templateCac
     "        {{element.right}}\n" +
     "    </p>\n" +
     "\n" +
-    "    <div class=\"help-block\" ng-compile=\"\" ng-bind-html=\"$field.help\"></div>\n" +
+    "    <div class=\"help-block\" ng-compile=\"\" ng-bind-html=\"$field.help\" ng-if=\"$field.help\"></div>\n" +
     "\n" +
     "    %element-error-list%\n" +
     "\n" +
@@ -416,7 +416,7 @@ angular.module("templates/formalizer-ui-select.tpl.html", []).run(["$templateCac
     "      </ui-select>\n" +
     "    </div>\n" +
     "\n" +
-    "    <div class=\"help-block\" ng-compile=\"\" ng-bind-html=\"$field.help\"></div>\n" +
+    "    <div class=\"help-block\" ng-compile=\"\" ng-bind-html=\"$field.help\" ng-if=\"$field.help\"></div>\n" +
     "\n" +
     "    %element-error-list%\n" +
     "\n" +

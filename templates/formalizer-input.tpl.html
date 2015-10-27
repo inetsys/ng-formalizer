@@ -4,11 +4,11 @@
     <div class="{{element.container.class}}">
       <div class="{{element.wrap.class}}">
           {{element.left}}
-          <input %element-attributes% />
+          <input %element-attributes%>
           {{element.right}}
       </div>
     </div>
-    <div class="help-block" ng-compile="" ng-bind-html="$field.help"></div>
+    <div class="help-block" ng-compile="" ng-bind-html="$field.help" ng-if="$field.help"></div>
     <div>
       %element-error-list%
     </div>

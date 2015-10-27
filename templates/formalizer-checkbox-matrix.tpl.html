@@ -21,7 +21,7 @@
         <input name="{{options.name}}-\{\{first_level\}\}-\{\{$index\}\}"
         id="{{options.id}}-\{\{first_level\}\}-\{\{$index\}\}"
         ng-model="{{options.model}}[$field.formalizer.source_model[0][xidx]][$field.formalizer.source_model[1][yidx]]"
-        %element-attributes% />
+        %element-attributes%>
       </td>
     </tr>
   </tbody>
@@ -33,7 +33,7 @@
 \{\{$field.model | json\}\}
 </pre>
 -->
-    <div class="help-block" ng-compile="" ng-bind-html="$field.help"></div>
+    <div class="help-block" ng-compile="" ng-bind-html="$field.help" ng-if="$field.help"></div>
 
   </div>
 </div>

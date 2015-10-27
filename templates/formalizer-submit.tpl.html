@@ -3,6 +3,6 @@
     <button %element-attributes% ng-disabled="%scope-form-name%.$invalid" ng-compile="" ng-bind-html="$field.label"></button>
   </div>
 
-  <div class="help-block" ng-compile="" ng-bind-html="$field.help"></div>
+  <div class="help-block" ng-compile="" ng-bind-html="$field.help" ng-if="$field.help"></div>
 
 </div>
