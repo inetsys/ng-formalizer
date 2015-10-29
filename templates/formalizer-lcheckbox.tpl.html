@@ -3,7 +3,7 @@
   <div class="{{element.container.class}}">
     <div class="{{element.wrap.class}}">
         <input {{element.attrs_text}} />
-        <span class="help-block" ng-compile="" ng-bind-html="$field.help"></span>
+        <span class="help-block" ng-compile="" ng-bind-html="$field.help" ng-show="$field.help"></span>
     </div>
 
     <div ng-formalizer-errors="'{{element.attrs.name}}'" messages="$field.messages"></div>

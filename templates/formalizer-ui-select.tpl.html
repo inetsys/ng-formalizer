@@ -11,7 +11,7 @@
       </ui-select>
     </div>
 
-    <div class="help-block" ng-compile="" ng-bind-html="$field.help"></div>
+    <div class="help-block" ng-compile="" ng-bind-html="$field.help" ng-show="$field.help"></div>
 
     <div ng-formalizer-errors="'{{element.attrs.name}}'" messages="$field.messages"></div>
   </div>
