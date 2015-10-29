@@ -1,12 +1,12 @@
 <div {{container.attrs_text}}>
   <label for="{{element.attrs.id}}" class="{{label.class}}" ng-compile="" ng-bind-html="$field.label"></label>
   <div class="{{element.container.class}}">
-    <select %element-attributes%>
+    <select {{element.attrs_text}}>
       {{defaultOption}}
     </select>
 
     <div class="help-block" ng-compile="" ng-bind-html="$field.help"></div>
 
-    %element-error-list%
+    <div ng-formalizer-errors="'{{element.attrs.name}}'" messages="$field.messages"></div>
   </div>
 </div>

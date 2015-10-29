@@ -34,43 +34,60 @@ ng-formalizer support 3 layouts, based on the class used in the form.
 
 ```html
 <form name="horizontal" ng-formalizer="" ng-base-model="entity" class="form-vertical">
-  <legend>Vertical</legend>
-  <div ng-repeat="field in fields track by $index">
-    <div ng-formalizer-field="field"></div>
-  </div>
-</form>
 ```
 
 #### Inline Form
 
 ```html
 <form name="inline" ng-formalizer="" ng-base-model="entity" class="form-inline">
-  <legend>Vertical</legend>
-  <div ng-repeat="field in fields track by $index">
-    <div ng-formalizer-field="field"></div>
-  </div>
-</form>
 ```
 
-### configuration (controller)
+### Directives
 
-```js
-  $scope.entity = {}; // @ng-base-model
-  $scope.fields = [
-    // Fields properties see below for examples & info
-  ];
-```
+#### ng-formalizer
 
-### NgFormalizerField Notes
+require: `ng-base-model="string"`
 
-NgFormalizerField set id attribute to `form[name]` + `field[name]` + `-container`, so if you specify an id attributte this will be overriden.
+`ng-base-model` is the name of the object that will be modified by the form.
+`ng-formalizer` must be empty, and just create the controller.
+
+#### ng-formalizer-field
+
+Display a field.
+Must be inside the form.
 
 The value passed need to be an angular expression.
 If it's `null/undefined`, it will wait until has some value, after that a modification in the metadata won't recreate the field.
 Most of the field metadata is binded directly to the input expression
 like label, but chaging the type won't do anything.
 
-`ng-model` of each field will be `form[ng-base-model]` + "." + `form[name]`.
+`ng-model` of each field will be `form[ng-base-model] + '.' + form[name]`.
+
+NgFormalizerField set id attribute of itself to `form[name] + '-' + field[name] + '-container'`, so if you specify an id attributte this will be overriden.
+
+#### ng-formalizer-errors
+
+require: `messages="string"`
+
+`ng-formalizer-errors` must be an expression evaluated to a string
+`messages` must be an expression evaluated to an object
+
+Display errors for the given field.
+Must be inside the form.
+
+```html
+<div ng-formalizer-errors="fields[0].name" messages="fields[0].messages2"></div>
+```
+
+
+### configuration (controller)
+
+```js
+  $scope.entity = {}; // @ng-base-model="entity"
+  $scope.fields = [
+    // Fields properties see below for examples & info
+  ];
+```
 
 ### Fields properties
 
@@ -94,6 +111,10 @@ Create an input with some constraints and error messages translated.
     }
 }
 ```
+
+`messages` could be `false` instead of an `object` to disable errors.
+
+
 
 ##### `label`: String
 

@@ -3,14 +3,13 @@
   <div class="{{element.container.class}}">
     <p class="{{element.wrap.class}}">
         {{element.left}}
-        <div slider %element-attributes% />
+        <div slider {{element.attrs_text}} />
         {{element.right}}
         <!-- hide an input with the value ?! -->
     </p>
 
     <div class="help-block" ng-compile="" ng-bind-html="$field.help"></div>
 
-    %element-error-list%
-
+    <div ng-formalizer-errors="'{{element.attrs.name}}'" messages="$field.messages"></div>
   </div>
 </div>

@@ -3,14 +3,13 @@
   <div class="{{element.container.class}}">
     <div class="{{element.wrap.class}}" ng-repeat="radio_data in $configuration.source">
       <label for="{{element.attrs.id}}-\{\{$index\}\}">
-        <input name="{{element.attrs.name}}" id="{{element.attrs.id}}-\{\{$index\}\}" value="\{\{radio_data{{source_model}}\}\}" %element-attributes%>
+        <input name="{{element.attrs.name}}" id="{{element.attrs.id}}-\{\{$index\}\}" value="\{\{radio_data{{source_model}}\}\}" {{element.attrs_text}}>
         \{\{radio_data['{{source_display}}']\}\}
       </label>
     </div>
 
     <div class="help-block" ng-compile="" ng-bind-html="$field.help"></div>
 
-    %element-error-list%
-
+    <div ng-formalizer-errors="'{{element.attrs.name}}'" messages="$field.messages"></div>
   </div>
 </div>

@@ -13,13 +13,12 @@
     </p>
     <p class="{{element.wrap.class}}">
         {{element.left}}
-        <input %element-attributes% />
+        <input {{element.attrs_text}} />
         {{element.right}}
     </p>
 
     <div class="help-block" ng-compile="" ng-bind-html="$field.help"></div>
 
-    %element-error-list%
-
+    <div ng-formalizer-errors="'{{element.attrs.name}}'" messages="$field.messages"></div>
   </div>
 </div>

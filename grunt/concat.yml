@@ -3,6 +3,7 @@ concat:
         src:
           - lib/ng-formalizer.js
           - lib/ng-formalizer-parsers.js
+          - lib/ng-formalizer-errors.js
           - lib/ng-datepicker-fix.js
           - lib/ng-formalizer-field.js
           - lib/ng-blacklist.js
