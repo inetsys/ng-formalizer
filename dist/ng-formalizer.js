@@ -24,7 +24,6 @@ angular
 })
 .provider('formalizerTemplates', function formalizerParsers() {
   var templates = {
-    'errors': 'templates/formalizer-error-list.tpl.html',
     'text': 'templates/formalizer-input.tpl.html'
   };
 
@@ -114,6 +113,7 @@ angular
         form: null,
         baseModel: null,
         attempts: 0,
+        fields: {},
 
         configure: function configure(cfg, $scope) {
           //console.log('configure', arguments);
@@ -127,6 +127,7 @@ angular
             visible: true,
             visible_children: true,
             type: cfg.type || 'text',
+            form_name: this.name,
             container: {
               'class': ['form-group', 'formalizer-element'], //, "col-xs-12 col-sm-12 col-md-12"],
               'ng-class': null
@@ -249,10 +250,16 @@ angular
             break;
           }
 
+
+          this.fields[field.element.attrs.name] = {
+            $configuration: field,
+            $field: cfg
+          };
+
           return field;
         },
 
-        interpolate: function interpolate(configuration, template, err_tpl, $scope) {
+        interpolate: function interpolate(configuration, template, $scope) {
           if (formalizerParsers[configuration.type]) {
             formalizerParsers[configuration.type]($scope, configuration);
           }
@@ -274,14 +281,10 @@ angular
           // TODO update using this method
           // field.element.attrs_text = join_attrs(field.element.attrs);
           configuration.container.attrs_text = join_attrs(configuration.container);
+          configuration.element.attrs_text = join_attrs(configuration.element.attrs);
 
-          //double interpolation!
-          var html = template
-            .replace('%element-attributes%', join_attrs(configuration.element.attrs))
-            .replace('%element-error-list%', err_tpl)
-            .replace(/%scope-form-name%/g, this.name);
           // always escape!
-          html = $interpolate(html)(configuration)
+          var html = $interpolate(template)(configuration)
             // TODO this seem to be a bug in $interpolate
             .replace(/\\\{/g, '{').replace(/\\\}/g, '}');
 
@@ -310,19 +313,13 @@ angular
           var self = this;
 
           return $http
-          .get(formalizerTemplates.errors, {
-            cache: $templateCache
-          })
-          .then(function(html_err) {
-            return $http
-              .get(formalizerTemplates[field.type], {
-                cache: $templateCache
-              })
-              .then(function (html) {
-                html = html.data;
-                return self.interpolate(configuration, html, html_err.data, $scope);
-              });
-          });
+            .get(formalizerTemplates[field.type], {
+              cache: $templateCache
+            })
+            .then(function (html) {
+              html = html.data;
+              return self.interpolate(configuration, html, $scope);
+            });
 
         }
       };
@@ -697,6 +694,45 @@ angular.module('formalizer')
   //
 });
 
+angular.module('formalizer')
+.directive('ngFormalizerErrors', ['$timeout', '$compile', function ($timeout, $compile) {
+  return {
+    scope: {
+      $messages: "=messages",
+      ngFormalizerErrors: "@ngFormalizerErrors"
+    },
+    require: '^ngFormalizer',
+    templateUrl: 'templates/formalizer-error-list.tpl.html',
+    replace: true,
+    link: function ($scope, $elm, $attrs, $ngFormalizer) {
+      $scope.$formalizer = $ngFormalizer;
+
+      // delayed init
+      var unwatch = $scope.$parent.$watch($attrs.ngFormalizerErrors, function (name, b) {
+        if (!name && !b) return;
+        $scope.name = name;
+        unwatch();
+
+        if ("string" !== typeof name) {
+          console.error(name);
+          throw new Error("ngFormalizerErrors must be a string with the field name");
+        }
+
+        // lazy init, wait until field is parsed
+        var unwatch2 = $scope.$watch(function() {
+          return $ngFormalizer.fields[name];
+        }, function(newValue) {
+          if (newValue) {
+            $scope.$configuration = $ngFormalizer.fields[name].$configuration;
+            $scope.$field = $ngFormalizer.fields[name].$field;
+            unwatch2();
+          }
+        });
+      });
+    }
+  };
+}]);
+
 //
 // fix https://github.com/angular-ui/bootstrap/issues/1891
 // TZ issues
@@ -761,16 +797,10 @@ angular.module('formalizer')
 
     $ngFormalizer.getFieldHTML(data, configuration, $scope)
     .then(function(html) {
-      //console.log('html', html);
-      // append html and compile in next tick
+      // append html and compile now
       var el = angular.element(html);
       $elm.append(el);
-
-      $timeout(function () {
-        $compile(el)($scope);
-
-        $scope.$digest();
-      });
+      $compile(el)($scope);
     });
   }
   return {
@@ -782,7 +812,6 @@ angular.module('formalizer')
 
       //delay execution
       $timeout(function() {
-
         var data = $scope.$eval($attrs.ngFormalizerField);
         if (!data) {
           var unwatch = $scope.$watch($attrs.ngFormalizerField, function(a, b) {
@@ -794,7 +823,6 @@ angular.module('formalizer')
         } else {
           formalizerit($scope, $elm, $attrs, $ngFormalizer, data);
         }
-
       });
     }
   };
