@@ -1,9 +1,12 @@
 /* remove flashing errors */
-form.ng-pristine .form-error-list {
+form.ng-pristine .formalizer-error-list {
     display: none;
 }
-form.ng-dirty .has-error .form-error-list {
+form.ng-dirty .has-error .formalizer-error-list {
     display: block;
+}
+form.ng-dirty .no-error .formalizer-error-list {
+    display: none;
 }
 .ng-required label:after {
     content: " *";
@@ -17,7 +20,11 @@ form.ng-dirty .has-error .form-error-list {
   margin-right: 8px !important;
 }
 .form-horizontal .formalizer-element-lcheckbox {
-  margin-top: -2px !important;
+  margin-top: 4px !important;
+  margin-right: 8px !important;
+}
+.form-horizontal .formalizer-element-lcheckbox.no-help {
+  margin-top: 8px !important;
 }
 .form-inline .formalizer-element-lcheckbox {
   margin-top: -8px !important;

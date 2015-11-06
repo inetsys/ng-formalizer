@@ -163,7 +163,8 @@ angular
 
           field.container.class.push('formalizer-' + field.type);
           field.container['ng-class'] = [
-            '"has-error" : (' + this.name + '[\'' + name + '\'].$invalid == true)'
+            '"has-error" : (' + this.name + '[\'' + name + '\'].$invalid == true)',
+            '"no-error" : (' + this.name + '[\'' + name + '\'].$invalid == false)'
           ];
 
           if (cfg.default !== undefined) {
@@ -242,11 +243,17 @@ angular
             }
 
             field.element.container['class'].push('col-sm-' + r); // 1 padding ?
+            field.element.offset = "col-sm-offset-" + l;
+            field.element.size = "col-sm-" + r;
             break;
           case 'vertical':
+            field.element.offset = "";
+            field.element.size = "col-sm-12";
             break;
           case 'inline':
             field.element.container['class'].push('input-group');
+            field.element.offset = "";
+            field.element.size = "";
             break;
           }
 
@@ -375,6 +382,10 @@ angular.module('formalizer')
     cfg.element.container['class'].push('input');
     safe_array_remove(cfg.element.attrs['class'], 'form-control');
     cfg.element.attrs['class'].push('pull-left');
+    cfg.element.attrs['ng-class'].push(
+      '"no-help": !$field.help.length'
+    );
+
   });
 
   formalizerParsersProvider.set('colorpicker', function ($scope, cfg) {
