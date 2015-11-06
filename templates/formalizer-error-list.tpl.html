@@ -1,4 +1,4 @@
-<ul class="form-error-list help-block" ng-show="$messages !== false">
+<ul class="formalizer-error-messages" ng-show="$messages !== false && $formalizer.form[$field.name].$error">
   <li ng-show="$formalizer.form[$field.name].$dirty && $formalizer.form[$field.name].$error.required">{{$messages.required || 'Field is required'}}</li>
   <li ng-show="$formalizer.form[$field.name].$error.min">{{$messages.min || 'Field minimum is '+ $configuration.element.attrs['min'] }}</li>
   <li ng-show="$formalizer.form[$field.name].$error.max">{{$messages.max || 'Field maximum is '+ $configuration.element.attrs['max']}}</li>

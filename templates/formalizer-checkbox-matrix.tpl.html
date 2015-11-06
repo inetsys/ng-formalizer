@@ -1,12 +1,12 @@
 <div {{container.attrs_text}}>
-  <label class="{{label.class}}" ng-compile="" ng-bind-html="$field.label"></label>
+  <label class="{{label.class}}" ng-compile="" ng-bind-html-and-compile="$field.label"></label>
   <div class="{{element.container.class}}">
 
 <table class="table table-striped">
   <thead>
     <tr>
       <th></th>
-      <th ng-repeat="label in $field.formalizer.source_display[0]" ng-compile="" ng-bind-html="label">
+      <th ng-repeat="label in $field.formalizer.source_display[0]" ng-bind-html-and-compile="label">
       </th>
     </tr>
   </thead>
@@ -33,7 +33,7 @@
 \{\{$field.model | json\}\}
 </pre>
 -->
-    <div class="help-block" ng-compile="" ng-bind-html="$field.help" ng-show="$field.help"></div>
+    <div class="help-block formalizer-help {{element.offset}} {{element.size}}" ng-bind-html-and-compile="$field.help" ng-show="$field.help"></div>
 
   </div>
 </div>

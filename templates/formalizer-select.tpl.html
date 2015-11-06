@@ -1,12 +1,12 @@
 <div {{container.attrs_text}}>
-  <label for="{{element.attrs.id}}" class="{{label.class}}" ng-compile="" ng-bind-html="$field.label"></label>
+  <label for="{{element.attrs.id}}" class="{{label.class}}" ng-bind-html-and-compile="$field.label"></label>
   <div class="{{element.container.class}}">
     <select {{element.attrs_text}}>
       {{defaultOption}}
     </select>
 
-    <div class="help-block" ng-compile="" ng-bind-html="$field.help" ng-show="$field.help"></div>
+    <div class="help-block formalizer-help {{element.offset}} {{element.size}}" ng-bind-html-and-compile="$field.help" ng-show="$field.help"></div>
+    <div class="help-block formalizer-error-list {{element.offset}} {{element.size}}" ng-formalizer-errors="'{{element.attrs.name}}'" messages="$field.messages"></div>
 
-    <div ng-formalizer-errors="'{{element.attrs.name}}'" messages="$field.messages"></div>
   </div>
 </div>
