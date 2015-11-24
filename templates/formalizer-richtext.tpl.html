@@ -4,9 +4,9 @@
     <div class="{{element.wrap.class}}">
         <div text-angular {{element.attrs_text}}></div>
     </div>
-
-    <div class="help-block formalizer-help {{element.offset}} {{element.size}}" ng-bind-html-and-compile="$field.help" ng-show="$field.help"></div>
-    <div class="help-block formalizer-error-list {{element.offset}} {{element.size}}" ng-formalizer-errors="'{{element.attrs.name}}'" messages="$field.messages"></div>
-
   </div>
+
+  <div class="help-block formalizer-help {{element.offset}} {{element.size}}" ng-bind-html-and-compile="$field.help" ng-show="$field.help"></div>
+  <div class="help-block formalizer-error-list {{element.offset}} {{element.size}}" ng-formalizer-errors="'{{element.attrs.name}}'" messages="$field.messages"></div>
+
 </div>
