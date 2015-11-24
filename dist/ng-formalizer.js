@@ -460,7 +460,7 @@ angular.module('formalizer')
 
     // forced attrs
     cfg.element.attrs['is-open'] = 'datepickers.' + isOpenVar;
-    cfg.element.attrs['datepicker-popup'] = cfg.options['datepicker-popup'] || '';
+    cfg.element.attrs['uib-datepicker-popup'] = cfg.options['uib-datepicker-popup'] || '';
     cfg.element.attrs['ng-focus'] = 'datepickers.' + openEvent + '()';
 
     cfg.element.attrs['ng-datepicker-fix'] = '';
@@ -629,13 +629,13 @@ angular.module('formalizer')
   var typeahead_attrs = [
       //"typeahead",
       //"typeahead-on-select",
-      'typeahead-append-to-body',
-      'typeahead-editable',
-      'typeahead-input-formatter',
-      'typeahead-loading',
-      'typeahead-min-length',
-      'typeahead-template-url',
-      'typeahead-wait-ms'
+      'uib-typeahead-append-to-body',
+      'uib-typeahead-editable',
+      'uib-typeahead-input-formatter',
+      'uib-typeahead-loading',
+      'uib-typeahead-min-length',
+      'uib-typeahead-template-url',
+      'uib-typeahead-wait-ms'
   ];
 
   formalizerTemplatesProvider.set('typeahead', 'templates/formalizer-typeahead.tpl.html');
@@ -644,9 +644,9 @@ angular.module('formalizer')
   function typeahead($scope, cfg) {
     cfg.element.attrs.type = 'text';
     if (cfg.source_display) {
-      cfg.element.attrs.typeahead = 'p as p.' + cfg.source_display + ' for p in $configuration.source | filter:{' + cfg.source_display + ':$viewValue}';
+      cfg.element.attrs["uib-typeahead"] = 'p as p.' + cfg.source_display + ' for p in $configuration.source | filter:{' + cfg.source_display + ':$viewValue}';
     } else {
-      cfg.element.attrs.typeahead = 'p for p in $configuration.source';
+      cfg.element.attrs["uib-typeahead"] = 'p for p in $configuration.source';
     }
 
     angular.forEach(typeahead_attrs, function (value) {
@@ -751,52 +751,61 @@ angular.module('formalizer')
 //
 angular.module("formalizer")
 .constant("datepickerPopupFix", {
-    /**
-     * Input format in moment.js format!
-     */
-    datepickerPopup: "YYYY-MM-DD",
-    /**
-     * timezone in string format:
-     * "+0000" GMT+0
-     * "+0100" GMT+1
-     * "-0100" GMT-1
-     * etc...
-     */
-    datepickerTZ: undefined
+  /**
+   * Input format in moment.js format!
+   */
+  datepickerPopup: "YYYY-MM-DD",
+  /**
+   * timezone in string format:
+   * "+0000" GMT+0
+   * "+0100" GMT+1
+   * "-0100" GMT-1
+   * etc...
+   */
+  datepickerTZ: undefined
 })
-.directive("ngDatepickerFix", ["datepickerPopupFix", function (datepickerPopupFix) {
-    return {
-        require: "?ngModel",
-        priority: 100,
-        link: function ($scope, $elm, $attrs, $ngModel) {
+.directive("ngDatepickerFix", ["datepickerPopupFix", "$parse", function (datepickerPopupFix, $parse) {
+  return {
+    require: "?ngModel",
+    priority: -100,
+    link: function ($scope, $elm, $attrs, $ngModel) {
+      // fix string date
+      var val = $scope.$eval($attrs.ngModel);
 
-            $ngModel.$parsers.unshift(function ngDatepickerFix(value) {
-                var mjs;
-
-                if ("string" === typeof value) {
-                    // manually introduce the date
-                    mjs = moment(value, datepickerPopupFix.datepickerPopup);
-                } else {
-                    // click on the datepicker
-                    mjs = moment(value);
-                }
-
-                if (!mjs.isValid()) {
-                    return value;
-                }
-
-                if (datepickerPopupFix.datepickerTZ !== undefined) {
-                    // fix TZ
-                    return new Date(mjs.toDate().toDateString() + " 00:00 GMT" + datepickerPopupFix.datepickerTZ);
-                }
-
-                return mjs.toDate();
-
-            });
-
+      if ("string" == typeof val) {
+        val = new Date(val);
+        if (!isNaN(val.getTime())) {
+          $parse($attrs.ngModel).assign($scope, val);
         }
-    };
+      }
+
+      $ngModel.$parsers.unshift(function ngDatepickerFix(value) {
+        var mjs;
+
+        if ("string" === typeof value) {
+            // manually introduce the date
+            mjs = moment(value, datepickerPopupFix.datepickerPopup);
+        } else {
+            // click on the datepicker
+            mjs = moment(value);
+        }
+
+        if (!mjs.isValid()) {
+            return value;
+        }
+
+        if (datepickerPopupFix.datepickerTZ !== undefined) {
+            // fix TZ
+            return new Date(mjs.toDate().toDateString() + " 00:00 GMT" + datepickerPopupFix.datepickerTZ);
+        }
+
+        return mjs.toDate();
+
+      });
+    }
+  };
 }]);
+
 angular.module('formalizer')
 .directive('ngFormalizerField', ['$timeout', '$compile', function ($timeout, $compile) {
   function formalizerit($scope, $elm, $attrs, $ngFormalizer, data) {
@@ -1321,3 +1330,15 @@ angular.module("formalizer")
     }
   };
 }]);
+
+angular.module("formalizer")
+.directive('ngAutofocus', ['$timeout', function($timeout) {
+  return {
+    restrict: 'A',
+    link : function($scope, $element) {
+      $timeout(function() {
+        $element[0].focus();
+      });
+    }
+  }
+}])

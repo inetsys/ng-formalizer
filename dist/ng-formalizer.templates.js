@@ -18,10 +18,10 @@ angular.module("templates/formalizer-checkbox-list.tpl.html", []).run(["$templat
     "        \\{\\{checkbox_data['{{source_display}}']\\}\\}\n" +
     "      </label>\n" +
     "    </div>\n" +
-    "\n" +
-    "    <div class=\"help-block formalizer-help {{element.offset}} {{element.size}}\" ng-bind-html-and-compile=\"$field.help\" ng-show=\"$field.help\"></div>\n" +
-    "\n" +
     "  </div>\n" +
+    "\n" +
+    "  <div class=\"help-block formalizer-help {{element.offset}} {{element.size}}\" ng-bind-html-and-compile=\"$field.help\" ng-show=\"$field.help\"></div>\n" +
+    "\n" +
     "</div>\n" +
     "");
 }]);
@@ -77,10 +77,11 @@ angular.module("templates/formalizer-checkbox.tpl.html", []).run(["$templateCach
     "    <label for=\"{{element.attrs.id}}\" class=\"{{label.class}}\">\n" +
     "      <input {{element.attrs_text}} /><span ng-bind-html-and-compile=\"$field.label\"></span>\n" +
     "    </label>\n" +
-    "\n" +
-    "    <div class=\"help-block formalizer-help {{element.offset}} {{element.size}}\" ng-bind-html-and-compile=\"$field.help\" ng-show=\"$field.help\"></div>\n" +
-    "    <div class=\"help-block formalizer-error-list {{element.offset}} {{element.size}}\" ng-formalizer-errors=\"'{{element.attrs.name}}'\" messages=\"$field.messages\"></div>\n" +
     "  </div>\n" +
+    "\n" +
+    "  <div class=\"help-block formalizer-help {{element.offset}} {{element.size}}\" ng-bind-html-and-compile=\"$field.help\" ng-show=\"$field.help\"></div>\n" +
+    "  <div class=\"help-block formalizer-error-list {{element.offset}} {{element.size}}\" ng-formalizer-errors=\"'{{element.attrs.name}}'\" messages=\"$field.messages\"></div>\n" +
+    "\n" +
     "</div>\n" +
     "");
 }]);
@@ -252,11 +253,11 @@ angular.module("templates/formalizer-radio-list.tpl.html", []).run(["$templateCa
     "        \\{\\{radio_data['{{source_display}}']\\}\\}\n" +
     "      </label>\n" +
     "    </div>\n" +
-    "\n" +
-    "    <div class=\"help-block formalizer-help {{element.offset}} {{element.size}}\" ng-bind-html-and-compile=\"$field.help\" ng-show=\"$field.help\"></div>\n" +
-    "    <div class=\"help-block formalizer-error-list {{element.offset}} {{element.size}}\" ng-formalizer-errors=\"'{{element.attrs.name}}'\" messages=\"$field.messages\"></div>\n" +
-    "\n" +
     "  </div>\n" +
+    "\n" +
+    "  <div class=\"help-block formalizer-help {{element.offset}} {{element.size}}\" ng-bind-html-and-compile=\"$field.help\" ng-show=\"$field.help\"></div>\n" +
+    "  <div class=\"help-block formalizer-error-list {{element.offset}} {{element.size}}\" ng-formalizer-errors=\"'{{element.attrs.name}}'\" messages=\"$field.messages\"></div>\n" +
+    "\n" +
     "</div>\n" +
     "");
 }]);
@@ -278,11 +279,11 @@ angular.module("templates/formalizer-richtext.tpl.html", []).run(["$templateCach
     "    <div class=\"{{element.wrap.class}}\">\n" +
     "        <div text-angular {{element.attrs_text}}></div>\n" +
     "    </div>\n" +
-    "\n" +
-    "    <div class=\"help-block formalizer-help {{element.offset}} {{element.size}}\" ng-bind-html-and-compile=\"$field.help\" ng-show=\"$field.help\"></div>\n" +
-    "    <div class=\"help-block formalizer-error-list {{element.offset}} {{element.size}}\" ng-formalizer-errors=\"'{{element.attrs.name}}'\" messages=\"$field.messages\"></div>\n" +
-    "\n" +
     "  </div>\n" +
+    "\n" +
+    "  <div class=\"help-block formalizer-help {{element.offset}} {{element.size}}\" ng-bind-html-and-compile=\"$field.help\" ng-show=\"$field.help\"></div>\n" +
+    "  <div class=\"help-block formalizer-error-list {{element.offset}} {{element.size}}\" ng-formalizer-errors=\"'{{element.attrs.name}}'\" messages=\"$field.messages\"></div>\n" +
+    "\n" +
     "</div>\n" +
     "");
 }]);
@@ -295,11 +296,11 @@ angular.module("templates/formalizer-select.tpl.html", []).run(["$templateCache"
     "    <select {{element.attrs_text}}>\n" +
     "      {{defaultOption}}\n" +
     "    </select>\n" +
-    "\n" +
-    "    <div class=\"help-block formalizer-help {{element.offset}} {{element.size}}\" ng-bind-html-and-compile=\"$field.help\" ng-show=\"$field.help\"></div>\n" +
-    "    <div class=\"help-block formalizer-error-list {{element.offset}} {{element.size}}\" ng-formalizer-errors=\"'{{element.attrs.name}}'\" messages=\"$field.messages\"></div>\n" +
-    "\n" +
     "  </div>\n" +
+    "\n" +
+    "  <div class=\"help-block formalizer-help {{element.offset}} {{element.size}}\" ng-bind-html-and-compile=\"$field.help\" ng-show=\"$field.help\"></div>\n" +
+    "  <div class=\"help-block formalizer-error-list {{element.offset}} {{element.size}}\" ng-formalizer-errors=\"'{{element.attrs.name}}'\" messages=\"$field.messages\"></div>\n" +
+    "\n" +
     "</div>\n" +
     "");
 }]);
@@ -346,10 +347,10 @@ angular.module("templates/formalizer-textarea.tpl.html", []).run(["$templateCach
     "        <textarea {{element.attrs_text}}>\n" +
     "        </textarea>\n" +
     "    </p>\n" +
-    "\n" +
-    "    <div class=\"help-block formalizer-help {{element.offset}} {{element.size}}\" ng-bind-html-and-compile=\"$field.help\" ng-show=\"$field.help\"></div>\n" +
-    "    <div class=\"help-block formalizer-error-list {{element.offset}} {{element.size}}\" ng-formalizer-errors=\"'{{element.attrs.name}}'\" messages=\"$field.messages\"></div>\n" +
     "  </div>\n" +
+    "\n" +
+    "  <div class=\"help-block formalizer-help {{element.offset}} {{element.size}}\" ng-bind-html-and-compile=\"$field.help\" ng-show=\"$field.help\"></div>\n" +
+    "  <div class=\"help-block formalizer-error-list {{element.offset}} {{element.size}}\" ng-formalizer-errors=\"'{{element.attrs.name}}'\" messages=\"$field.messages\"></div>\n" +
     "</div>\n" +
     "");
 }]);
@@ -360,25 +361,23 @@ angular.module("templates/formalizer-typeahead.tpl.html", []).run(["$templateCac
     "  <label for=\"{{element.attrs.id}}\" class=\"{{label.class}}\" ng-bind-html-and-compile=\"$field.label\"></label>\n" +
     "  <div class=\"{{element.container.class}}\">\n" +
     "    <p class=\"{{element.wrap.class}}\">\n" +
-    "\n" +
-    "    <ul class=\"formalizer-typeahead-muli formalizer-typeahead-muli-selected\">\n" +
-    "      <li ng-repeat=\"obj in taSelected({{element.attrs[\"ong-model\"]}})\">\n" +
-    "        <span>\\{\\{obj[$field.source_display]\\}\\} <a ng-click=\"taRemove(obj, {{element.attrs[\"ong-model\"]}})\"><span class=\"glyphicon glyphicon-trash\"></span></a></span>\n" +
-    "      </li>\n" +
-    "    </ul>\n" +
-    "\n" +
-    "\n" +
+    "      <ul class=\"formalizer-typeahead-muli formalizer-typeahead-muli-selected\">\n" +
+    "        <li ng-repeat=\"obj in taSelected({{element.attrs[\"ong-model\"]}})\">\n" +
+    "          <span>\\{\\{obj[$field.source_display]\\}\\} <a ng-click=\"taRemove(obj, {{element.attrs[\"ong-model\"]}})\"><span class=\"glyphicon glyphicon-trash\"></span></a></span>\n" +
+    "        </li>\n" +
+    "      </ul>\n" +
     "    </p>\n" +
+    "\n" +
     "    <p class=\"{{element.wrap.class}}\">\n" +
     "        {{element.left}}\n" +
     "        <input {{element.attrs_text}} />\n" +
     "        {{element.right}}\n" +
     "    </p>\n" +
-    "\n" +
-    "    <div class=\"help-block formalizer-help {{element.offset}} {{element.size}}\" ng-bind-html-and-compile=\"$field.help\" ng-show=\"$field.help\"></div>\n" +
-    "    <div class=\"help-block formalizer-error-list {{element.offset}} {{element.size}}\" ng-formalizer-errors=\"'{{element.attrs.name}}'\" messages=\"$field.messages\"></div>\n" +
-    "\n" +
     "  </div>\n" +
+    "\n" +
+    "  <div class=\"help-block formalizer-help {{element.offset}} {{element.size}}\" ng-bind-html-and-compile=\"$field.help\" ng-show=\"$field.help\"></div>\n" +
+    "  <div class=\"help-block formalizer-error-list {{element.offset}} {{element.size}}\" ng-formalizer-errors=\"'{{element.attrs.name}}'\" messages=\"$field.messages\"></div>\n" +
+    "\n" +
     "</div>\n" +
     "");
 }]);
@@ -397,11 +396,11 @@ angular.module("templates/formalizer-ui-select.tpl.html", []).run(["$templateCac
     "        </ui-select-choices>\n" +
     "      </ui-select>\n" +
     "    </div>\n" +
-    "\n" +
-    "    <div class=\"help-block formalizer-help {{element.offset}} {{element.size}}\" ng-bind-html-and-compile=\"$field.help\" ng-show=\"$field.help\"></div>\n" +
-    "    <div class=\"help-block formalizer-error-list {{element.offset}} {{element.size}}\" ng-formalizer-errors=\"'{{element.attrs.name}}'\" messages=\"$field.messages\"></div>\n" +
-    "\n" +
     "  </div>\n" +
+    "\n" +
+    "  <div class=\"help-block formalizer-help {{element.offset}} {{element.size}}\" ng-bind-html-and-compile=\"$field.help\" ng-show=\"$field.help\"></div>\n" +
+    "  <div class=\"help-block formalizer-error-list {{element.offset}} {{element.size}}\" ng-formalizer-errors=\"'{{element.attrs.name}}'\" messages=\"$field.messages\"></div>\n" +
+    "\n" +
     "</div>\n" +
     "");
 }]);
