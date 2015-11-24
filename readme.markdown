@@ -314,16 +314,11 @@ Extends current configuration with extra options for each type of field.
 * `multiple`
 
 
-`typeahead` & `typeahead-multi` attrs [ui-bootstrap-typeahead](http://angular-ui.github.io/bootstrap/#/typeahead)
+`typeahead` & `typeahead-multi` options
+All extra attributes are found @ [ui-bootstrap-typeahead](http://angular-ui.github.io/bootstrap/#/typeahead)
 
+Following attributes cannot be used:
 * `typeahead-on-select` not available in `typeahead-multi` (use options.taAppend instead)
-* `typeahead-append-to-body`
-* `typeahead-editable`
-* `typeahead-input-formatter`
-* `typeahead-loading`
-* `typeahead-min-length`
-* `typeahead-template-url`
-* `typeahead-wait-m`
 
 `typeahead` options
 
@@ -379,31 +374,13 @@ var formalizer_cfg = {
 };
 ```
 
-`datepiker` attrs [ui-bootstrap-datepicker](http://angular-ui.github.io/bootstrap/#/datepicker)
+`datepiker` options
 
-* `datepicker-mode`
-* `min-date`
-* `max-date`
-* `date-disabled` [usage example](#datepiker-date-disabled)
-* `show-weeks`
-* `starting-day`
-* `init-date`
-* `min-mode`
-* `max-mode`
-* `format-day`
-* `format-month`
-* `format-year`
-* `format-day-header`
-* `format-day-title`
-* `format-month-title`
-* `year-range`
-* `show-button-bar`
-* `current-text`
-* `clear-text`
-* `close-text`
-* `close-on-date-selection`
-* `datepicker-append-to-body`
-* `datepicker-option`
+All extra attributes are found @ [ui-bootstrap-datepicker](http://angular-ui.github.io/bootstrap/#/datepicker)
+
+Following attributes cannot be used:
+* `ng-focus` used to open the popup
+* `is-open` used by formalizer to only allow one opened popup
 
 `raw` options
 
@@ -490,7 +467,7 @@ Allow letters only.
 
 ##### only-iso
 
-Allow letters, digits, "-" and "_".
+Allow letters, digits, `-` and `_`.
 
 ```json
 "constraints": {
@@ -550,7 +527,7 @@ Cannot contains any spaces
 
 ##### hexadecimal
 
-hexadecimal number: 0-9 & a-f
+hexadecimal number: `0-9` & `a-f`
 
 ```json
 "constraints": {
@@ -560,7 +537,7 @@ hexadecimal number: 0-9 & a-f
 
 ##### hex-color
 
-A color: #ffffff (# is required)
+A color: `#ffffff` (*#* is required)
 
 ```json
 "constraints": {

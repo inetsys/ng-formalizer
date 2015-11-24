@@ -23,6 +23,7 @@ concat:
           - lib/ng-from-today.js
           - lib/ng-use-locale.js
           - lib/ng-hide-ex.js
+          - lib/ng-autofocus.js
         dest: dist/ng-formalizer.js
     js_templates:
         src:
