@@ -46,7 +46,9 @@
 
 <form name="vertical" ng-formalizer="" ng-base-model="entity" class="form-vertical container">
   <legend>Vertical</legend>
-  <div ng-formalizer-field="fields.text"></div>
+  <div ng-formalizer-field="fields.date0"></div>
+  <div ng-formalizer-field="fields.date1"></div>
+  <div ng-formalizer-field="fields.date2"></div>
 </form>
 <div class="clearfix"></div>
 <hr />
@@ -78,27 +80,28 @@ angular
 }])
 .controller("ctrl", ["$scope", "$timeout", function ($scope, $timeout) {
   $scope.entity = {
+    date0: "2015-08-20T08:42:33+00:00",
+    date1: "2015-08-20T00:00:00+01:00",
+    date2: new Date()
   };
 
-  $scope.fields = {};
-
-  $timeout(function() {
-    $scope.fields.text = {
-      "label": "text",
-      "type": "text",
-      "name": "text",
-      "constraints" : {
-        "minlength" : 3
-      }
-    };
-  }, 2000);
-  $timeout(function() {
-    $scope.fields.text.label = "MODIFIED!";
-  }, 3000);
-  $timeout(function() {
-    $scope.fields.text.help = "RE-MODIFIED!";
-  }, 4000);
-
+  $scope.fields = {
+    date0: {
+      "label": "Datepicker",
+      "type": "datepicker",
+      "name": "date0",
+    },
+    date1: {
+      "label": "Datepicker",
+      "type": "datepicker",
+      "name": "date1",
+    },
+    date2: {
+      "label": "Datepicker",
+      "type": "datepicker",
+      "name": "date2",
+    }
+  };
 
 }]);
 

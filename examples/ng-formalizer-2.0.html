@@ -83,14 +83,14 @@ Configuration {{form_cfg | json}}
 </html>
 <script>
 angular
-.module("app", ["formalizer"])
-.config(["datepickerConfig", "datepickerPopupConfig", "datepickerPopupFix", function (datepickerConfig, datepickerPopupConfig, datepickerPopupFix) {
-    datepickerPopupConfig.currentText = "Hoy";
-    datepickerPopupConfig.clearText = "Borrar";
-    datepickerPopupConfig.closeText = "Cerrar";
-    datepickerPopupConfig.toggleWeeksText = "Semanas";
-    datepickerConfig.showWeeks = false;
-    datepickerPopupConfig.datepickerPopup = "dd/MM/yyyy";
+.module("app", ["formalizer", 'ui.bootstrap'])
+.config(["uibDatepickerConfig", "uibDatepickerPopupConfig", "datepickerPopupFix", function (uibDatepickerConfig, uibDatepickerPopupConfig, datepickerPopupFix) {
+    uibDatepickerPopupConfig.currentText = "Hoy";
+    uibDatepickerPopupConfig.clearText = "Borrar";
+    uibDatepickerPopupConfig.closeText = "Cerrar";
+    uibDatepickerPopupConfig.toggleWeeksText = "Semanas";
+    uibDatepickerConfig.showWeeks = false;
+    uibDatepickerPopupConfig.datepickerPopup = "dd/MM/yyyy";
 
     // spanish GMT+0
     datepickerPopupFix.datepickerPopup = "DD/MM/YYYY";
@@ -130,7 +130,6 @@ angular
     "label": "text",
     "type": "text",
     "name": "text",
-    "help": "minlength = 3",
     "constraints" : {
       "minlength" : 3
     }
@@ -138,22 +137,18 @@ angular
     "label": "Password",
     "type": "password",
     "name": "password",
-    "help": "help"
   }, {
     "label": "lcheckbox",
     "type": "lcheckbox",
     "name": "lcheckbox",
-    "help": "help"
   },{
     "label": "hidden",
     "type": "hidden",
     "name": "hidden",
-    "help": "help"
   },{
     "label": "textarea",
     "type": "textarea",
     "name": "textarea",
-    "help": "help"
   },
    /*TODO FIXME
    {
@@ -165,7 +160,6 @@ angular
     "label": "select + source",
     "type": "select",
     "name": "select",
-    "help": "help",
     "source": $scope.select_values,
     "source_model": "id",
     "source_display": "label",
@@ -174,7 +168,6 @@ angular
     "label": "select + string",
     "type": "select",
     "name": "select",
-    "help": "help",
     "source": "select_values",
     "source_model": "id",
     "source_display": "label",
@@ -183,7 +176,6 @@ angular
     "label": "ui-select",
     "type": "ui-select",
     "name": "select",
-    "help": "help",
     "source": "select_values",
     "source_model": "id",
     "source_display": "label"
@@ -191,7 +183,6 @@ angular
     "label": "Datepicker",
     "type": "datepicker",
     "name": "date",
-    "help": "help"
   },{
     "label": "datepicker no weekend",
     "type": "datepicker",
@@ -203,7 +194,6 @@ angular
     "label": "T&C",
     "type": "checkbox",
     "name": "tyc",
-    "help": "help",
     "right": true
   },{
     "label": "locale number",
@@ -216,7 +206,6 @@ angular
     "label": "radio-list",
     "type": "radio-list",
     "name": "radio",
-    "help": "help",
     "source": "check_source",
     "source_display": "label",
     "source_model": null // null means the object otherwise a key(string)
@@ -253,6 +242,10 @@ angular
       "compile": true
     }
   }];
+
+  $scope.fields.map(function(v) {
+    v.help = "HELP!";
+  });
 
   $scope.html = "<p><img class=\"ta-insert-video\" src=\"https://img.youtube.com/vi/Yl7Dlo9MNuo/hqdefault.jpg\" ta-insert-video=\"https://www.youtube.com/embed/Yl7Dlo9MNuo\" allowfullscreen=\"true\" frameborder=\"0\" contenteditable=\"false\"/><br/></p>";
 

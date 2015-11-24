@@ -100,13 +100,13 @@ Configuration {{form_cfg | json}}
 <script>
 angular
 .module("app", ["formalizer"])
-.config(["datepickerConfig", "datepickerPopupConfig", "datepickerPopupFix", function (datepickerConfig, datepickerPopupConfig, datepickerPopupFix) {
-    datepickerPopupConfig.currentText = "Hoy";
-    datepickerPopupConfig.clearText = "Borrar";
-    datepickerPopupConfig.closeText = "Cerrar";
-    datepickerPopupConfig.toggleWeeksText = "Semanas";
-    datepickerConfig.showWeeks = false;
-    datepickerPopupConfig.datepickerPopup = "dd/MM/yyyy";
+.config(["uibDatepickerConfig", "uibDatepickerPopupConfig", "datepickerPopupFix", function (uibDatepickerConfig, uibDatepickerPopupConfig, datepickerPopupFix) {
+    uibDatepickerPopupConfig.currentText = "Hoy";
+    uibDatepickerPopupConfig.clearText = "Borrar";
+    uibDatepickerPopupConfig.closeText = "Cerrar";
+    uibDatepickerPopupConfig.toggleWeeksText = "Semanas";
+    uibDatepickerConfig.showWeeks = false;
+    uibDatepickerPopupConfig.datepickerPopup = "dd/MM/yyyy";
 
     // spanish GMT+0
     datepickerPopupFix.datepickerPopup = "DD/MM/YYYY";
