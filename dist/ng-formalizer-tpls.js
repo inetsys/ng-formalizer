@@ -883,7 +883,8 @@ angular.module('formalizer')
     // forced attrs
     cfg.element.attrs['is-open'] = 'datepickers.' + isOpenVar;
     cfg.element.attrs['uib-datepicker-popup'] = cfg.options['uib-datepicker-popup'] || '';
-    cfg.element.attrs['ng-focus'] = 'datepickers.' + openEvent + '()';
+    // do not use focus, uib use it and this mess thing in IE
+    cfg.element.attrs['ng-click'] = 'datepickers.' + openEvent + '()';
 
     cfg.element.attrs['ng-datepicker-fix'] = '';
 
