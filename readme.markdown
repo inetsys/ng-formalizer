@@ -300,6 +300,29 @@ Be aware that the HTML will be compiled after injected.
     "template": "<div class=\"col-sm-10 col-sm-offset-2\">Current avatar: {{entity.avatar}}</div>"
 }
 ```
+##### `cattrs`: Object
+
+Container attributes. This will override what formalizer calculate
+except `ng-class` that will be appended (and need to be an array see example)
+
+ng-class example:
+
+```json
+{
+    "type": "input",
+    "name": "x",
+    "cattrs": {
+      "ng-class": ["'custom-error-class': form.$invalid"]
+    }
+}
+```
+
+
+##### `attrs`: Object
+
+Element attributes. This will override what formalizer calculate
+except `ng-class` that will be appended (and need to be an array see example above)
+
 ##### `options`: Object
 
 Extends current configuration with extra options for each type of field.
