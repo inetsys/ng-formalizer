@@ -1,0 +1,8 @@
+jshint:
+  options:
+    #reporter: require('jshint-stylish')
+  server:
+    src:
+      - 'lib/*.js'
+    options:
+      #jshintrc: 'garu-server/.jshintrc-spec'
