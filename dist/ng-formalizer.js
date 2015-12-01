@@ -1350,5 +1350,5 @@ angular.module("formalizer")
         $element[0].focus();
       });
     }
-  }
-}])
+  };
+}]);
