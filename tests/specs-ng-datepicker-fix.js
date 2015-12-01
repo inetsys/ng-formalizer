@@ -13,17 +13,19 @@ describe("specs-ng-datepicker-fix.js", function () {
 
     // Store references to $scope and $compile
     // so they are available to all tests in this describe block
-    beforeEach(inject(function(_$compile_, _$rootScope_, $timeout, datepickerPopupConfig, datepickerPopupFix) {
+    beforeEach(inject(function(_$compile_, _$rootScope_, $timeout, uibDatepickerPopupConfig, datepickerPopupFix) {
         // The injector unwraps the underscores (_) from around the parameter names when matching
         $compile = _$compile_;
         $scope = _$rootScope_;
 
         // date test specific
-        datepickerPopupConfig.currentText = "Hoy";
-        datepickerPopupConfig.clearText = "Borrar";
-        datepickerPopupConfig.closeText = "Cerrar";
-        datepickerPopupConfig.toggleWeeksText = "Semanas";
-        datepickerPopupConfig.showWeeks = false;
+        uibDatepickerPopupConfig.currentText = "Hoy";
+        uibDatepickerPopupConfig.clearText = "Borrar";
+        uibDatepickerPopupConfig.closeText = "Cerrar";
+        uibDatepickerPopupConfig.toggleWeeksText = "Semanas";
+        uibDatepickerPopupConfig.showWeeks = false;
+        // spanish format
+        uibDatepickerPopupConfig.datepickerPopup = "dd/MM/yyyy";
 
         datepickerPopupFix.datepickerPopup = "DD/MM/YYYY";
         datepickerPopupFix.datepickerTZ = "+0000";
@@ -33,7 +35,8 @@ describe("specs-ng-datepicker-fix.js", function () {
         };
 
         $scope.entity = {
-            text: null
+          // this format should be accepted as string!
+          datepicker: "2015-12-01T10:18:34+00:00"
         };
 
         $scope.fields = [{
@@ -68,15 +71,20 @@ describe("specs-ng-datepicker-fix.js", function () {
 
         var submit = element.find("#form-submit");
 
+        expect(form.datepicker.$viewValue).toEqual("01/12/2015");
+
+        // no error state
         expect(form.$invalid).toEqual(false);
         expect(form.datepicker.$invalid).toEqual(false);
         expect(submit.attr("disabled")).toBeFalsy();
 
-
-        form.datepicker.$setViewValue("15/03/2014");
+        $scope.entity.datepicker = "15/03/2014";
+        //form.datepicker.$setViewValue("15/03/2014");
         $scope.$digest();
+        console.log($scope.entity.date);
 
-        expect(form.datepicker.$modelValue.toISOString()).toEqual("2014-03-14T23:00:00.000Z");
+        // model is not transform to Date anymore
+        //expect(form.datepicker.$modelValue.toISOString()).toEqual("2014-03-14T23:00:00.000Z");
         expect(form.datepicker.$viewValue).toEqual("15/03/2014");
     });
 
@@ -88,11 +96,11 @@ describe("specs-ng-datepicker-fix.js", function () {
         expect(form.datepicker.$invalid).toEqual(false);
         expect(submit.attr("disabled")).toBeFalsy();
 
-
         form.datepicker.$setViewValue("15/03/2014");
         $scope.$digest();
 
-        expect(form.datepicker.$modelValue.toISOString()).toEqual("2014-03-15T00:00:00.000Z");
+        // model is not transform to Date anymore
+        //expect(form.datepicker.$modelValue.toISOString()).toEqual("2014-03-15T00:00:00.000Z");
         expect(form.datepicker.$viewValue).toEqual("15/03/2014");
     });
 });
