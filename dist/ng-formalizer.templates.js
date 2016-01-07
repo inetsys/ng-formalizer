@@ -21,6 +21,7 @@ angular.module("templates/formalizer-checkbox-list.tpl.html", []).run(["$templat
     "  </div>\n" +
     "\n" +
     "  <div class=\"help-block formalizer-help {{element.offset}} {{element.size}}\" ng-bind-html-and-compile=\"$field.help\" ng-show=\"$field.help\"></div>\n" +
+    "  <div class=\"help-block formalizer-error-list {{element.offset}} {{element.size}}\" ng-formalizer-errors=\"'{{element.attrs.name}}'\" messages=\"$field.messages\"></div>\n" +
     "\n" +
     "</div>\n" +
     "");
@@ -100,6 +101,7 @@ angular.module("templates/formalizer-error-list.tpl.html", []).run(["$templateCa
   $templateCache.put("templates/formalizer-error-list.tpl.html",
     "<ul class=\"formalizer-error-messages\" ng-show=\"$messages !== false && $formalizer.form[$field.name].$error\">\n" +
     "  <li ng-show=\"$formalizer.form[$field.name].$dirty && $formalizer.form[$field.name].$error.required\">{{$messages.required || 'Field is required'}}</li>\n" +
+    "  <li ng-show=\"$formalizer.form.$dirty && $formalizer.form[$field.name].$error.required_list\">{{$messages.required_list || 'At least one must be checked'}}</li>\n" +
     "  <li ng-show=\"$formalizer.form[$field.name].$error.min\">{{$messages.min || 'Field minimum is '+ $configuration.element.attrs['min'] }}</li>\n" +
     "  <li ng-show=\"$formalizer.form[$field.name].$error.max\">{{$messages.max || 'Field maximum is '+ $configuration.element.attrs['max']}}</li>\n" +
     "  <li ng-show=\"$formalizer.form[$field.name].$error.minlength\">{{$messages.minlength || 'Field is required to be at least '+ $configuration.element.attrs['ng-minlength'] + ' characters'}}</li>\n" +

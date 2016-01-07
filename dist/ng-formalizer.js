@@ -205,6 +205,12 @@ angular
             } else if (['min', 'max', 'max-date', 'min-date'].indexOf(key) !== -1) {
               field.element.attrs[key] = constraints[key];
               field.container.class.push(key);
+            } else if(key == 'required-list') {
+              kattr = 'ng-' + key;
+              if (constraints[key]) {
+                field.element.attrs[kattr] = field.element.attrs['ng-model'];
+                field.container.class.push('ng-required');
+              }
             } else {
               kattr = 'ng-' + key;
               field.element.attrs[kattr] = constraints[key];
@@ -252,17 +258,17 @@ angular
             }
 
             field.element.container['class'].push('col-sm-' + r); // 1 padding ?
-            field.element.offset = "col-sm-offset-" + l;
-            field.element.size = "col-sm-" + r;
+            field.element.offset = 'col-sm-offset-' + l;
+            field.element.size = 'col-sm-' + r;
             break;
           case 'vertical':
-            field.element.offset = "";
-            field.element.size = "col-sm-12";
+            field.element.offset = '';
+            field.element.size = 'col-sm-12';
             break;
           case 'inline':
             field.element.container['class'].push('input-group');
-            field.element.offset = "";
-            field.element.size = "";
+            field.element.offset = '';
+            field.element.size = '';
             break;
           }
 
@@ -581,9 +587,17 @@ angular.module('formalizer')
               );
           });
       }
+
     };
 
     cfg.element.attrs['checklist-value'] = 'checkbox_data' + (cfg.source_model ? '.' + cfg.source_model : '');
+
+    // copy error from the first check to the real name
+    var name = cfg.element.attrs.name;
+    $scope.$watch(cfg.form_name + '[\'' + name + '-0\']', function() {
+      $scope.$eval(cfg.form_name + '[\'' + name + '\'] = ' +
+      cfg.form_name + '[\'' + name + '-0\']');
+    }, true);
 
     cfg.element.attrs.type = 'checkbox';
     cfg.element.container['class'].push('checkbox');
@@ -862,6 +876,7 @@ angular.module("formalizer")
 .directive("ngBlacklist", function () {
     return {
         require: "ngModel",
+        restrict: 'A',
         link: function ($scope, $elm, $attrs, $ngModel) {
             var blacklist = $scope.$eval($attrs.ngBlacklist);
 
@@ -877,6 +892,7 @@ angular.module("formalizer")
         }
     };
 });
+
 angular.module("formalizer")
 .directive("ngEqualTo", function () {
     return {
@@ -1352,3 +1368,35 @@ angular.module("formalizer")
     }
   };
 }]);
+
+
+angular.module('formalizer')
+.directive('ngRequiredList', function () {
+  return {
+    require: 'ngModel',
+    restrict: 'A',
+    link: function ($scope, $elm, $attrs, $ngModel) {
+      $scope.$watchCollection($attrs.ngRequiredList, function(a, b) {
+        if (a && Array.isArray(a)) {
+          $ngModel.$setValidity('required_list', a.length > 0);
+          return;
+        }
+        $ngModel.$setValidity('required_list', false);
+      })
+      /*
+      $ngModel.$parsers.unshift(function (value) {
+        var mdl = $scope.$eval($attrs.ngRequiredList);
+
+        console.log('ngRequiredList', mdl);
+        if (Array.isArray(mdl)) {
+          $ngModel.$setValidity('ng-required', mdl.length > 0);
+          return value;
+        }
+        // warning ?
+        $ngModel.$setValidity('ng-required', false);
+        return value;
+      });
+      */
+    }
+  };
+});
