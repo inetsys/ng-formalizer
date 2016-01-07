@@ -8,7 +8,7 @@ form.ng-dirty .has-error .formalizer-error-list {
 form.ng-dirty .no-error .formalizer-error-list {
     display: none;
 }
-.ng-required label:after {
+.ng-required label.control-label:after {
     content: " *";
     color: #a94442;
 }

@@ -24,6 +24,7 @@ concat:
           - lib/ng-use-locale.js
           - lib/ng-hide-ex.js
           - lib/ng-autofocus.js
+          - lib/ng-required-list.js
         dest: dist/ng-formalizer.js
     js_templates:
         src:

@@ -598,6 +598,18 @@ Set datepicker range.
 }
 ```
 
+##### required-list
+
+This is to make checkbox-list required. But not to require to check all, just one.
+
+```json
+"constraints": {
+   "required-list": true
+}
+```
+
+*NOTE:* required-list, is not watched!
+
 ##### server-validation
 
 Validate against server. $http send a JSON body with `request-key` and server must return a JSON with a boolean in `request-response`.

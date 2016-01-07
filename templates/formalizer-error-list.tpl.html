@@ -1,5 +1,6 @@
 <ul class="formalizer-error-messages" ng-show="$messages !== false && $formalizer.form[$field.name].$error">
   <li ng-show="$formalizer.form[$field.name].$dirty && $formalizer.form[$field.name].$error.required">{{$messages.required || 'Field is required'}}</li>
+  <li ng-show="$formalizer.form.$dirty && $formalizer.form[$field.name].$error.required_list">{{$messages.required_list || 'At least one must be checked'}}</li>
   <li ng-show="$formalizer.form[$field.name].$error.min">{{$messages.min || 'Field minimum is '+ $configuration.element.attrs['min'] }}</li>
   <li ng-show="$formalizer.form[$field.name].$error.max">{{$messages.max || 'Field maximum is '+ $configuration.element.attrs['max']}}</li>
   <li ng-show="$formalizer.form[$field.name].$error.minlength">{{$messages.minlength || 'Field is required to be at least '+ $configuration.element.attrs['ng-minlength'] + ' characters'}}</li>
