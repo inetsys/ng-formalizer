@@ -81,7 +81,6 @@ describe("specs-ng-datepicker-fix.js", function () {
         $scope.entity.datepicker = "15/03/2014";
         //form.datepicker.$setViewValue("15/03/2014");
         $scope.$digest();
-        console.log($scope.entity.date);
 
         // model is not transform to Date anymore
         //expect(form.datepicker.$modelValue.toISOString()).toEqual("2014-03-14T23:00:00.000Z");

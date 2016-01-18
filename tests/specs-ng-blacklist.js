@@ -22,7 +22,7 @@ describe("specs-ng-blacklist.js", function () {
     it("Create form&input with ng-blacklist", function () {
 
         $rootScope.entity = {
-            blacklist: 0
+            blacklist: null
         };
 
         $rootScope.blacklist = ["abc", "zzz"];
@@ -43,9 +43,12 @@ describe("specs-ng-blacklist.js", function () {
         input.$setViewValue("abc");
         expect(input.$valid).toEqual(false);
         expect(input.$viewValue).toEqual("abc");
-        expect($rootScope.entity.blacklist).toEqual("abc");
+        $rootScope.$digest();
+        // because it's invalid, model has no value
+        expect($rootScope.entity.blacklist).toEqual(undefined);
 
         input.$setViewValue("adef");
+        $rootScope.$digest();
         expect(input.$valid).toEqual(true);
         expect(input.$viewValue).toEqual("adef");
         $rootScope.$digest();

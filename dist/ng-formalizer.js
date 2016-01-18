@@ -1382,7 +1382,7 @@ angular.module('formalizer')
           return;
         }
         $ngModel.$setValidity('required_list', false);
-      })
+      });
       /*
       $ngModel.$parsers.unshift(function (value) {
         var mdl = $scope.$eval($attrs.ngRequiredList);
