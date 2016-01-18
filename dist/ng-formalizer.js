@@ -878,17 +878,16 @@ angular.module("formalizer")
         require: "ngModel",
         restrict: 'A',
         link: function ($scope, $elm, $attrs, $ngModel) {
-            var blacklist = $scope.$eval($attrs.ngBlacklist);
+            $ngModel.$validators.blacklist = function (value) {
+              if (value == null || value == undefined) return true;
 
-            if ("string" === typeof blacklist) {
-                blacklist = blacklist.split(",");
-            }
+              var blacklist = $scope.$eval($attrs.ngBlacklist);
 
-            $ngModel.$parsers.unshift(function (value) {
-                $ngModel.$setValidity("blacklist", blacklist.indexOf(value) === -1);
-
-                return value;
-            });
+              if ("string" === typeof blacklist) {
+                  blacklist = blacklist.split(",");
+              }
+              return blacklist.indexOf(value) === -1;
+            };
         }
     };
 });
