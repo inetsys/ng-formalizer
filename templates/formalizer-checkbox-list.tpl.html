@@ -8,7 +8,7 @@
       </label>
     </div>
 
-    <div class="{{element.wrap.class}}" ng-repeat="checkbox_data in $configuration.source">
+    <div class="{{element.wrap.class}}" ng-repeat="checkbox_data in $configuration.source {{source_filter}}">
       <label for="{{element.attrs.id}}-\{\{$index\}\}">
         <input name="{{element.attrs.name}}-\{\{$index\}\}" id="{{element.attrs.id}}-\{\{$index\}\}" {{element.attrs_text}}>
         \{\{checkbox_data['{{source_display}}']\}\}
