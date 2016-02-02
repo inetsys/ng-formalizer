@@ -12,7 +12,7 @@ angular.module("templates/formalizer-checkbox-list.tpl.html", []).run(["$templat
     "      </label>\n" +
     "    </div>\n" +
     "\n" +
-    "    <div class=\"{{element.wrap.class}}\" ng-repeat=\"checkbox_data in $configuration.source\">\n" +
+    "    <div class=\"{{element.wrap.class}}\" ng-repeat=\"checkbox_data in $configuration.source {{source_filter}}\">\n" +
     "      <label for=\"{{element.attrs.id}}-\\{\\{$index\\}\\}\">\n" +
     "        <input name=\"{{element.attrs.name}}-\\{\\{$index\\}\\}\" id=\"{{element.attrs.id}}-\\{\\{$index\\}\\}\" {{element.attrs_text}}>\n" +
     "        \\{\\{checkbox_data['{{source_display}}']\\}\\}\n" +
