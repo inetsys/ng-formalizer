@@ -1,13 +1,13 @@
 <div {{container.attrs_text}}>
   <div>
     <label for="{{element.attrs.id}}" class="{{label.class}}" ng-bind-html-and-compile="$field.label"></label>
-    <div class="{{element.container.class}}">
-      <div class="{{element.wrap.class}}">
+    <span class="{{element.container.class}}">
+      <span class="{{element.wrap.class}}">
           {{element.left}}
           <input {{element.attrs_text}} />
           {{element.right}}
-      </div>
-    </div>
+      </span>
+    </span>
 
     <div class="help-block formalizer-help {{element.offset}} {{element.size}}" ng-bind-html-and-compile="$field.help" ng-show="$field.help"></div>
     <div class="help-block formalizer-error-list {{element.offset}} {{element.size}}" ng-formalizer-errors="'{{element.attrs.name}}'" messages="$field.messages"></div>

@@ -210,13 +210,13 @@ angular.module("templates/formalizer-input.tpl.html", []).run(["$templateCache",
     "<div {{container.attrs_text}}>\n" +
     "  <div>\n" +
     "    <label for=\"{{element.attrs.id}}\" class=\"{{label.class}}\" ng-bind-html-and-compile=\"$field.label\"></label>\n" +
-    "    <div class=\"{{element.container.class}}\">\n" +
-    "      <div class=\"{{element.wrap.class}}\">\n" +
+    "    <span class=\"{{element.container.class}}\">\n" +
+    "      <span class=\"{{element.wrap.class}}\">\n" +
     "          {{element.left}}\n" +
     "          <input {{element.attrs_text}} />\n" +
     "          {{element.right}}\n" +
-    "      </div>\n" +
-    "    </div>\n" +
+    "      </span>\n" +
+    "    </span>\n" +
     "\n" +
     "    <div class=\"help-block formalizer-help {{element.offset}} {{element.size}}\" ng-bind-html-and-compile=\"$field.help\" ng-show=\"$field.help\"></div>\n" +
     "    <div class=\"help-block formalizer-error-list {{element.offset}} {{element.size}}\" ng-formalizer-errors=\"'{{element.attrs.name}}'\" messages=\"$field.messages\"></div>\n" +
@@ -231,14 +231,14 @@ angular.module("templates/formalizer-lcheckbox.tpl.html", []).run(["$templateCac
   $templateCache.put("templates/formalizer-lcheckbox.tpl.html",
     "<div {{container.attrs_text}}>\n" +
     "  <label for=\"{{element.attrs.id}}\" class=\"{{label.class}}\" ng-bind-html-and-compile=\"$field.label\"></label>\n" +
-    "  <div class=\"{{element.container.class}}\">\n" +
-    "    <div class=\"{{element.wrap.class}}\">\n" +
+    "  <span class=\"{{element.container.class}}\">\n" +
+    "    <span class=\"{{element.wrap.class}}\">\n" +
     "        <input {{element.attrs_text}} />\n" +
     "        <span class=\"help-block formalizer-help\" ng-bind-html-and-compile=\"$field.help\" ng-show=\"$field.help\"></span>\n" +
-    "    </div>\n" +
+    "    </span>\n" +
     "\n" +
-    "    <div class=\"help-block formalizer-error-list {{element.offset}} {{element.size}}\" ng-formalizer-errors=\"'{{element.attrs.name}}'\" messages=\"$field.messages\"></div>\n" +
-    "  </div>\n" +
+    "    <span class=\"help-block formalizer-error-list {{element.offset}} {{element.size}}\" ng-formalizer-errors=\"'{{element.attrs.name}}'\" messages=\"$field.messages\"></span>\n" +
+    "  </span>\n" +
     "  <div class=\"clearfix\"></div>\n" +
     "</div>\n" +
     "");
@@ -294,11 +294,11 @@ angular.module("templates/formalizer-select.tpl.html", []).run(["$templateCache"
   $templateCache.put("templates/formalizer-select.tpl.html",
     "<div {{container.attrs_text}}>\n" +
     "  <label for=\"{{element.attrs.id}}\" class=\"{{label.class}}\" ng-bind-html-and-compile=\"$field.label\"></label>\n" +
-    "  <div class=\"{{element.container.class}}\">\n" +
+    "  <span class=\"{{element.container.class}}\">\n" +
     "    <select {{element.attrs_text}}>\n" +
     "      {{defaultOption}}\n" +
     "    </select>\n" +
-    "  </div>\n" +
+    "  </span>\n" +
     "\n" +
     "  <div class=\"help-block formalizer-help {{element.offset}} {{element.size}}\" ng-bind-html-and-compile=\"$field.help\" ng-show=\"$field.help\"></div>\n" +
     "  <div class=\"help-block formalizer-error-list {{element.offset}} {{element.size}}\" ng-formalizer-errors=\"'{{element.attrs.name}}'\" messages=\"$field.messages\"></div>\n" +

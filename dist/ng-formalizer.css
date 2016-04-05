@@ -27,7 +27,7 @@ form.ng-dirty .no-error .formalizer-error-list {
   margin-top: 8px !important;
 }
 .form-inline .formalizer-element-lcheckbox {
-  margin-top: -8px !important;
+  margin-right: 4px !important;
 }
 .form-inline .formalizer-element-checkbox {
   margin-right: 8px !important;

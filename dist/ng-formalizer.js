@@ -266,7 +266,7 @@ angular
             field.element.size = 'col-sm-12';
             break;
           case 'inline':
-            field.element.container['class'].push('input-group');
+            //field.element.container['class'].push('input-group');
             field.element.offset = '';
             field.element.size = '';
             break;
