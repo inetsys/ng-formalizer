@@ -99,30 +99,30 @@ angular.module("templates/formalizer-columns.tpl.html", []).run(["$templateCache
 
 angular.module("templates/formalizer-error-list.tpl.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("templates/formalizer-error-list.tpl.html",
-    "<ul class=\"formalizer-error-messages\" ng-show=\"$messages !== false && $formalizer.form[$field.name].$error\">\n" +
-    "  <li ng-show=\"$formalizer.form[$field.name].$dirty && $formalizer.form[$field.name].$error.required\">{{$messages.required || 'Field is required'}}</li>\n" +
-    "  <li ng-show=\"$formalizer.form.$dirty && $formalizer.form[$field.name].$error.required_list\">{{$messages.required_list || 'At least one must be checked'}}</li>\n" +
-    "  <li ng-show=\"$formalizer.form[$field.name].$error.min\">{{$messages.min || 'Field minimum is '+ $configuration.element.attrs['min'] }}</li>\n" +
-    "  <li ng-show=\"$formalizer.form[$field.name].$error.max\">{{$messages.max || 'Field maximum is '+ $configuration.element.attrs['max']}}</li>\n" +
-    "  <li ng-show=\"$formalizer.form[$field.name].$error.minlength\">{{$messages.minlength || 'Field is required to be at least '+ $configuration.element.attrs['ng-minlength'] + ' characters'}}</li>\n" +
-    "  <li ng-show=\"$formalizer.form[$field.name].$error.maxlength\">{{$messages.maxlength || 'Field cannot be longer than ' + $configuration.element.attrs['ng-maxlength'] + ' characters'}}</li>\n" +
-    "  <li ng-show=\"$formalizer.form[$field.name].$error.number\">{{$messages.number || 'Field is an invalid number'}}</li>\n" +
-    "  <li ng-show=\"$formalizer.form[$field.name].$error.email\">{{$messages.email || 'Field is an invalid email'}}</li>\n" +
-    "  <li ng-show=\"$formalizer.form[$field.name].$error.url\">{{$messages.url || 'Field is an invalid URL'}}</li>\n" +
-    "  <li ng-show=\"$formalizer.form[$field.name].$error.blacklist\">{{$messages.blacklist || 'Field value is blacklisted'}}</li>\n" +
-    "  <li ng-show=\"$formalizer.form[$field.name].$error['equal-to']\">{{$messages['equal-to'] || 'Field must be equal to: X'}}</li>\n" +
-    "  <li ng-show=\"$formalizer.form[$field.name].$error['only-alpha']\">{{$messages['only-alpha'] || 'Field must contains only letters'}}</li>\n" +
-    "  <li ng-show=\"$formalizer.form[$field.name].$error['only-iso']\">{{$messages['only-iso'] || 'Valid characters are: A-Z, a-z, 0-9'}}</li>\n" +
-    "  <li ng-show=\"$formalizer.form[$field.name].$error['one-upper']\">{{$messages['one-upper'] || 'At least one uppercase'}}</li>\n" +
-    "  <li ng-show=\"$formalizer.form[$field.name].$error['one-lower']\">{{$messages['one-lower'] || 'At least one lowercase'}}</li>\n" +
-    "  <li ng-show=\"$formalizer.form[$field.name].$error['one-number']\">{{$messages['one-number'] || 'At least one number'}}</li>\n" +
-    "  <li ng-show=\"$formalizer.form[$field.name].$error['one-alpha']\">{{$messages['one-alpha'] || 'At least one letter'}}</li>\n" +
-    "  <li ng-show=\"$formalizer.form[$field.name].$error['server-validation']\">{{$messages['server-validation'] || 'Server validation fails'}}</li>\n" +
-    "  <li ng-show=\"$formalizer.form[$field.name].$error['length']\">{{$messages['length'] || 'Field length must be exactly ' + $configuration.element.attrs['ng-length'] }}</li>\n" +
-    "  <li ng-show=\"$formalizer.form[$field.name].$error['decimals']\">{{$messages['decimals'] || 'Maximum decimals exceeded: '+ $configuration.element.attrs['ng-decimals'] }}</li>\n" +
-    "  <li ng-show=\"$formalizer.form[$field.name].$error['no-decimals']\">{{$messages['no-decimals'] || 'Cannot contain decimals ' + $configuration.element.attrs['ng-no-decimals'] }}</li>\n" +
-    "  <li ng-show=\"$formalizer.form[$field.name].$error['pattern']\">{{$messages['pattern'] || 'Invalid pattern match'}}</li>\n" +
-    "  <li ng-show=\"$formalizer.form[$field.name].$error['date']\">{{$messages['date'] || 'Invalid date'}}</li>\n" +
+    "<ul class=\"formalizer-error-messages\" class=\"ng-hide\" ng-show=\"$messages !== false && $formalizer.form[$field.name].$error\">\n" +
+    "  <li class=\"ng-hide\" ng-show=\"$formalizer.form[$field.name].$dirty && $formalizer.form[$field.name].$error.required\" ng-bind-html-and-compile=\"$messages.required || ('Field is required')\"></li>\n" +
+    "  <li class=\"ng-hide\" ng-show=\"$formalizer.form.$dirty && $formalizer.form[$field.name].$error.required_list\" ng-bind-html-and-compile=\"$messages.required_list || ('At least one must be checked')\"></li>\n" +
+    "  <li class=\"ng-hide\" ng-show=\"$formalizer.form[$field.name].$error.min\" ng-bind-html-and-compile=\"$messages.min || ('Field minimum is {{ $configuration.element.attrs[&quot;min&quot;] }}')\"></li>\n" +
+    "  <li class=\"ng-hide\" ng-show=\"$formalizer.form[$field.name].$error.max\" ng-bind-html-and-compile=\"$messages.max || ('Field maximum is {{ $configuration.element.attrs[&quot;max&quot;] }}')\"></li>\n" +
+    "  <li class=\"ng-hide\" ng-show=\"$formalizer.form[$field.name].$error.minlength\" ng-bind-html-and-compile=\"$messages.minlength || ('Field is required to be at least {{ $configuration.element.attrs[&quot;ng-minlength&quot;] }} characters')\"></li>\n" +
+    "  <li class=\"ng-hide\" ng-show=\"$formalizer.form[$field.name].$error.maxlength\" ng-bind-html-and-compile=\"$messages.maxlength || ('Field cannot be longer than {{$configuration.element.attrs[&quot;ng-maxlength&quot;]}} characters')\"></li>\n" +
+    "  <li class=\"ng-hide\" ng-show=\"$formalizer.form[$field.name].$error.number\" ng-bind-html-and-compile=\"$messages.number || ('Field is an invalid number')\"></li>\n" +
+    "  <li class=\"ng-hide\" ng-show=\"$formalizer.form[$field.name].$error.email\" ng-bind-html-and-compile=\"$messages.email || ('Field is an invalid email')\"></li>\n" +
+    "  <li class=\"ng-hide\" ng-show=\"$formalizer.form[$field.name].$error.url\" ng-bind-html-and-compile=\"$messages.url || ('Field is an invalid URL')\"></li>\n" +
+    "  <li class=\"ng-hide\" ng-show=\"$formalizer.form[$field.name].$error.blacklist\" ng-bind-html-and-compile=\"$messages.blacklist || ('Field value is blacklisted')\"></li>\n" +
+    "  <li class=\"ng-hide\" ng-show=\"$formalizer.form[$field.name].$error['equal-to']\" ng-bind-html-and-compile=\"$messages['equal-to'] || ('Field must be equal to: X')\"></li>\n" +
+    "  <li class=\"ng-hide\" ng-show=\"$formalizer.form[$field.name].$error['only-alpha']\" ng-bind-html-and-compile=\"$messages['only-alpha'] || ('Field must contains only letters')\"></li>\n" +
+    "  <li class=\"ng-hide\" ng-show=\"$formalizer.form[$field.name].$error['only-iso']\" ng-bind-html-and-compile=\"$messages['only-iso'] || ('Valid characters are: A-Z, a-z, 0-9')\"></li>\n" +
+    "  <li class=\"ng-hide\" ng-show=\"$formalizer.form[$field.name].$error['one-upper']\" ng-bind-html-and-compile=\"$messages['one-upper'] || ('At least one uppercase')\"></li>\n" +
+    "  <li class=\"ng-hide\" ng-show=\"$formalizer.form[$field.name].$error['one-lower']\" ng-bind-html-and-compile=\"$messages['one-lower'] || ('At least one lowercase')\"></li>\n" +
+    "  <li class=\"ng-hide\" ng-show=\"$formalizer.form[$field.name].$error['one-number']\" ng-bind-html-and-compile=\"$messages['one-number'] || ('At least one number')\"></li>\n" +
+    "  <li class=\"ng-hide\" ng-show=\"$formalizer.form[$field.name].$error['one-alpha']\" ng-bind-html-and-compile=\"$messages['one-alpha'] || ('At least one letter')\"></li>\n" +
+    "  <li class=\"ng-hide\" ng-show=\"$formalizer.form[$field.name].$error['server-validation']\" ng-bind-html-and-compile=\"$messages['server-validation'] || ('Server validation fails')\"></li>\n" +
+    "  <li class=\"ng-hide\" ng-show=\"$formalizer.form[$field.name].$error['length']\" ng-bind-html-and-compile=\"$messages['length'] || ('Field length must be exactly {{$configuration.element.attrs[&quot;ng-length&quot;]}}' )\"></li>\n" +
+    "  <li class=\"ng-hide\" ng-show=\"$formalizer.form[$field.name].$error['decimals']\" ng-bind-html-and-compile=\"$messages['decimals'] || ('Maximum decimals exceeded: {{$configuration.element.attrs[&quot;ng-decimals&quot;]}}' )\"></li>\n" +
+    "  <li class=\"ng-hide\" ng-show=\"$formalizer.form[$field.name].$error['no-decimals']\" ng-bind-html-and-compile=\"$messages['no-decimals'] || ('Cannot contain decimals {{$configuration.element.attrs[&quot;ng-no-decimals&quot;]}}' )\"></li>\n" +
+    "  <li class=\"ng-hide\" ng-show=\"$formalizer.form[$field.name].$error['pattern']\" ng-bind-html-and-compile=\"$messages['pattern'] || ('Invalid pattern match')\"></li>\n" +
+    "  <li class=\"ng-hide\" ng-show=\"$formalizer.form[$field.name].$error['date']\" ng-bind-html-and-compile=\"$messages['date'] || ('Invalid date')\"></li>\n" +
     "</ul>\n" +
     "");
 }]);
