@@ -26,7 +26,7 @@
     "moment": "2.8.x",
     "textAngular": "1.4.x",
     "angular-spectrum-colorpicker": "1.4.x",
-    "angular-ui-select": "0.13.x"
+    "angular-ui-select": "0.17.1"
   },
   "devDependencies": {
     "angular-1.4": "angular#1.4.x",

@@ -393,7 +393,7 @@ angular.module("templates/formalizer-ui-select.tpl.html", []).run(["$templateCac
     "      <!-- theme=\"bootstrap\" -->\n" +
     "      <ui-select {{element.attrs_text}}>\n" +
     "        <ui-select-match class=\"ui-select-match\" placeholder=\"{{placeholder || \"\"}}\">\\{\\{$select.selected{{source_display? \".\" + source_display : source_display}}\\}\\}</ui-select-match>\n" +
-    "        <ui-select-choices class=\"ui-select-choices\" repeat=\"data{{source_model ? \".\" + source_model: source_model}} as data in $configuration.source | filter: $select.search\">\n" +
+    "        <ui-select-choices class=\"ui-select-choices\" repeat=\"data{{source_model ? \".\" + source_model: source_model}} as data in ($configuration.source | {{source_filter}})\">\n" +
     "          <span ng-bind-html=\"data{{source_display? \".\" + source_display : source_display}} | highlight: $select.search\"></span>\n" +
     "        </ui-select-choices>\n" +
     "      </ui-select>\n" +
