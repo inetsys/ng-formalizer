@@ -123,6 +123,7 @@ angular.module("templates/formalizer-error-list.tpl.html", []).run(["$templateCa
     "  <li class=\"ng-hide\" ng-show=\"$formalizer.form[$field.name].$error['no-decimals']\" ng-bind-html-and-compile=\"$messages['no-decimals'] || ('Cannot contain decimals {{$configuration.element.attrs[&quot;ng-no-decimals&quot;]}}' )\"></li>\n" +
     "  <li class=\"ng-hide\" ng-show=\"$formalizer.form[$field.name].$error['pattern']\" ng-bind-html-and-compile=\"$messages['pattern'] || ('Invalid pattern match')\"></li>\n" +
     "  <li class=\"ng-hide\" ng-show=\"$formalizer.form[$field.name].$error['date']\" ng-bind-html-and-compile=\"$messages['date'] || ('Invalid date')\"></li>\n" +
+    "  <li class=\"ng-hide\" ng-show=\"$formalizer.form[$field.name].$error['alphanumeric']\" ng-bind-html-and-compile=\"$messages['alphanumeric'] || ('Invalid alpha-numeric')\"></li>\n" +
     "</ul>\n" +
     "");
 }]);
@@ -1347,55 +1348,64 @@ angular.module("formalizer")
 });
 
 (function() {
-    "use strict";
+  "use strict";
 
-    var SPECIAL_CHARS_REGEXP = /([\:\-\_]+(.))/g;
-    var MOZ_HACK_REGEXP = /^moz([A-Z])/;
+  var SPECIAL_CHARS_REGEXP = /([\:\-\_]+(.))/g;
+  var MOZ_HACK_REGEXP = /^moz([A-Z])/;
 
-    /**
-     * copy&paste from angular
-     */
-    function camelCase(name) {
-      return name.
-        replace(SPECIAL_CHARS_REGEXP, function(_, separator, letter, offset) {
-          return offset ? letter.toUpperCase() : letter;
-        }).
-        replace(MOZ_HACK_REGEXP, 'Moz$1');
-    }
+  /**
+   * copy&paste from angular
+   */
+  function camelCase(name) {
+    return name.
+      replace(SPECIAL_CHARS_REGEXP, function(_, separator, letter, offset) {
+        return offset ? letter.toUpperCase() : letter;
+      }).
+      replace(MOZ_HACK_REGEXP, 'Moz$1');
+  }
 
-    angular.forEach({
-        "only-alpha": /^[a-zA-Z]*$/i,
-        //"only-iso": /^[a-zA-Z0-9_\-\s]*$/i,
-        "one-upper": /^(?=.*[A-Z]).+$/,
-        "one-lower": /^(?=.*[a-z]).+$/,
-        "one-number": /^(?=.*[0-9]).+$/,
-        "one-alpha": /^(?=.*[a-z]).+$/i,
-        "no-spaces": /^[^\s]+$/,
-        "hexadecimal": /^[0-9a-fA-F]+$/,
-        "hex-color": /^#?([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$/
-    }, function(regex, key) {
-        angular.module('formalizer')
-        .directive(camelCase('ng-' + key), function (){
-            return {
-                require: 'ngModel',
-                link: function($scope, $elm, $attr, $ngModel) {
-                    $ngModel.$parsers.unshift(function (value) {
-                        var str_val = ("" + value);
-                        // for this test, use required
-                        if (value === undefined || value === null || str_val.length === 0) {
-                          $ngModel.$setValidity(key, true);
-                          return value;
-                        }
+  angular.forEach({
+    "only-alpha": /^[a-zA-Z]*$/i,
+    "alphanumeric": /^[a-zA-Z0-9]+$/,
+    "one-upper": /^(?=.*[A-Z]).+$/,
+    "one-lower": /^(?=.*[a-z]).+$/,
+    "one-number": /^(?=.*[0-9]).+$/,
+    "one-alpha": /^(?=.*[a-z]).+$/i,
+    "no-spaces": /^[^\s]+$/,
+    "hexadecimal": /^[0-9a-fA-F]+$/,
+    "hex-color": /^#?([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$/
+  }, function(regex, key) {
+    console.log(camelCase('ng-' + key));
+    angular.module('formalizer')
+    .directive(camelCase('ng-' + key), ["$timeout", function ($timeout) {
+      return {
+        require: 'ngModel',
+        link: function($scope, $elm, $attr, $ngModel) {
+          function check (value) {
+            console.log(camelCase('ng-' + key), value);
 
-                        // do not test 'empty' things this task is for required
-                        $ngModel.$setValidity(key, regex.test(str_val));
+            var str_val = ("" + value);
+            // for this test, use required
+            if (value === undefined || value === null || str_val.length === 0) {
+              $ngModel.$setValidity(key, true);
+              return value;
+            }
 
-                        return str_val;
-                    });
-                }
-            };
-        });
-    });
+            // do not test 'empty' things this task is for required
+            $ngModel.$setValidity(key, regex.test(str_val));
+
+            return str_val;
+          }
+
+          $ngModel.$parsers.unshift(check);
+          // run check after ng-default
+          $timeout(function() {
+            check($ngModel.$modelValue);
+          });
+        }
+      };
+    }]);
+  });
 }());
 
 /**
@@ -1478,38 +1488,41 @@ angular.module("formalizer")
 
 angular.module("formalizer")
 .directive("ngDefault", ["$timeout", function ($timeout) {
-    return {
-        require: "ngModel",
-        link: function ($scope, $elm, $attrs, $ngModel) {
-            var def_val = $scope.$eval($attrs.ngDefault),
-                not_set_values = $scope.$eval($attrs.ngDefaultValues);
+  return {
+    require: "ngModel",
+    priority: 0,
+    link: function ($scope, $elm, $attrs, $ngModel) {
+      console.log("default!");
+      var def_val = $scope.$eval($attrs.ngDefault),
+        not_set_values = $scope.$eval($attrs.ngDefaultValues);
 
-            if ("number" === $attrs.type) {
-                def_val = parseFloat(def_val, 10);
-            }
+      if ("number" === $attrs.type) {
+        def_val = parseFloat(def_val, 10);
+      }
 
-            if (!not_set_values) {
-                not_set_values = [undefined];
-            } else if (Array.isArray(not_set_values)) {
-                not_set_values.push(undefined);
-            } else {
-                throw new Error("ngDefaultValues must be an array of values");
-            }
+      if (!not_set_values) {
+        not_set_values = [undefined];
+      } else if (Array.isArray(not_set_values)) {
+        not_set_values.push(undefined);
+      } else {
+        throw new Error("ngDefaultValues must be an array of values");
+      }
 
-            function is_nan(val) {
-                return "number" === typeof val && ("" + val) === "NaN";
-            }
+      function is_nan(val) {
+        return "number" === typeof val && ("" + val) === "NaN";
+      }
 
-            // wait model to be populated
-            $timeout(function () {
-                if (is_nan($ngModel.$modelValue) || not_set_values.indexOf($ngModel.$modelValue) !== -1) {
-                    //$ngModel.$setViewValue(def_val);
-                    $scope.$eval($attrs.ngModel + " = " + JSON.stringify(def_val));
-                }
-            });
+      // wait model to be populated
+      $timeout(function () {
+        if (is_nan($ngModel.$modelValue) || not_set_values.indexOf($ngModel.$modelValue) !== -1) {
+          //$ngModel.$setViewValue(def_val);
+          $scope.$eval($attrs.ngModel + " = " + JSON.stringify(def_val));
         }
-    };
+      });
+    }
+  };
 }]);
+
 /*
  * listen angular changes in boolean attrs
  */

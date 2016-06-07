@@ -123,6 +123,7 @@ angular.module("templates/formalizer-error-list.tpl.html", []).run(["$templateCa
     "  <li class=\"ng-hide\" ng-show=\"$formalizer.form[$field.name].$error['no-decimals']\" ng-bind-html-and-compile=\"$messages['no-decimals'] || ('Cannot contain decimals {{$configuration.element.attrs[&quot;ng-no-decimals&quot;]}}' )\"></li>\n" +
     "  <li class=\"ng-hide\" ng-show=\"$formalizer.form[$field.name].$error['pattern']\" ng-bind-html-and-compile=\"$messages['pattern'] || ('Invalid pattern match')\"></li>\n" +
     "  <li class=\"ng-hide\" ng-show=\"$formalizer.form[$field.name].$error['date']\" ng-bind-html-and-compile=\"$messages['date'] || ('Invalid date')\"></li>\n" +
+    "  <li class=\"ng-hide\" ng-show=\"$formalizer.form[$field.name].$error['alphanumeric']\" ng-bind-html-and-compile=\"$messages['alphanumeric'] || ('Invalid alpha-numeric')\"></li>\n" +
     "</ul>\n" +
     "");
 }]);
