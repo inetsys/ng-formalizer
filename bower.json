@@ -1,6 +1,6 @@
 {
   "name": "ng-formalizer",
-  "version": "0.2.17",
+  "version": "0.2.18",
   "description": "AngularJS directive for building complex forms from a simple JSON",
   "author": "https://github.com/inetsys",
   "license": "MIT",
