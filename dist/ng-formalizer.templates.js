@@ -124,6 +124,12 @@ angular.module("templates/formalizer-error-list.tpl.html", []).run(["$templateCa
     "  <li class=\"ng-hide\" ng-show=\"$formalizer.form[$field.name].$error['pattern']\" ng-bind-html-and-compile=\"$messages['pattern'] || ('Invalid pattern match')\"></li>\n" +
     "  <li class=\"ng-hide\" ng-show=\"$formalizer.form[$field.name].$error['date']\" ng-bind-html-and-compile=\"$messages['date'] || ('Invalid date')\"></li>\n" +
     "  <li class=\"ng-hide\" ng-show=\"$formalizer.form[$field.name].$error['alphanumeric']\" ng-bind-html-and-compile=\"$messages['alphanumeric'] || ('Invalid alpha-numeric')\"></li>\n" +
+    "  <li class=\"ng-hide\" ng-show=\"$formalizer.form[$field.name].$error['date-before']\" ng-bind-html-and-compile=\"$messages['date-before'] || ('Invalid date. Must be before: {{ $configuration.element.attrs[&quot;ng-date-before&quot;] }}')\"></li>\n" +
+    "  <li class=\"ng-hide\" ng-show=\"$formalizer.form[$field.name].$error['date-after']\" ng-bind-html-and-compile=\"$messages['date-after'] || ('Invalid date. Must be after: {{ $configuration.element.attrs[&quot;ng-date-after&quot;] }}')\"></li>\n" +
+    "  <li class=\"ng-hide\" ng-show=\"$formalizer.form[$field.name].$error['till-today']\" ng-bind-html-and-compile=\"$messages['till-today'] || ('Invalid date. Must be a past date or today.')\"></li>\n" +
+    "  <li class=\"ng-hide\" ng-show=\"$formalizer.form[$field.name].$error['from-today']\" ng-bind-html-and-compile=\"$messages['from-today'] || ('Invalid date. Must be a future date or today.')\"></li>\n" +
+    "  <li class=\"ng-hide\" ng-show=\"$formalizer.form[$field.name].$error['past-date']\" ng-bind-html-and-compile=\"$messages['past-date'] || ('Invalid date. Must be a past date.')\"></li>\n" +
+    "  <li class=\"ng-hide\" ng-show=\"$formalizer.form[$field.name].$error['future-date']\" ng-bind-html-and-compile=\"$messages['future-date'] || ('Invalid date. Must be a future date.')\"></li>\n" +
     "</ul>\n" +
     "");
 }]);
