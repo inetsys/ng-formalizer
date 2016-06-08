@@ -950,15 +950,12 @@ angular.module("formalizer")
     "hexadecimal": /^[0-9a-fA-F]+$/,
     "hex-color": /^#?([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$/
   }, function(regex, key) {
-    console.log(camelCase('ng-' + key));
     angular.module('formalizer')
     .directive(camelCase('ng-' + key), ["$timeout", function ($timeout) {
       return {
         require: 'ngModel',
         link: function($scope, $elm, $attr, $ngModel) {
           function check (value) {
-            console.log(camelCase('ng-' + key), value);
-
             var str_val = ("" + value);
             // for this test, use required
             if (value === undefined || value === null || str_val.length === 0) {
@@ -1226,65 +1223,87 @@ angular.module("formalizer")
     };
 });
 
-angular.module("formalizer")
-.directive("ngPastDate", function () {
-    return {
+(function() {
+  function today_utc() {
+    var m = moment.utc();
+    m.millisecond(0);
+    m.seconds(0);
+    m.minutes(0);
+    m.hours(0);
+
+    return m;
+  }
+  [{
+    directive: 'ngDateAfter',
+    constraint: 'date-after',
+    check: function(ref_date, input_date) {
+      return ref_date.diff(input_date, 'seconds') < 0;
+    }
+  }, {
+    directive: 'ngDateBefore',
+    constraint: 'date-before',
+    check: function(ref_date, input_date) {
+      return ref_date.diff(input_date, 'seconds') > 0;
+    }
+  }, {
+    directive: 'ngFutureDate',
+    constraint: 'future-date',
+    check: function(ref_date, input_date) {
+      return today_utc().diff(input_date, 'seconds') < 0;
+    }
+  }, {
+    directive: 'ngPastDate',
+    constraint: 'past-date',
+    check: function(ref_date, input_date) {
+      return today_utc().diff(input_date, 'seconds') > 0;
+    }
+  }, {
+    directive: 'ngTillToday',
+    constraint: 'till-today',
+    check: function(ref_date, input_date) {
+      return today_utc().diff(input_date, 'seconds') >= 0;
+    }
+  }, {
+    directive: 'ngFromToday',
+    constraint: 'from-today',
+    check: function(ref_date, input_date) {
+      return today_utc().diff(input_date, 'seconds') <= 0;
+    }
+  }].forEach(function(dt) {
+    angular.module('formalizer')
+    .directive(dt.directive, ['$timeout', '$log', function ($timeout, $log) {
+      return {
         priority: -9000, // higher than ui-datepicker
-        link: function ($scope, $elm, $attrs) {
-            var date = new Date();
-            date.setMilliseconds(0);
-            date.setSeconds(0);
-            date.setMinutes(0);
-            date.setHours(0);
-            date.setTime(date.getTime() - 24 * 60 * 60 * 1000);
+        require: 'ngModel',
+        link: function ($scope, $elm, $attrs, $ngModel) {
+          $log.debug('(', dt.directive ,')', $attrs[dt.directive]);
 
-            $attrs.$set('maxDate', JSON.stringify(date));
+          var ref_date = moment($attrs[dt.directive]);
 
+          function check (value) {
+            var input_date = moment(value);
+
+            if (!value || !input_date.isValid()) {
+              $ngModel.$setValidity(dt.constraint, true);
+            } else {
+              var res = dt.check(ref_date, input_date);
+              $log.debug('(', dt.directive ,')', "ref_date", ref_date.toJSON(), "input_date", input_date.toJSON(), res);
+              $ngModel.$setValidity(dt.constraint, res);
+            }
+
+            return value;
+          }
+
+          $ngModel.$parsers.unshift(check);
+          // run check after ng-default
+          $timeout(function() {
+            check($ngModel.$modelValue);
+          });
         }
-    };
-});
-angular.module("formalizer")
-.directive("ngFutureDate", function () {
-    return {
-        priority: -9000, // higher than ui-datepicker
-        link: function ($scope, $elm, $attrs) {
-            var date = new Date();
-            date.setMilliseconds(0);
-            date.setSeconds(0);
-            date.setMinutes(0);
-            date.setHours(0);
-            date.setTime(date.getTime() + 24 * 60 * 60 * 1000);
-
-            $attrs.$set('maxDate', JSON.stringify(date));
-
-        }
-    };
-});
-angular.module("formalizer")
-.directive("ngTillToday", function () {
-    return {
-        priority: -9000, // higher than ui-datepicker
-        link: function ($scope, $elm, $attrs) {
-            var date = new Date();
-
-            $attrs.$set('maxDate', JSON.stringify(date));
-        }
-    };
-});
-
-angular.module("formalizer")
-.directive("ngFromToday", function () {
-    return {
-        priority: -9000, // higher than ui-datepicker
-        link: function ($scope, $elm, $attrs) {
-            var date = new Date();
-            // date is ****-**-** 00:00
-            date.setTime(date.getTime() - 24 * 60 * 60 * 1000);
-
-            $attrs.$set("minDate", JSON.stringify(date));
-        }
-    };
-});
+      };
+    }])
+  });
+}());
 
 /**
 * ng-use-locale=""

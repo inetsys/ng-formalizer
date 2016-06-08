@@ -570,8 +570,6 @@ A color: `#ffffff` (*#* is required)
 
 ##### future-date
 
-Set datepicker range.
-
 ```json
 "constraints": {
    "future-date": true
@@ -579,8 +577,6 @@ Set datepicker range.
 ```
 
 ##### past-date
-
-Set datepicker range.
 
 ```json
 "constraints": {
@@ -590,13 +586,40 @@ Set datepicker range.
 
 ##### till-today
 
-Set datepicker range.
-
 ```json
 "constraints": {
    "till-today": true
 }
 ```
+
+##### from-today
+
+```json
+"constraints": {
+   "from-today": true
+}
+```
+
+##### date-after
+
+*NOTE* use the same timezone that you configure @[ng-datepicker-fix](#ng-datepicker-fix)
+
+```json
+"constraints": {
+   "date-after": "2016-06-08T09:55:48.113Z"
+}
+```
+
+##### date-before
+
+*NOTE* use the same timezone that you configure @[ng-datepicker-fix](#ng-datepicker-fix)
+
+```json
+"constraints": {
+   "date-before": "2016-06-08T09:55:48.113Z"
+}
+```
+
 
 ##### required-list
 
@@ -757,7 +780,7 @@ $scope.disabled_weekend = function(date, mode) {
     return ( mode === 'day' && ( date.getDay() === 0 || date.getDay() === 6 ) );
 };
 ```
-
+<a name="ng-datepicker-fix"></a>
 ## ng-datepicker-fix
 
 Fix date input/output in foreign languages like Spanish using momentjs.
