@@ -902,7 +902,7 @@ angular.module('formalizer')
 
     // calendar button setup
     cfg.element.wrap['class'].push('input-group');
-    cfg.element.right = '<span class="input-group-btn"><button ng-click="datepickers.' + openEvent + '($event)" class="btn btn-default" type="button"><i class="glyphicon glyphicon-calendar"></i></button>';
+    cfg.element.right = '<span class="input-group-btn"><button ng-click="datepickers.' + openEvent + '($event)" class="btn btn-default" type="button"><i class="glyphicon glyphicon-calendar"></i></button></span>';
 
     // forced attrs
     cfg.element.attrs['is-open'] = 'datepickers.' + isOpenVar;
