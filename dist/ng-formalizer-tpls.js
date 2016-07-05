@@ -1495,12 +1495,15 @@ angular.module("formalizer")
     require: "ngModel",
     priority: 0,
     link: function ($scope, $elm, $attrs, $ngModel) {
-      console.log("default!");
       var def_val = $scope.$eval($attrs.ngDefault),
         not_set_values = $scope.$eval($attrs.ngDefaultValues);
 
       if ("number" === $attrs.type) {
         def_val = parseFloat(def_val, 10);
+      }
+
+      if ("datepicker" === $attrs.type) {
+        def_val = new Date(def_val);
       }
 
       if (!not_set_values) {
@@ -1519,7 +1522,13 @@ angular.module("formalizer")
       $timeout(function () {
         if (is_nan($ngModel.$modelValue) || not_set_values.indexOf($ngModel.$modelValue) !== -1) {
           //$ngModel.$setViewValue(def_val);
-          $scope.$eval($attrs.ngModel + " = " + JSON.stringify(def_val));
+          if ("datepicker" === $attrs.type) {
+            $scope.$$tmp = def_val;
+            $scope.$eval($attrs.ngModel + " = $$tmp");
+            delete $scope.$$tmp;
+          } else {
+            $scope.$eval($attrs.ngModel + " = " + JSON.stringify(def_val));
+          }
         }
       });
     }
