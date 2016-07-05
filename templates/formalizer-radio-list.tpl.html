@@ -3,7 +3,7 @@
   <div class="{{element.container.class}}">
     <div class="{{element.wrap.class}}" ng-repeat="radio_data in $configuration.source">
       <label for="{{element.attrs.id}}-\{\{$index\}\}">
-        <input name="{{element.attrs.name}}" id="{{element.attrs.id}}-\{\{$index\}\}" value="\{\{radio_data{{source_model}}\}\}" {{element.attrs_text}}>
+        <input name="{{element.attrs.name}}" id="{{element.attrs.id}}-\{\{$index\}\}" ng-value="radio_data{{source_model}}" {{element.attrs_text}}>
         \{\{radio_data['{{source_display}}']\}\}
       </label>
     </div>

@@ -258,7 +258,7 @@ angular.module("templates/formalizer-radio-list.tpl.html", []).run(["$templateCa
     "  <div class=\"{{element.container.class}}\">\n" +
     "    <div class=\"{{element.wrap.class}}\" ng-repeat=\"radio_data in $configuration.source\">\n" +
     "      <label for=\"{{element.attrs.id}}-\\{\\{$index\\}\\}\">\n" +
-    "        <input name=\"{{element.attrs.name}}\" id=\"{{element.attrs.id}}-\\{\\{$index\\}\\}\" value=\"\\{\\{radio_data{{source_model}}\\}\\}\" {{element.attrs_text}}>\n" +
+    "        <input name=\"{{element.attrs.name}}\" id=\"{{element.attrs.id}}-\\{\\{$index\\}\\}\" ng-value=\"radio_data{{source_model}}\" {{element.attrs_text}}>\n" +
     "        \\{\\{radio_data['{{source_display}}']\\}\\}\n" +
     "      </label>\n" +
     "    </div>\n" +
