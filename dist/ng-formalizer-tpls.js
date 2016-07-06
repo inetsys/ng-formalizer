@@ -1083,15 +1083,26 @@ angular.module('formalizer')
   //
 
   var typeahead_attrs = [
-      //"typeahead",
+      //"uib-typeahead",
       //"typeahead-on-select",
-      'uib-typeahead-append-to-body',
-      'uib-typeahead-editable',
-      'uib-typeahead-input-formatter',
-      'uib-typeahead-loading',
-      'uib-typeahead-min-length',
-      'uib-typeahead-template-url',
-      'uib-typeahead-wait-ms'
+
+      'typeahead-append-to',
+      'typeahead-append-to-body',
+      'typeahead-editable',
+      'typeahead-focus-first',
+      'typeahead-focus-on-select',
+      'typeahead-input-formatter',
+      'typeahead-is-open',
+      'typeahead-loading',
+      'typeahead-min-length',
+      'typeahead-no-results',
+      'typeahead-should-select',
+      'typeahead-popup-template-url',
+      'typeahead-select-on-blur',
+      'typeahead-select-on-exact',
+      'typeahead-show-hint',
+      'typeahead-template-url',
+      'typeahead-wait-ms',
   ];
 
   formalizerTemplatesProvider.set('typeahead', 'templates/formalizer-typeahead.tpl.html');
