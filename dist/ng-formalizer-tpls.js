@@ -99,7 +99,7 @@ angular.module("templates/formalizer-columns.tpl.html", []).run(["$templateCache
 
 angular.module("templates/formalizer-error-list.tpl.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("templates/formalizer-error-list.tpl.html",
-    "<ul class=\"formalizer-error-messages\" class=\"ng-hide\" ng-show=\"$messages !== false && $formalizer.form[$field.name].$error\">\n" +
+    "<ul class=\"formalizer-error-messages ng-hide\" ng-show=\"$messages !== false && !!$formalizer.form[$field.name].$error\">\n" +
     "  <li class=\"ng-hide\" ng-show=\"$formalizer.form[$field.name].$dirty && $formalizer.form[$field.name].$error.required\" ng-bind-html-and-compile=\"$messages.required || ('Field is required')\"></li>\n" +
     "  <li class=\"ng-hide\" ng-show=\"$formalizer.form.$dirty && $formalizer.form[$field.name].$error.required_list\" ng-bind-html-and-compile=\"$messages.required_list || ('At least one must be checked')\"></li>\n" +
     "  <li class=\"ng-hide\" ng-show=\"$formalizer.form[$field.name].$error.min\" ng-bind-html-and-compile=\"$messages.min || ('Field minimum is {{ $configuration.element.attrs[&quot;min&quot;] }}')\"></li>\n" +
@@ -974,7 +974,8 @@ angular.module('formalizer')
     cfg.source_display = cfg.source_display || 'label';
     cfg.element.attrs['ng-class'] = [];
     safe_array_remove(cfg.element.attrs['class'], 'form-control');
-    cfg.source_filter = cfg.source_filter || 'filter: $select.search';
+    cfg.source_filter = cfg.source_filter ? (cfg.source_filter + ' |') : '';
+    cfg.source_filter += 'filter: $select.search';
   });
 
   //

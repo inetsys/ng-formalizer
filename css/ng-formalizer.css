@@ -1,11 +1,14 @@
 /* remove flashing errors */
-form.ng-pristine .formalizer-error-list {
+form.ng-pristine .formalizer-error-list,
+ng-form.ng-pristine .formalizer-error-list {
     display: none;
 }
-form.ng-dirty .has-error .formalizer-error-list {
+form.ng-dirty .has-error .formalizer-error-list,
+ng-form.ng-dirty .has-error .formalizer-error-list {
     display: block;
 }
-form.ng-dirty .no-error .formalizer-error-list {
+form.ng-dirty .no-error .formalizer-error-list,
+ng-form.ng-dirty .no-error .formalizer-error-list {
     display: none;
 }
 .ng-required label.control-label:after {

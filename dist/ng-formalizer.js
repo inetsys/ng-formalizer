@@ -543,7 +543,8 @@ angular.module('formalizer')
     cfg.source_display = cfg.source_display || 'label';
     cfg.element.attrs['ng-class'] = [];
     safe_array_remove(cfg.element.attrs['class'], 'form-control');
-    cfg.source_filter = cfg.source_filter || 'filter: $select.search';
+    cfg.source_filter = cfg.source_filter ? (cfg.source_filter + ' |') : '';
+    cfg.source_filter += 'filter: $select.search';
   });
 
   //
