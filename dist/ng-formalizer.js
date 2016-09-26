@@ -555,6 +555,9 @@ angular.module('formalizer')
 
   formalizerParsersProvider.set('richtext', function ($scope, cfg) {
     safe_array_remove(cfg.element.attrs['class'], 'form-control');
+    delete cfg.element.attrs['type'];
+    cfg.element.attrs['id'] = 'textAngular-' + cfg.element.attrs['name'];
+    delete cfg.element.attrs['ta-disabled'];
   });
 
   //
@@ -564,6 +567,11 @@ angular.module('formalizer')
   formalizerTemplatesProvider.set('checkbox-list', 'templates/formalizer-checkbox-list.tpl.html');
 
   formalizerParsersProvider.set('checkbox-list', function ($scope, cfg) {
+    if (cfg.source_filter) {
+      cfg.source_filter = ' | ' + cfg.source_filter;
+    }
+
+
     var model = cfg.element.attrs['checklist-model'] = cfg.element.attrs['ng-model'];
     delete cfg.element.attrs['ng-model'];
 
@@ -630,6 +638,10 @@ angular.module('formalizer')
     safe_array_remove(cfg.element.attrs['class'], 'form-control');
 
     cfg.source_model = (cfg.source_model ? '.' + cfg.source_model : '');
+
+    if (cfg.source_filter) {
+      cfg.source_filter = ' | ' + cfg.source_filter;
+    }
   });
 
   //
