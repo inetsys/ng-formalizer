@@ -163,8 +163,7 @@ describe('specs-formalizer-full.js', function () {
     $scope.$digest();
 
     $timeout.flush();
-
-    form = $scope.$$childTail.form;
+    form = $scope.form;
   }));
 
   // a single test

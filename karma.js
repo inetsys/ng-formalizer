@@ -51,10 +51,7 @@ module.exports = function (config) {
       "lib/ng-length.js",
       "lib/ng-decimals.js",
       "lib/ng-no-decimals.js",
-      "lib/ng-past-date.js",
-      "lib/ng-future-date.js",
-      "lib/ng-till-today.js",
-      "lib/ng-from-today.js",
+      "lib/ng-dates.js",
       "lib/ng-use-locale.js",
       "lib/ng-hide-ex.js",
 
