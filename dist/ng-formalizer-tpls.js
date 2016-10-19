@@ -429,6 +429,8 @@ angular.module("templates/formalizer.fields.tpl.html", []).run(["$templateCache"
     "");
 }]);
 
+'use strict';
+
 angular
 .module('formalizer', [
   'ui.bootstrap',
@@ -438,7 +440,7 @@ angular
   'angularSpectrumColorpicker',
   'ui.select',
   'ngSanitize'
-  ])
+])
 .config(['$sceProvider', function($sceProvider) {
   $sceProvider.enabled(false);
 }])
@@ -1282,8 +1284,10 @@ angular.module("formalizer")
   };
 }]);
 
+'use strict';
+
 angular.module('formalizer')
-.directive('ngFormalizerField', ['$timeout', '$compile', function ($timeout, $compile) {
+.directive('ngFormalizerField', ['$timeout', '$compile', function($timeout, $compile) {
   function formalizerit($scope, $element, $attrs, $ngFormalizer, data) {
     var configuration = $ngFormalizer.configure(data, $scope);
     $scope.$field = data;
@@ -1294,31 +1298,26 @@ angular.module('formalizer')
     $ngFormalizer.getFieldHTML(data, configuration, $scope)
     .then(function(html) {
       // append html and compile now
-      var node_el = angular.element(html);
-      $element.append(node_el);
-      $compile(node_el)($scope);
-      node_el = null;
+
+      $element[0].innerHTML = html;
+      $compile($element.contents())($scope);
+
+      //var node_el = angular.element(html);
+      //$element.append(node_el);
+      //$compile(node_el)($scope);
     });
   }
 
   return {
     scope: true,
     require: '^ngFormalizer',
-    link: function ($scope, $element, $attrs, $ngFormalizer) {
+    link: function($scope, $element, $attrs, $ngFormalizer) {
       $scope.$formalizer = $ngFormalizer;
 
-      //delay execution
-      $timeout(function() {
-        var data = $scope.$eval($attrs.ngFormalizerField);
-        if (!data) {
-          var unwatch = $scope.$watch($attrs.ngFormalizerField, function(a, b) {
-            if (a !== b) { // skip init
-              formalizerit($scope, $element, $attrs, $ngFormalizer, a);
-              unwatch();
-            }
-          });
-        } else {
-          formalizerit($scope, $element, $attrs, $ngFormalizer, data);
+      var unwatch = $scope.$watch($attrs.ngFormalizerField, function(a, b) {
+        if (a) {
+          formalizerit($scope, $element, $attrs, $ngFormalizer, a);
+          unwatch();
         }
       });
     }
@@ -1595,16 +1594,23 @@ angular.module('formalizer')
       });
       $compile.$$addBindingClass($element);
 
-      return function ngBindHtmlLink(scope, element, attr) {
-        $compile.$$addBindingInfo(element, attr.ngBindHtmlAndCompile);
+      return function ngBindHtmlLink($scope, $element2, $attr2) {
+        $compile.$$addBindingInfo($element2, $attr2.ngBindHtmlAndCompile);
 
-        scope.$on('$destroy', scope.$watch(ngBindHtmlWatch, function ngBindHtmlWatchAction() {
+        $scope.$on('$destroy', $scope.$watch(ngBindHtmlWatch, function ngBindHtmlWatchAction() {
           // we re-evaluate the expr because we want a TrustedValueHolderType
           // for $sce, not a string
-          element.html($sce.getTrustedHtml(ngBindHtmlGetter(scope)) || '');
-          $timeout(function() {
-            $compile(element.contents())(scope);
-          });
+          var value = ngBindHtmlGetter($scope);
+          if (value) {
+            if (value.indexOf('<') >= 0) {
+              $element2.html($sce.getTrustedHtml(value) || '');
+              $compile($element2.contents())($scope);
+            } else {
+              $element2[0].textContent = value;
+            }
+          } else {
+            $element2[0].textContent = '';
+          }
         }));
       };
     }

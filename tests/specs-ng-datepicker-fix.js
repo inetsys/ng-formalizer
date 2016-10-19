@@ -84,6 +84,7 @@ describe("specs-ng-datepicker-fix.js", function () {
 
         // model is not transform to Date anymore
         //expect(form.datepicker.$modelValue.toISOString()).toEqual("2014-03-14T23:00:00.000Z");
+        console.log(form.datepicker); // debug travis ci
         expect(form.datepicker.$viewValue).toEqual("15/03/2014");
     });
 
